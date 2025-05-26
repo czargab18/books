@@ -83,8 +83,31 @@ jobs:
       - name: Checar o repositório
         uses: actions/checkout@v4
 
+      - name: Instalar Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 'latest'
+
+      - name: Instalar Python e dependências
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.*'
+  
+      - name: Instalar dependências Python
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Salvar ambiente Python como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: venv
+          path: .venv
+
       - name: Listar subdiretórios modificados
         run: echo "Subdiretórios modificados: ${{ needs.detect.outputs.subfolders }}"
+
 
 # --------------------------
 #   renderizar-books:
