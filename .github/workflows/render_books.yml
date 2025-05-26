@@ -26,10 +26,16 @@ jobs:
   detect:
     runs-on: ubuntu-latest
     steps:
+
+      - name: Configurar Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
       - name: Checar o repositório
         uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Importante para que o git diff funcione corretamente
+          fetch-depth: 0
 
       - name: Listar arquivos modificados
         id: arquivos
@@ -66,15 +72,17 @@ jobs:
       #       # Adicione aqui o comando para renderizar o book, ex: quarto render build/$book
       #     done
 
+
+# --------------------------
 #   renderizar-books:
 #     runs-on: ubuntu-latest
-#     if: ${{ needs.detect-modificacao.outputs.subfolders != '' }}
-#     needs: [detect-modificacao]
+#     if: ${{ needs.detect.outputs.subfolders != '' }}
+#     needs: [detect]
 #     steps:
 #       - name: Verificar subdiretórios
 #         run: |
-#           echo "Subdiretórios detectados: ${{ needs.detect-modificacao.outputs.subfolders }}"
-#           if [[ -z "${{ needs.detect-modificacao.outputs.subfolders }}" ]]; then
+#           echo "Subdiretórios detectados: ${{ needs.detect.outputs.subfolders }}"
+#           if [[ -z "${{ needs.detect.outputs.subfolders }}" ]]; then
 #             echo "Nenhum subdiretório foi detectado. Pulando etapa."
 #           fi
 
@@ -117,7 +125,7 @@ jobs:
 #         # renderizar books e correções
 #       - name: Renderizar cada book modificado
 #         run: |
-#           for folder in ${{ needs.detect-modificacao.outputs.subfolders }}; do
+#           for folder in ${{ needs.detect.outputs.subfolders }}; do
 #             echo "Rendering book in books/build/$folder"
 #             quarto render books/build/$folder --to html
 #           done
@@ -149,7 +157,7 @@ jobs:
 #         env:
 #           PYTHONPATH: ./
 #         run: |
-#           for folder in ${{ needs.detect-modificacao.outputs.subfolders }}; do
+#           for folder in ${{ needs.detect.outputs.subfolders }}; do
 #             echo "Corrigindo book in books/build/$folder"
 #            python -m backend.tasks.books.renderbook
 #           done
