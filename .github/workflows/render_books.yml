@@ -6,35 +6,21 @@ on:
     - cron: "0 0 16 * 1"
   push:
     branches: [main]
-    paths: [
-      "**/build/*.qmd",
-      "**/build/*.yml",
-      "**/.github/workflows/*book*.yml"
-    ]
+    paths:
+      - "**/build/*.qmd"
+      - "**/build/*.yml"
+      - "**/.github/workflows/*book*.yml"
   pull_request:
     branches: [main]
-    paths: [
-      "**/build/*.qmd",
-      "**/build/*.yml",
-      "**/.github/workflows/*book*.yml"
-    ]
+    paths:
+      - "**/build/*.qmd"
+      - "**/build/*.yml"
+      - "**/.github/workflows/*book*.yml"
+
 permissions:
   contents: write
   pages: write
   pull-requests: read
-
-jobs:
-  # Ideia:
-  # - build: configurar dependencias e caches
-  detect:
-  run-on: ubuntu-latest  
-  steps:
-    - name: Checar o repositório
-      # DESCRIPTION: "Checa e disponibiliza os arquivos do repositório para
-      #               executar o workflow."
-      uses: actions/checkout@v4
-  # - renderizar Books e salva-los em `/docs/`
-  # - apenas enviar os arquivos da pasta /docs/ para repo:estatistica/books/
 
 jobs:
   detect:
