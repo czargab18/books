@@ -1,1 +1,4 @@
 *.pdf
+# Ignora todos os .gitignore exceto o da raiz
+**/.gitignore
+!/.gitignore
