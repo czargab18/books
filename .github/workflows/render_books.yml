@@ -28,13 +28,22 @@ jobs:
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0  # Importante para que o git diff funcione corretamente
 
       - name: Listar arquivos modificados
         id: arquivos
         run: |
-          # Junta arquivos adicionados, modificados e removidos
-          git fetch origin ${{ github.event.before }}
-          FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            git fetch origin ${{ github.event.pull_request.base.ref }}
+            FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }}...${{ github.sha }})
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            git fetch origin ${{ github.event.before }}
+            FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          else
+            # Para workflow_dispatch ou schedule, considere todos os arquivos relevantes
+            FILES=$(git ls-files "build/*.qmd" "build/*.yml")
+          fi
           echo "Arquivos modificados entre os commits:"
           echo "$FILES"
           echo "arquivos_modificados<<EOF" >> $GITHUB_ENV
@@ -48,6 +57,14 @@ jobs:
           MATCHED_SUBFOLDERS=$(echo "${{ env.arquivos_modificados }}" | grep -oE '^build/[A-Z]{3}[0-9]{4}/' | cut -d'/' -f2 | sort | uniq | xargs || echo "")
           echo "Subdiretórios detectados: $MATCHED_SUBFOLDERS"
           echo "subfolders=$MATCHED_SUBFOLDERS" >> $GITHUB_OUTPUT
+
+      # Exemplo de uso do output em outro job:
+      # - name: Renderizar books afetados
+      #   run: |
+      #     for book in ${{ steps.detect-subfolders.outputs.subfolders }}; do
+      #       echo "Renderizando $book"
+      #       # Adicione aqui o comando para renderizar o book, ex: quarto render build/$book
+      #     done
 
 #   renderizar-books:
 #     runs-on: ubuntu-latest
