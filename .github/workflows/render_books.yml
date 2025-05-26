@@ -6,25 +6,208 @@ on:
     - cron: "0 0 16 * 1"
   push:
     branches: [main]
-    paths: [
-      "**/build/*.qmd",
-      "**/build/*.yml",
-      "**/.github/workflows/*book*.yml"
-    ]
+    paths:
+      - "**/build/*.qmd"
+      - "**/build/*.yml"
+      - "**/.github/workflows/*book*.yml"
   pull_request:
     branches: [main]
-    paths: [
-      "**/build/*.qmd",
-      "**/build/*.yml",
-      "**/.github/workflows/*book*.yml"
-    ]
+    paths:
+      - "**/build/*.qmd"
+      - "**/build/*.yml"
+      - "**/.github/workflows/*book*.yml"
+
 permissions:
   contents: write
   pages: write
   pull-requests: read
 
 jobs:
-  # Ideia:
-  # - build: configurar dependencias e caches
-  # - renderizar Books e salva-los em `/docs/`
-  # - apenas enviar os arquivos da pasta /docs/ para repo:estatistica/books/
+  detect:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Listar arquivos modificados
+        id: arquivos
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            git fetch origin ${{ github.event.pull_request.base.ref }}
+            FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }}...${{ github.sha }})
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            git fetch origin ${{ github.event.before }}
+            FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          else
+            # Para workflow_dispatch ou schedule, considere todos os arquivos relevantes
+            FILES=$(git ls-files "build/*.qmd" "build/*.yml")
+          fi
+          echo "Arquivos modificados entre os commits:"
+          echo "$FILES"
+          echo "arquivos_modificados<<EOF" >> $GITHUB_ENV
+          echo "$FILES" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Identificar subdiretórios correspondentes
+        id: detect-subfolders
+        run: |
+          # Filtra subpastas com padrão ABC1234 em build/
+          MATCHED_SUBFOLDERS=$(echo "${{ env.arquivos_modificados }}" | grep -oE '^build/[A-Z]{3}[0-9]{4}/' | cut -d'/' -f2 | sort | uniq | xargs || echo "")
+          echo "Subdiretórios detectados: $MATCHED_SUBFOLDERS"
+          echo "subfolders=$MATCHED_SUBFOLDERS" >> $GITHUB_OUTPUT
+
+      # Exemplo de uso do output em outro job:
+      # - name: Renderizar books afetados
+      #   run: |
+      #     for book in ${{ steps.detect-subfolders.outputs.subfolders }}; do
+      #       echo "Renderizando $book"
+      #       # Adicione aqui o comando para renderizar o book, ex: quarto render build/$book
+      #     done
+
+  build:
+    runs-on: ubuntu-latest
+    needs: detect
+    if: ${{ needs.detect.outputs.subfolders != '' }}
+    env:
+      SUBFOLDERS: ${{ needs.detect.outputs.subfolders }}
+
+    steps:
+      - name: Configurar Git
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: 'latest'
+
+      - name: Instalar Python e dependências
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.13.*'
+  
+      - name: Instalar dependências Python
+        run: |
+          python -m venv .venv
+          source .venv/bin/activate
+          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+
+      - name: Salvar ambiente Python como artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: venv
+          path: .venv
+
+      - name: Listar subdiretórios modificados
+        run: echo "Subdiretórios modificados: ${{ needs.detect.outputs.subfolders }}"
+
+
+# --------------------------
+#   renderizar-books:
+#     runs-on: ubuntu-latest
+#     if: ${{ needs.detect.outputs.subfolders != '' }}
+#     needs: [detect]
+#     steps:
+
+#       - name: Checkout do repositório
+#         uses: actions/checkout@v4
+
+#       #     # Configura R
+#       #     - name: Cache de Pacotes R
+#       #       uses: actions/cache@v3
+#       #       with:
+#       #         path: ~/.R/library
+#       #         key: ${{ runner.os }}-R-library-${{ hashFiles('**/DESCRIPTION') }}
+#       #         restore-keys: |
+#       #           ${{ runner.os }}-R-library-
+
+#       #     - name: Configura a Linguagem R
+#       #       uses: r-lib/actions/setup-r@v2
+
+#       #     - name: Instalar Pacotes R (em paralelo)
+#       #       run: |
+#       #         Rscript -e '
+#       #         if (!requireNamespace("pak", quietly = TRUE)) {
+#       #           install.packages("pak")
+#       #         }
+#       #         pak::pkg_install(c("knitr", "rmarkdown", "downlit", "xml2"))'
+
+#       # Configura Quarto
+
+#       - name: Cache de Configurações do Quarto
+#         uses: actions/cache@v3
+#         with:
+#           path: ~/.quarto
+#           key: ${{ runner.os }}-quarto-${{ hashFiles('**/*.qmd', '**/quarto.yml') }}
+#           restore-keys: |
+#             ${{ runner.os }}-quarto-
+
+#       - name: Configura o Quarto
+#         uses: quarto-dev/quarto-actions/setup@v2
+
+#         # renderizar books e correções
+#       - name: Renderizar cada book modificado
+#         run: |
+#           for folder in ${{ needs.detect.outputs.subfolders }}; do
+#             echo "Rendering book in books/build/$folder"
+#             quarto render books/build/$folder --to html
+#           done
+
+#       # Configura Python
+#       - name: Cache de Dependências Python
+#         uses: actions/cache@v3
+#         with:
+#           path: ~/.cache/pip
+#           key: ${{ runner.os }}-pip-${{ hashFiles('**/backend/requirements.txt') }}
+#           restore-keys: |
+#             ${{ runner.os }}-pip-
+
+#       - name: Configura o Python
+#         uses: actions/setup-python@v4
+#         with:
+#           python-version: "3.x"
+
+#       # - name: Instalar Dependências Python
+#       #   run: pip install -r requirements.txt || echo "Ignorando dependências incompatíveis"
+
+#       - name: Instalar Pacote backend
+#         run: |
+#           #  python -m pip install --upgrade pip
+#             pip install -e backend
+#           #  pip install -r ./backend/core/requirements.txt || echo "Ignorando dependências incompatíveis"
+
+#       - name: Correções com Python
+#         env:
+#           PYTHONPATH: ./
+#         run: |
+#           for folder in ${{ needs.detect.outputs.subfolders }}; do
+#             echo "Corrigindo book in books/build/$folder"
+#            python -m backend.tasks.books.renderbook
+#           done
+
+#       - name: Configurar Git
+#         run: |
+#           git config --global user.name "github-actions[bot]"
+#           git config --global user.email "github-actions[bot]@users.noreply.github.com"
+
+#       - name: Adicionar mudanças ao Git
+#         run: |
+#           git add .
+#           git status
+
+#       - name: Commitar mudanças
+#         run: |
+#           git commit -m "Atualizações automáticas: Ambiente de teste" || echo "Nenhuma mudança para commitar."
+
+#       - name: Fazer Push para o repositório
+#         env:
+#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#         run: |
+#           git push -u origin books
