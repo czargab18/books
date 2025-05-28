@@ -2,7 +2,6 @@ project:
   type: book
   output-dir: "./../../TAS0000"
   lib-dir:  "./../delete/site_libs"
-  include-in-header: formulas.tex
   preview:
     port: 4200
     browser: false
@@ -25,3 +24,4 @@ format:
       - brand
     code-link: true
     search: true
+    include-in-header: formulas.tex
