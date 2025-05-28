@@ -140,7 +140,6 @@ jobs:
   repo:
     needs: [build, clean]
     runs-on: ubuntu-latest
-    env:
 
     steps:
       - name: Checar o repositório
