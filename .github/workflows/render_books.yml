@@ -1,4 +1,5 @@
-name: Renderizar Books com Quarto
+name: render_books
+# Descrição: Renderiza livros em Quarto e executa tarefas pós-processamento
 
 on:
   workflow_dispatch:
