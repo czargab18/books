@@ -5,13 +5,13 @@ on:
   schedule:
     - cron: "0 0 16 * 1"
   push:
-    branches: [main]
+    branches: [main, dev1]
     paths:
       - "**/build/*.qmd"
       - "**/build/*.yml"
       - "**/.github/workflows/*book*.yml"
   pull_request:
-    branches: [main]
+    branches: [main, dev1]
     paths:
       - "**/build/*.qmd"
       - "**/build/*.yml"
@@ -98,9 +98,8 @@ jobs:
           path: .venv
 
       - name: Listar subdiretórios modificados
-        env:
-          SUBFOLDERS: ${{ needs.detect.outputs.subfolders }}
-        run: echo "Subdiretórios modificados: $SUBFOLDERS"
+        run: |
+          echo "Subdiretórios modificados: $SUBFOLDERS"
 
       # Exemplo: Renderização dos books em cada subdiretório detectado
       - name: Renderizar books (Quarto)
