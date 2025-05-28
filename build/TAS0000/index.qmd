@@ -16,9 +16,8 @@ O nome desta série é inspirado na famosa coleção de Donald Knuth chamada "Th
 
     Defenderei a definição com seguinte exemplo: Um Estatístico é contratado para trabalhar em uma empresas especializada na venda de 2 produtos químicos. Após uma analise minucioso, ele conclui que produto A é 30% melhor que o B mas é 65% mais caro. A decisão de comercializar o produto será da empresa. Seus estudos ajudarão na decisão. Ele melhorou as opções de escolha. Em outras palavras, ele maximixou o poder de escolha da empresa com base em seus estudos.
 
-# formulas LaTeX
-Testando o uso de formulas LaTeX salvas em outro arquivo e usadas neste.
-Seu uso é mais eficaz para diminuir a quantidade de código no documento e aumentar a refatoração
+# fórmulas LaTeX
+Este documento utiliza fórmulas LaTeX que estão salvas em arquivos separados e são importadas para cá quando necessário. Essa abordagem torna o código do documento mais limpo, facilita a reutilização das fórmulas em diferentes partes do projeto e simplifica a manutenção e atualização das expressões matemáticas. Assim, é possível centralizar as definições e garantir consistência em toda a documentação.
 
 ## Exemplo de Fórmulas Avançadas
 
