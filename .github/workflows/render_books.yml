@@ -109,7 +109,6 @@ jobs:
               # LOOP FOR PARA CADA PASTA
       #       # python -m backend.tasks.books.renderbook build/$folder
       #     done
-      - name: Salvando alterações do Ambbiente 'build' para 'repo'
       
 
 # Usando css e js direto de https://www.estatistica.pro
