@@ -1,3 +1,8 @@
+# Melhorias sugeridas:
+# Considere adicionar um step de teste/validação após renderização, para garantir que o build não quebrou.
+# Se o workflow for rodar em repositórios privados, garanta que o token de acesso (GITHUB_TOKEN) tem permissões adequadas para push e criar PR.
+# Documente no README o fluxo e os secrets necessários.
+
 name: render_books
 # Descrição: Renderiza livros em Quarto e executa tarefas pós-processamento
 
@@ -6,13 +11,15 @@ on:
   schedule:
     - cron: "0 0 27 8 *"
   push:
-    branches: [main]
+    # branches: [main]
+    branches: [dev1]
     paths:
       - "**/build/*.qmd"
       - "**/build/*.yml"
       - "**/.github/workflows/*book*.yml"
   pull_request:
-    branches: [main]
+    # branches: [main]
+    branches: [dev1]
     paths:
       - "**/build/*.qmd"
       - "**/build/*.yml"
@@ -67,63 +74,43 @@ jobs:
     if: ${{ needs.detect.outputs.subfolders != '' }}
     env:
       SUBFOLDERS: ${{ needs.detect.outputs.subfolders }}
+    refs:
+      # Define a branch para o push
+      # Se não for definido, será usado o padrão do repositório
+      branch: renb
 
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
 
-      - name: Configurar Git
-        run: |
-          git config --global user.name "${{secrets.USERNAME}}"
-          git config --global user.email "${{secrets.USEREMAIL}}"
-
       - name: Instalar Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Instalar Python e dependências
-        uses: actions/setup-python@v5
-        with:
-          python-version: '3.13'
-          
-      - name: Instalar dependências Python
-        run: |
-          python -m venv .venv
-          source .venv/bin/activate
-          if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+      # - name: Instalar Python e dependências
+      #   clonar repo:backend
+      # instalar pacote repo: backend 
 
-      - name: Salvar ambiente Python como artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: venv
-          path: .venv
-
-      - name: Listar subdiretórios modificados
-        run: |
-          echo "Subdiretórios modificados: $SUBFOLDERS"
-
-      # Exemplo: Renderização dos books em cada subdiretório detectado
+      # Renderização dos books em cada subdiretório detectado
       - name: Renderizar books (Quarto)
         run: |
           for folder in $SUBFOLDERS; do
             echo "Renderizando build/$folder ..."
             quarto render build/$folder --to html || echo "Falha ao renderizar build/$folder"
           done
-
-      # Exemplo: Pós-processamento com Python, se necessário
-      - name: Correções com Python
-        env:
-          PYTHONPATH: ./
-        run: |
-          for folder in $SUBFOLDERS; do
-            echo "Processando build/$folder com Python..."
-            # Substitua pelo comando correto se necessário
-            # python -m backend.tasks.books.renderbook build/$folder
-          done
-
-      - name: Commitar e enviar mudanças se houver alterações
-        run: |
-          git add .
-          git diff --cached --quiet || (git commit -m "Atualizações automáticas: Ambiente de teste" && git push)
+            
+      # Pós-processamento com Python, se necessário
+      # - name: Correções com Python
+      #   env:
+      #     PYTHONPATH: ./
+      #   run: |
+      #     for folder in $SUBFOLDERS; do
+      #       echo "Processando build/$folder com Python..."
+      #       # Substitua pelo comando correto se necessário
+              # LOOP FOR PARA CADA PASTA
+      #       # python -m backend.tasks.books.renderbook build/$folder
+      #     done
+      - name: Salvando alterações do Ambbiente 'build' para 'repo'
+      
 
 # Usando css e js direto de https://www.estatistica.pro
 # Logo, não será necessário gerar os mesmos neste repositório
@@ -153,3 +140,43 @@ jobs:
           else
             echo "Diretório 'ac' não encontrado."
           fi
+
+# Salvar tudo e enviar par ao GitHub
+  repo:
+    needs: [build, clean]
+    runs-on: ubuntu-latest
+    env:
+
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar branche para push
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+          git checkout renb
+          git fetch origin main
+
+      - name: Configurar Usuario Git
+        run: |
+          git config --global user.name "${{ secrets.USERNAME }}"
+          git config --global user.email "${{ secrets.USEREMAIL }}"
+
+      - name: Commitar e enviar mudanças se houver alterações
+        run: |
+          # git checkout renb
+          git add .
+          git diff --cached --quiet || (git commit -m "Atualizações automáticas: Renderização de livros" && git push)
+          git push origin renb
+
+      - name: Criar Pull Request  
+        uses: peter-evans/create-pull-request@v4
+        with:
+          branch: renb
+          title: "Atualizações automáticas: Renderização de livros"
+          body: "Este PR foi gerado automaticamente pelo workflow de renderização de livros."
+          base: main
+          labels: "automático, renderização, livro"
+          delete-branch: true
+          draft: false
+          reviewers: ${{ secrets.REVIEWERS }}
