@@ -74,10 +74,6 @@ jobs:
     if: ${{ needs.detect.outputs.subfolders != '' }}
     env:
       SUBFOLDERS: ${{ needs.detect.outputs.subfolders }}
-    refs:
-      # Define a branch para o push
-      # Se não for definido, será usado o padrão do repositório
-      branch: renb
 
     steps:
       - name: Checar o repositório
@@ -153,8 +149,6 @@ jobs:
       - name: Configurar branche para push
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-          git checkout renb
-          git fetch origin main
 
       - name: Configurar Usuario Git
         run: |
@@ -162,20 +156,22 @@ jobs:
           git config --global user.email "${{ secrets.USEREMAIL }}"
 
       - name: Commitar e enviar mudanças se houver alterações
+        with:
+          branch: 'renb'
         run: |
-          # git checkout renb
+          git checkout renb
           git add .
           git diff --cached --quiet || (git commit -m "Atualizações automáticas: Renderização de livros" && git push)
           git push origin renb
 
-      - name: Criar Pull Request  
-        uses: peter-evans/create-pull-request@v4
-        with:
-          branch: renb
-          title: "Atualizações automáticas: Renderização de livros"
-          body: "Este PR foi gerado automaticamente pelo workflow de renderização de livros."
-          base: main
-          labels: "automático, renderização, livro"
-          delete-branch: true
-          draft: false
-          reviewers: ${{ secrets.REVIEWERS }}
+      # - name: Criar Pull Request  
+      #   uses: peter-evans/create-pull-request@v4
+      #   with:
+      #     branch: renb
+      #     title: "Atualizações automáticas: Renderização de livros"
+      #     body: "Este PR foi gerado automaticamente pelo workflow de renderização de livros."
+      #     base: main
+      #     labels: "automático, renderização, livro"
+      #     delete-branch: true
+      #     draft: false
+      #     reviewers: ${{ secrets.REVIEWERS }}
