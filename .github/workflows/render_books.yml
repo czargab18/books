@@ -98,7 +98,9 @@ jobs:
           path: .venv
 
       - name: Listar subdiretórios modificados
-        run: echo "Subdiretórios modificados: ${{ env.SUBFOLDERS }}"
+        env:
+          SUBFOLDERS: ${{ needs.detect.outputs.subfolders }}
+        run: echo "Subdiretórios modificados: $SUBFOLDERS"
 
       # Exemplo: Renderização dos books em cada subdiretório detectado
       - name: Renderizar books (Quarto)
