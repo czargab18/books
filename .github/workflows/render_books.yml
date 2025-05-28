@@ -5,13 +5,13 @@ on:
   schedule:
     - cron: "0 0 16 * 1"
   push:
-    branches: [main, dev1]
+    branches: [main]
     paths:
       - "**/build/*.qmd"
       - "**/build/*.yml"
       - "**/.github/workflows/*book*.yml"
   pull_request:
-    branches: [main, dev1]
+    branches: [main]
     paths:
       - "**/build/*.qmd"
       - "**/build/*.yml"
@@ -61,8 +61,8 @@ jobs:
           echo "subfolders=$MATCHED_SUBFOLDERS" >> $GITHUB_OUTPUT
 
   build:
+    needs: [detect]
     runs-on: ubuntu-latest
-    needs: detect
     if: ${{ needs.detect.outputs.subfolders != '' }}
     env:
       SUBFOLDERS: ${{ needs.detect.outputs.subfolders }}
@@ -123,3 +123,32 @@ jobs:
         run: |
           git add .
           git diff --cached --quiet || (git commit -m "Atualizações automáticas: Ambiente de teste" && git push)
+
+# Usando css e js direto de https://www.estatistica.pro
+# Logo, não será necessário gerar os mesmos neste repositório
+  clean:
+    needs: [build]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+
+      # - name: Limpar arquivos temporários
+      #   run: |
+      #     echo "Limpando arquivos temporários..." 
+
+      - name: Excluir arquivos gerados pelo Quarto
+        run: |
+          set -e
+          if [ -d "delete" ]; then
+            echo "Excluindo diretório '/delete/'"
+            rm -rf delete
+          else
+            echo "Diretório 'delete' não encontrado."
+          fi
+          if [ -d "ac" ]; then
+            echo "Excluindo diretório 'ac'..."
+            rm -rf ac
+          else
+            echo "Diretório 'ac' não encontrado."
+          fi
