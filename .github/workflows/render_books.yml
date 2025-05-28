@@ -78,13 +78,12 @@ jobs:
 
       - name: Instalar Quarto
         uses: quarto-dev/quarto-actions/setup@v2
-        with:
-          version: 'latest'
 
       - name: Instalar Python e dependências
         uses: actions/setup-python@v5
         with:
           python-version: '3.13'
+          
       - name: Instalar dependências Python
         run: |
           python -m venv .venv
