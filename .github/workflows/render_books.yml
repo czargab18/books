@@ -100,7 +100,8 @@ jobs:
       - name: Listar subdiretórios modificados
         env:
           SUBFOLDERS: ${{ needs.detect.outputs.subfolders }}
-        run: echo "Subdiretórios modificados: $SUBFOLDERS"
+        run: |
+          echo "Subdiretórios modificados: $SUBFOLDERS"
 
       # Exemplo: Renderização dos books em cada subdiretório detectado
       - name: Renderizar books (Quarto)
