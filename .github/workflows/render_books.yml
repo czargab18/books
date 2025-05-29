@@ -82,10 +82,6 @@ jobs:
       - name: Instalar Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      # - name: Instalar Python e dependências
-      #   clonar repo:backend
-      # instalar pacote repo: backend 
-
       # Renderização dos books em cada subdiretório detectado
       - name: Renderizar books (Quarto)
         run: |
@@ -93,18 +89,21 @@ jobs:
             echo "Renderizando build/$folder ..."
             quarto render build/$folder --to html || echo "Falha ao renderizar build/$folder"
           done
-            
-      # Pós-processamento com Python, se necessário
-      # - name: Correções com Python
-      #   env:
-      #     PYTHONPATH: ./
-      #   run: |
-      #     for folder in $SUBFOLDERS; do
-      #       echo "Processando build/$folder com Python..."
-      #       # Substitua pelo comando correto se necessário
-              # LOOP FOR PARA CADA PASTA
-      #       # python -m backend.tasks.books.renderbook build/$folder
-      #     done
+
+      - name: Instalar Pacote backend
+        run: |
+          git clone https://github.com/cesargabrielphd/backend.git
+          cd backend
+            pip install -e backend
+
+      - name: Correções com Python
+        env:
+          PYTHONPATH: ./
+        run: |
+          for folder in ${{ needs.detect-modificacao.outputs.subfolders }}; do
+            echo "Corrigindo book in books/build/$folder"
+           python -m backend.tasks.books.renderbook
+          done
       
 
 # Usando css e js direto de https://www.estatistica.pro
