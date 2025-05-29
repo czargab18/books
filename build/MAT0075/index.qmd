@@ -1,5 +1,7 @@
 # Sumário {#sumario .headline2}
  > ALGO A SER DESENVOLVIDO POR ALGUMA RAZÃO.
+  Apenas para salvar minhas notas de aula em algum momento.
+  Relaxar!!!
 
 Bibliografia a ser seguida:  
 [@rolla2025]  
