@@ -140,13 +140,17 @@ jobs:
   repo:
     needs: [build, clean]
     runs-on: ubuntu-latest
-    env:
 
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
 
-      - name: Configurar branche para push
+      - name: Configurar Git para push
+        uses: actions/configure-git@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configurar remote para push
         run: |
           git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
 
@@ -159,7 +163,6 @@ jobs:
         with:
           branch: 'renb'
         run: |
-          git checkout renb
           git add .
           git diff --cached --quiet || (git commit -m "Atualizações automáticas: Renderização de livros" && git push)
           git push origin renb
