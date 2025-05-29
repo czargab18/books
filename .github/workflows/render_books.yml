@@ -92,7 +92,7 @@ jobs:
 
       - name: Instalar Pacote backend
         run: |
-          git clone https://x-access-token:${GH_TOKEN_BACKEND}@github.com/cesargabrielphd/backend.git
+          git clone https://x-access-token:${{secrets.ACCES_REPO}}@github.com/cesargabrielphd/backend.git
           cd backend
           pip install -e .
 
