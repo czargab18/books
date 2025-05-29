@@ -90,15 +90,19 @@ jobs:
             quarto render build/$folder --to html || echo "Falha ao renderizar build/$folder"
           done
 
+      - name: Correções com Python
+        use: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+          cache: 'pip'
+
       - name: Instalar Pacote backend
         run: |
           git clone https://x-access-token:${{secrets.ACCES_REPO}}@github.com/cesargabrielphd/backend.git
           cd backend
           pip install -e .
 
-      - name: Correções com Python
-        env:
-          PYTHONPATH: ./
+      - name: Executar tarefas de correção
         run: |
           for folder in ${{ needs.detect-modificacao.outputs.subfolders }}; do
             echo "Corrigindo book in books/build/$folder"
