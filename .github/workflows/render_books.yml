@@ -1,8 +1,3 @@
-# Melhorias sugeridas:
-# Considere adicionar um step de teste/validação após renderização, para garantir que o build não quebrou.
-# Se o workflow for rodar em repositórios privados, garanta que o token de acesso (GITHUB_TOKEN) tem permissões adequadas para push e criar PR.
-# Documente no README o fluxo e os secrets necessários.
-
 name: render_books
 # Descrição: Renderiza livros em Quarto e executa tarefas pós-processamento
 
@@ -11,14 +6,12 @@ on:
   schedule:
     - cron: "0 0 27 8 *"
   push:
-    # branches: [main]
     branches: [dev1]
     paths:
       - "**/build/*.qmd"
       - "**/build/*.yml"
       - "**/.github/workflows/*book*.yml"
   pull_request:
-    # branches: [main]
     branches: [dev1]
     paths:
       - "**/build/*.qmd"
@@ -90,38 +83,33 @@ jobs:
             quarto render build/$folder --to html || echo "Falha ao renderizar build/$folder"
           done
 
-      - name: Correções com Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.13'
-          cache: 'pip'
+      # # Teste/validação dos builds renderizados
+      # - name: Validar builds renderizados
+      #   run: |
+      #     for folder in $SUBFOLDERS; do
+      #       if ls build/$folder/*.html 1> /dev/null 2>&1; then
+      #         echo "HTML gerado em build/$folder"
+      #       else
+      #         echo "Nenhum HTML gerado em build/$folder" && exit 1
+      #       fi
+      #     done
 
-      - name: Instalar Pacote backend
-        run: |
-          git clone https://x-access-token:${{secrets.ACCES_REPO}}@github.com/cesargabrielphd/backend.git
-          cd backend
-          pip install -e .
+      # Pós-processamento com Python, se necessário
+      # - name: Correções com Python
+      #   env:
+      #     PYTHONPATH: ./
+      #   run: |
+      #     for folder in $SUBFOLDERS; do
+      #       echo "Processando build/$folder com Python..."
+      #       # python -m backend.tasks.books.renderbook build/$folder
+      #     done
 
-      - name: Executar tarefas de correção
-        run: |
-          for folder in ${{ needs.detect-modificacao.outputs.subfolders }}; do
-            echo "Corrigindo book in books/build/$folder"
-           python -m backend.tasks.books.renderbook
-          done
-      
-
-# Usando css e js direto de https://www.estatistica.pro
-# Logo, não será necessário gerar os mesmos neste repositório
   clean:
     needs: [build]
     runs-on: ubuntu-latest
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
-
-      # - name: Limpar arquivos temporários
-      #   run: |
-      #     echo "Limpando arquivos temporários..." 
 
       - name: Excluir arquivos gerados pelo Quarto
         run: |
@@ -139,7 +127,6 @@ jobs:
             echo "Diretório 'ac' não encontrado."
           fi
 
-# Salvar tudo e enviar par ao GitHub
   repo:
     needs: [build, clean]
     runs-on: ubuntu-latest
@@ -148,25 +135,19 @@ jobs:
       - name: Checar o repositório
         uses: actions/checkout@v4
 
-      - name: Configurar Git para push
-        uses: actions/configure-git@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Configurar remote para push
-        run: |
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-
       - name: Configurar Usuario Git
         run: |
           git config --global user.name "${{ secrets.USERNAME }}"
           git config --global user.email "${{ secrets.USEREMAIL }}"
 
+      - name: Configurar remote para push
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
       - name: Commitar e enviar mudanças se houver alterações
         run: |
           git add .
-          git diff --cached --quiet || (git commit -m "Atualizações automáticas: Renderização de livros" && git push)
-          git push origin renb
+          git diff --cached --quiet || (git commit -m "Atualizações automáticas: Renderização de livros" && git push origin renb)
 
       # - name: Criar Pull Request  
       #   uses: peter-evans/create-pull-request@v4
