@@ -62,7 +62,7 @@ jobs:
           echo "Subdiretórios detectados: $SUBFOLDERS"
           echo "subfolders=$SUBFOLDERS" >> $GITHUB_OUTPUT
 
-  build:
+  render:
     needs: [detect]
     runs-on: ubuntu-latest
     if: ${{ needs.detect.outputs.subfolders != '' }}
@@ -94,7 +94,7 @@ jobs:
       #     done
 
   clean:
-    needs: [build]
+    needs: [render]
     runs-on: ubuntu-latest
     steps:
       - name: Checar o repositório
@@ -113,7 +113,7 @@ jobs:
           done
 
   repo:
-    needs: [build, clean]
+    needs: [render, clean]
     runs-on: ubuntu-latest
 
     steps:
