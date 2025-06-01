@@ -23,6 +23,15 @@ permissions:
   pages: write
   pull-requests: read
 
+# Reestruturar os Ambientes
+# - detect: para detectar subdiretórios modificados
+# - build: Adicionar as dependencias:
+#          Quarto/cache + Python/cache:backend
+# - render: para renderizar os livros
+# - clean: para limpar arquivos temporários
+# - repo: para gerenciar o repositório e enviar alterações
+# - pages: para publicar no GitHub Pages
+
 jobs:
   detect:
     runs-on: ubuntu-latest
@@ -150,3 +159,32 @@ jobs:
       #     delete-branch: true
       #     draft: false
       #     reviewers: ${{ secrets.REVIEWERS }}
+
+  pages:
+    needs: [repo]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Git para push
+        uses: actions/configure-git@v2
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Configurar Usuario Git
+        run: |
+          git config --global user.name "${{ secrets.USERNAME }}"
+          git config --global user.email "${{ secrets.USEREMAIL }}"
+
+      - name: Configurar remote para push
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
+      - name: Deploy para GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/
+          publish_branch: gh-pages
