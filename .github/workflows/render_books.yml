@@ -35,31 +35,32 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Listar arquivos modificados
+      - name: Listar arquivos modificados (preciso)
         id: arquivos
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           set -e
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            git fetch origin ${{ github.event.pull_request.base.ref }}
-            FILES=$(git diff --name-only origin/${{ github.event.pull_request.base.ref }}...${{ github.sha }})
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+            REPO="${{ github.repository }}"
+            FILES=$(curl -sSL -H "Authorization: Bearer $GITHUB_TOKEN" \
+              "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/files" | jq -r '.[].filename')
           elif [[ "${{ github.event_name }}" == "push" ]]; then
-            git fetch origin ${{ github.event.before }}
             FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
           else
             FILES=$(git ls-files "build/*.qmd" "build/*.yml")
           fi
           echo "Arquivos modificados:"
           echo "$FILES"
-          echo "arquivos_modificados<<EOF" >> $GITHUB_ENV
-          echo "$FILES" >> $GITHUB_ENV
-          echo "EOF" >> $GITHUB_ENV
+          echo "$FILES" > arquivos_modificados.txt
 
       - name: Identificar subdiretórios correspondentes
         id: detect-subfolders
         run: |
-          MATCHED_SUBFOLDERS=$(echo "${{ env.arquivos_modificados }}" | grep -oE '^build/[A-Z]{3}[0-9]{4}/' | cut -d'/' -f2 | sort | uniq | xargs || echo "")
-          echo "Subdiretórios detectados: $MATCHED_SUBFOLDERS"
-          echo "subfolders=$MATCHED_SUBFOLDERS" >> $GITHUB_OUTPUT
+          SUBFOLDERS=$(grep -oE '^build/[A-Z]{3}[0-9]{4}/' arquivos_modificados.txt | cut -d'/' -f2 | sort | uniq | xargs || echo "")
+          echo "Subdiretórios detectados: $SUBFOLDERS"
+          echo "subfolders=$SUBFOLDERS" >> $GITHUB_OUTPUT
 
   build:
     needs: [detect]
@@ -75,7 +76,6 @@ jobs:
       - name: Instalar Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      # Renderização dos books em cada subdiretório detectado
       - name: Renderizar books (Quarto)
         run: |
           for folder in $SUBFOLDERS; do
@@ -83,18 +83,7 @@ jobs:
             quarto render build/$folder --to html || echo "Falha ao renderizar build/$folder"
           done
 
-      # # Teste/validação dos builds renderizados (opcional)
-      # - name: Validar builds renderizados
-      #   run: |
-      #     for folder in $SUBFOLDERS; do
-      #       if ls build/$folder/*.html 1> /dev/null 2>&1; then
-      #         echo "HTML gerado em build/$folder"
-      #       else
-      #         echo "Nenhum HTML gerado em build/$folder" && exit 1
-      #       fi
-      #     done
-
-      # Pós-processamento com Python, se necessário
+      # Opcional: Pós-processamento Python
       # - name: Correções com Python
       #   env:
       #     PYTHONPATH: ./
@@ -114,18 +103,14 @@ jobs:
       - name: Excluir arquivos gerados pelo Quarto
         run: |
           set -e
-          if [ -d "delete" ]; then
-            echo "Excluindo diretório '/delete/'"
-            rm -rf delete
-          else
-            echo "Diretório 'delete' não encontrado."
-          fi
-          if [ -d "ac" ]; then
-            echo "Excluindo diretório 'ac'..."
-            rm -rf ac
-          else
-            echo "Diretório 'ac' não encontrado."
-          fi
+          for dir in delete ac; do
+            if [ -d "$dir" ]; then
+              echo "Excluindo diretório '$dir'..."
+              rm -rf "$dir"
+            else
+              echo "Diretório '$dir' não encontrado."
+            fi
+          done
 
   repo:
     needs: [build, clean]
