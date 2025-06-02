@@ -23,6 +23,15 @@ permissions:
   pages: write
   pull-requests: read
 
+# Reestruturar os Ambientes
+# - detect: para detectar subdiretórios modificados
+# - build: Adicionar as dependencias:
+#          Quarto/cache + Python/cache:backend
+# - render: para renderizar os livros
+# - clean: para limpar arquivos temporários
+# - repo: para gerenciar o repositório e enviar alterações
+# - pages: para publicar no GitHub Pages
+
 jobs:
   detect:
     runs-on: ubuntu-latest
@@ -120,11 +129,6 @@ jobs:
       - name: Checar o repositório
         uses: actions/checkout@v4
 
-      - name: Configurar Git para push
-        uses: actions/configure-git@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Configurar Usuario Git
         run: |
           git config --global user.name "${{ secrets.USERNAME }}"
@@ -139,14 +143,26 @@ jobs:
           git add .
           git diff --cached --quiet || (git commit -m "Atualizações automáticas: Renderização de livros" && git push origin renb)
 
-      # - name: Criar Pull Request  
-      #   uses: peter-evans/create-pull-request@v4
-      #   with:
-      #     branch: renb
-      #     title: "Atualizações automáticas: Renderização de livros"
-      #     body: "Este PR foi gerado automaticamente pelo workflow de renderização de livros."
-      #     base: main
-      #     labels: "automático, renderização, livro"
-      #     delete-branch: true
-      #     draft: false
-      #     reviewers: ${{ secrets.REVIEWERS }}
+  pages:
+    needs: [repo]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar Usuario Git
+        run: |
+          git config --global user.name "${{ secrets.USERNAME }}"
+          git config --global user.email "${{ secrets.USEREMAIL }}"
+
+      - name: Configurar remote para push
+        run: |
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+
+      - name: Deploy para GitHub Pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: build/
+          publish_branch: gh-pages

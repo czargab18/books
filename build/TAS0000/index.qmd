@@ -19,4 +19,3 @@ O nome desta série é inspirado na famosa coleção de Donald Knuth chamada "Th
 # fórmulas LaTeX
 Este documento utiliza fórmulas LaTeX que estão salvas em arquivos separados e são importadas para cá quando necessário. Essa abordagem torna o código do documento mais limpo, facilita a reutilização das fórmulas em diferentes partes do projeto e simplifica a manutenção e atualização das expressões matemáticas. Assim, é possível centralizar as definições e garantir consistência em toda a documentação.
 
-## TESTE
