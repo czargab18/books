@@ -124,15 +124,12 @@ jobs:
   repo:
     needs: [render, clean]
     runs-on: ubuntu-latest
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-      # - name: Checar o repositório
-      #   uses: actions/checkout@v4
-
-      - name: Configurar Git para push
-        uses: github-actions/configure-git@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+      - name: Checar o repositório
+        uses: actions/checkout@v4
 
       - name: Configurar Usuario Git
         run: |
@@ -151,15 +148,12 @@ jobs:
   pages:
     needs: [repo]
     runs-on: ubuntu-latest
+    with:
+      token: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
-
-      - name: Configurar Git para push
-        uses: github-actions/configure-git@v2
-        with:
-          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Configurar Usuario Git
         run: |
