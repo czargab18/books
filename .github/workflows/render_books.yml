@@ -130,7 +130,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configurar Git para push
-        uses: actions/configure-git@v2
+        uses: github-actions/configure-git@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
@@ -148,18 +148,6 @@ jobs:
           git add .
           git diff --cached --quiet || (git commit -m "Atualizações automáticas: Renderização de livros" && git push origin renb)
 
-      # - name: Criar Pull Request  
-      #   uses: peter-evans/create-pull-request@v4
-      #   with:
-      #     branch: renb
-      #     title: "Atualizações automáticas: Renderização de livros"
-      #     body: "Este PR foi gerado automaticamente pelo workflow de renderização de livros."
-      #     base: main
-      #     labels: "automático, renderização, livro"
-      #     delete-branch: true
-      #     draft: false
-      #     reviewers: ${{ secrets.REVIEWERS }}
-
   pages:
     needs: [repo]
     runs-on: ubuntu-latest
@@ -169,7 +157,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Configurar Git para push
-        uses: actions/configure-git@v2
+        uses: github-actions/configure-git@v2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
 
