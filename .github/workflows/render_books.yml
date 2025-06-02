@@ -124,8 +124,6 @@ jobs:
   repo:
     needs: [render, clean]
     runs-on: ubuntu-latest
-    with:
-      token: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checar o repositório
@@ -148,8 +146,6 @@ jobs:
   pages:
     needs: [repo]
     runs-on: ubuntu-latest
-    with:
-      token: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
       - name: Checar o repositório
