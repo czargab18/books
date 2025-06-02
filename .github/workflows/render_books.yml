@@ -126,8 +126,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checar o repositório
-        uses: actions/checkout@v4
+      # - name: Checar o repositório
+      #   uses: actions/checkout@v4
 
       - name: Configurar Git para push
         uses: github-actions/configure-git@v2
