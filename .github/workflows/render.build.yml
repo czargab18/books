@@ -66,6 +66,18 @@ jobs:
           echo "Subdiretórios detectados: $SUBFOLDERS"
           echo "subfolders=$SUBFOLDERS" >> $GITHUB_OUTPUT
 
+  build:
+    needs: detect
+    runs-on: ubuntu-latest
+    steps:
+      run: echo "Pular etapa de build, pois não há dependências a serem instaladas."
+
+  render:
+    needs: [detect, build]
+    runs-on: ubuntu-latest
+    steps:
+      run: echo "Pular etapa de reder"
+
   clean:
     needs: [detect, render]
     runs-on: ubuntu-latest
@@ -95,13 +107,6 @@ jobs:
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
-      - name: Buscar alterações dos jobs anteriores
-        run: |
-          git fetch --all
-          git reset --hard origin/${{ github.ref_name }}
 
       - name: Configurar Git
         run: |
