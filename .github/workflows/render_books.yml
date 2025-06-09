@@ -124,50 +124,28 @@ jobs:
   repo:
     needs: [render, clean]
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checar o repositórioo
+      - name: Checar o repositório
         uses: actions/checkout@v4
 
-      - name: Configurar Usuario Git
+      - name: Configurar usuário do Git
         run: |
           git config --global user.name "${{ secrets.USERNAME }}"
           git config --global user.email "${{ secrets.USEREMAIL }}"
 
-      - name: Configurar remote para push
+      - name: Adicionar e commitar alterações
         run: |
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-
-      - name: Commitar e enviar mudanças se houver alterações
-        run: |
-          git fetch origin books || true
-          git checkout books 2>/dev/null || git checkout -b books
-          git merge origin/books || true
           git add .
-          git diff --cached --quiet && echo "Nenhuma alteração para commit." && exit 0
-          git commit -m "Atualizações automáticas: Renderização de livros"
-          git push origin books:books
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração para commitar."
+          else
+            git commit -m "chore: atualizações automáticas dos livros renderizados [ci skip]"
+          fi
 
-#  pages:
-#    needs: [repo]
-#    runs-on: ubuntu-latest
-#
-#    steps:
-#      - name: Checar o repositório
-#        uses: actions/checkout@v4
-#
-#      - name: Configurar Usuario Git
-#        run: |
-#          git config --global user.name "${{ secrets.USERNAME }}"
-#          git config --global user.email "${{ secrets.USEREMAIL }}"
-#
-#      - name: Configurar remote para push
-#        run: |
-#          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-#
-#      - name: Deploy para GitHub Pages
-#        uses: peaceiris/actions-gh-pages@v3
-#        with:
-#          github_token: ${{ secrets.GITHUB_TOKEN }}
-#          publish_dir: build/
-#          publish_branch: pages
+      - name: Enviar alterações para o GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if git rev-parse --verify HEAD >/dev/null 2>&1; then
+            git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" HEAD:${{ github.ref }}
+          fi
