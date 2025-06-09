@@ -6,13 +6,13 @@ on:
   schedule:
     - cron: "0 0 27 8 *"
   push:
-    branches: [main]
+    branches: [main, book]
     paths:
       - "**/build/*.qmd"
       - "**/build/*.yml"
       - "**/.github/workflows/*book*.yml"
   pull_request:
-    branches: [main]
+    branches: [main, book]
     paths:
       - "**/build/*.qmd"
       - "**/build/*.yml"
