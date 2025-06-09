@@ -70,19 +70,19 @@ jobs:
     needs: [detect, render]
     runs-on: ubuntu-latest
     steps:
-      - name: Excluir libs geradas automaticamente pelo Quarto
+      - name: Excluir todas as pastas 'delete/site_libs' de cada book
         env:
           SUBFOLDERS: ${{ needs.detect.outputs.subfolders }}
         run: |
           set -e
           if [ -n "$SUBFOLDERS" ]; then
             for dir in $SUBFOLDERS; do
-              LIBS_PATH="build/$dir/site_libs"
-              if [ -d "$LIBS_PATH" ]; then
-                echo "Excluindo '$LIBS_PATH'..."
-                rm -rf "$LIBS_PATH"
+              FIND_PATH="build/$dir/delete"
+              if [ -d "$FIND_PATH" ]; then
+                echo "Procurando e excluindo 'site_libs' em '$FIND_PATH'..."
+                find "$FIND_PATH" -type d -name "site_libs" -exec rm -rf {} +
               else
-                echo "Libs '$LIBS_PATH' não encontradas."
+                echo "Diretório '$FIND_PATH' não encontrado."
               fi
             done
           else
