@@ -65,3 +65,26 @@ jobs:
           SUBFOLDERS=$(grep -oE '^build/[A-Z]{3}[0-9]{4}/' arquivos_modificados.txt | cut -d'/' -f2 | sort | uniq | xargs || echo "")
           echo "Subdiretórios detectados: $SUBFOLDERS"
           echo "subfolders=$SUBFOLDERS" >> $GITHUB_OUTPUT
+
+  clean:
+    needs: [detect, render]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Excluir libs geradas automaticamente pelo Quarto
+        env:
+          SUBFOLDERS: ${{ needs.detect.outputs.subfolders }}
+        run: |
+          set -e
+          if [ -n "$SUBFOLDERS" ]; then
+            for dir in $SUBFOLDERS; do
+              LIBS_PATH="build/$dir/site_libs"
+              if [ -d "$LIBS_PATH" ]; then
+                echo "Excluindo '$LIBS_PATH'..."
+                rm -rf "$LIBS_PATH"
+              else
+                echo "Libs '$LIBS_PATH' não encontradas."
+              fi
+            done
+          else
+            echo "Nenhum subdiretório detectado. Nada a excluir."
+          fi
