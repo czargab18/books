@@ -130,8 +130,8 @@ jobs:
 
       - name: Configurar usuário do Git
         run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git config --global user.name "${{ secrets.USERNAME }}"
+          git config --global user.email "${{ secrets.USEREMAIL }}"
 
       - name: Adicionar e commitar alterações
         run: |
