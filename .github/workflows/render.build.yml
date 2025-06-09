@@ -1,5 +1,12 @@
 name: render_books
 # Descrição: Renderiza livros em Quarto e executa tarefas pós-processamento
+# Reestruturar os Ambientes
+# - detect: para detectar subdiretórios modificados
+# - build: Adicionar as dependencias:
+#          Quarto/cache + Python/cache: + repo-pgk:backend
+# - render: para renderizar os livros
+# - clean: para limpar arquivos temporários
+# - repo: para gerenciar o repositório e enviar alterações
 
 on:
   workflow_dispatch:
@@ -25,3 +32,30 @@ jobs:
     runs-on: ubuntu-latest
     outputs:
       subfolders: ${{ steps.detect-subfolders.outputs.subfolders }}
+
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 00
+
+      - name: Listar arquivos modificados (última alteração)
+        id: arquivos
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          set -e
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            PR_NUMBER="${{ github.event.pull_request.number }}"
+            REPO="${{ github.repository }}"
+            FILES=$(curl -sSL -H "Authorization: Bearer $GITHUB_TOKEN" \
+              "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/files" | jq -r '.[].filename')
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          elif [[ "${{ github.event_name }}" == "merge_group" ]]; then
+            FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          else
+            FILES=$(git diff --name-only HEAD~1 HEAD)
+          fi
+          echo "Arquivos modificados:"
+          echo "$FILES"
