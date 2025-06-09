@@ -36,8 +36,6 @@ jobs:
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 00
 
       - name: Listar arquivos modificados (preciso)
         id: arquivos
