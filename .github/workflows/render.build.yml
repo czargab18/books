@@ -39,7 +39,7 @@ jobs:
         with:
           fetch-depth: 00
 
-      - name: Listar arquivos modificados (última alteração)
+      - name: Listar arquivos modificados (preciso)
         id: arquivos
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -55,7 +55,15 @@ jobs:
           elif [[ "${{ github.event_name }}" == "merge_group" ]]; then
             FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
           else
-            FILES=$(git diff --name-only HEAD~1 HEAD)
+            FILES=$(git ls-files "build/*.qmd" "build/*.yml")
           fi
           echo "Arquivos modificados:"
           echo "$FILES"
+          echo "$FILES" > arquivos_modificados.txt
+
+      - name: Identificar subdiretórios correspondentes
+        id: detect-subfolders
+        run: |
+          SUBFOLDERS=$(grep -oE '^build/[A-Z]{3}[0-9]{4}/' arquivos_modificados.txt | cut -d'/' -f2 | sort | uniq | xargs || echo "")
+          echo "Subdiretórios detectados: $SUBFOLDERS"
+          echo "subfolders=$SUBFOLDERS" >> $GITHUB_OUTPUT
