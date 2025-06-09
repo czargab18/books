@@ -1,6 +1,31 @@
+###########################################
+################## pastas:#################
+###########################################
+##### IGNORAR
 *.pdf
 /delete
 /ac
-# Ignora todos os .gitignore exceto o da raiz
 **/.gitignore
+##### NÃO IGNORAR
+# !fluxograma.pdf
 !/.gitignore
+
+###########################################
+#################### R ####################
+###########################################
+##### IGNORAR
+renv/*
+renv/.gitignore
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/sandbox/
+renv/staging/
+
+##### NÃO IGNORAR
+!**/renv/activate.R
+!**/renv/settings.json
+!.Rprofile
+!renv.lock

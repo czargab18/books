@@ -143,26 +143,26 @@ jobs:
           git add .
           git diff --cached --quiet || (git commit -m "Atualizações automáticas: Renderização de livros" && git push origin renb)
 
-  pages:
-    needs: [repo]
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checar o repositório
-        uses: actions/checkout@v4
-
-      - name: Configurar Usuario Git
-        run: |
-          git config --global user.name "${{ secrets.USERNAME }}"
-          git config --global user.email "${{ secrets.USEREMAIL }}"
-
-      - name: Configurar remote para push
-        run: |
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
-
-      - name: Deploy para GitHub Pages
-        uses: peaceiris/actions-gh-pages@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: build/
-          publish_branch: gh-pages
+#  pages:
+#    needs: [repo]
+#    runs-on: ubuntu-latest
+#
+#    steps:
+#      - name: Checar o repositório
+#        uses: actions/checkout@v4
+#
+#      - name: Configurar Usuario Git
+#        run: |
+#          git config --global user.name "${{ secrets.USERNAME }}"
+#          git config --global user.email "${{ secrets.USEREMAIL }}"
+#
+#      - name: Configurar remote para push
+#        run: |
+#          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}
+#
+#      - name: Deploy para GitHub Pages
+#        uses: peaceiris/actions-gh-pages@v3
+#        with:
+#          github_token: ${{ secrets.GITHUB_TOKEN }}
+#          publish_dir: build/
+#          publish_branch: pages
