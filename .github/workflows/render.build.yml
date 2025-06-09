@@ -1,4 +1,4 @@
-name: render_books
+name: build_render_books
 # Descrição: Renderiza livros em Quarto e executa tarefas pós-processamento
 # Reestruturar os Ambientes
 # - detect: para detectar subdiretórios modificados
