@@ -140,14 +140,12 @@ jobs:
 
       - name: Commitar e enviar mudanças se houver alterações
         run: |
+          git fetch origin books || true
+          git checkout books 2>/dev/null || git checkout -b books
+          git merge origin/books || true
           git add .
           git diff --cached --quiet && echo "Nenhuma alteração para commit." && exit 0
-          # Cria a branch books localmente se não existir
-          git branch | grep books || git checkout -b books
-          # Garante que estamos na branch books
-          git checkout books
           git commit -m "Atualizações automáticas: Renderização de livros"
-          # Push para books (cria no remoto se não existir)
           git push origin books:books
 
 #  pages:
