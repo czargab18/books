@@ -95,6 +95,13 @@ jobs:
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Buscar alterações dos jobs anteriores
+        run: |
+          git fetch --all
+          git reset --hard origin/${{ github.ref_name }}
 
       - name: Configurar Git
         run: |
