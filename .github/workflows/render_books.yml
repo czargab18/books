@@ -23,14 +23,6 @@ permissions:
   pages: write
   pull-requests: read
 
-# Reestruturar os Ambientes
-# - detect: para detectar subdiretórios modificados
-# - build: Adicionar as dependencias:
-#          Quarto/cache + Python/cache:backend
-# - render: para renderizar os livros
-# - clean: para limpar arquivos temporários
-# - repo: para gerenciar o repositório e enviar alterações
-# - pages: para publicar no GitHub Pages
 
 jobs:
   detect:
