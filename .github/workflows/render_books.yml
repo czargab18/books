@@ -126,6 +126,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checar o repositórioo
+        uses: actions/checkout@v4
+
       - name: Configurar Usuario Git
         run: |
           git config --global user.name "${{ secrets.USERNAME }}"
