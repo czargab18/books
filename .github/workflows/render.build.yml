@@ -70,13 +70,15 @@ jobs:
     needs: detect
     runs-on: ubuntu-latest
     steps:
-      run: echo "Pular etapa de build, pois não há dependências a serem instaladas."
+      - name: Pular etapa de build, pois não há dependências a serem instaladas.
+        run: echo "Pular etapa de build, pois não há dependências a serem instaladas."
 
   render:
     needs: [detect, build]
     runs-on: ubuntu-latest
     steps:
-      run: echo "Pular etapa de reder"
+      - name: Pular etapa de render
+        run: echo "Pular etapa de render"
 
   clean:
     needs: [detect, render]
