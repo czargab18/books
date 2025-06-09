@@ -1,0 +1,27 @@
+name: render_books
+# Descrição: Renderiza livros em Quarto e executa tarefas pós-processamento
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 27 8 *"
+  push:
+    branches: [main, book]
+    paths:
+      - "**/build/*.qmd"
+      - "**/build/*.yml"
+  pull_request:
+    branches: [main, book]
+    paths:
+      - "**/build/*.qmd"
+      - "**/build/*.yml"
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      subfolders: ${{ steps.detect-subfolders.outputs.subfolders }}
