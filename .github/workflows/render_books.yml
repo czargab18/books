@@ -141,7 +141,7 @@ jobs:
       - name: Commitar e enviar mudanças se houver alterações
         run: |
           git add .
-          git diff --cached --quiet || (git commit -m "Atualizações automáticas: Renderização de livros" && git push origin renb)
+          git diff --cached --quiet || (git commit -m "Atualizações automáticas: Renderização de livros" && git push origin books)
 
 #  pages:
 #    needs: [repo]
