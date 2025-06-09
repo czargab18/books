@@ -126,7 +126,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checar o repositório
+      - name: Checar o repositórioo
         uses: actions/checkout@v4
 
       - name: Configurar Usuario Git
@@ -141,7 +141,14 @@ jobs:
       - name: Commitar e enviar mudanças se houver alterações
         run: |
           git add .
-          git diff --cached --quiet || (git commit -m "Atualizações automáticas: Renderização de livros" && git push origin books)
+          git diff --cached --quiet && echo "Nenhuma alteração para commit." && exit 0
+          # Cria a branch books localmente se não existir
+          git branch | grep books || git checkout -b books
+          # Garante que estamos na branch books
+          git checkout books
+          git commit -m "Atualizações automáticas: Renderização de livros"
+          # Push para books (cria no remoto se não existir)
+          git push origin books:books
 
 #  pages:
 #    needs: [repo]
