@@ -110,6 +110,9 @@ jobs:
   build:
     needs: [detectar]
     runs-on: ubuntu-latest
+    outputs:
+      path_quarto_bin: ${{ steps.save-path.outputs.quarto_bin }}
+      path_quarto_dir: ${{ steps.save-path.outputs.quarto_dir }}
 
     steps:
       - name: Instalar Quarto
@@ -123,19 +126,13 @@ jobs:
           fi
           echo "Quarto instalado com sucesso."
 
-      - name: Salvar artefatos do ambiente
+      - name: Salvar paths do Quarto
+        id: save-path
         run: |
-          mkdir -p quarto-env
-          QUARTO_PATH=$(command -v quarto)
-          QUARTO_DIR=$(dirname "$QUARTO_PATH")
-          cp "$QUARTO_PATH" quarto-env/
-          cp -r "$QUARTO_DIR" quarto-env/
-
-      - name: Upload artefatos
-        uses: actions/upload-artifact@v4
-        with:
-          name: quarto-env
-          path: quarto-env
+          QUARTO_BIN=$(command -v quarto)
+          QUARTO_DIR=$(dirname "$QUARTO_BIN")
+          echo "quarto_bin=$QUARTO_BIN" >> $GITHUB_OUTPUT
+          echo "quarto_dir=$QUARTO_DIR" >> $GITHUB_OUTPUT
 
   renderizar:
     needs: [detectar, backend, build]
@@ -144,21 +141,20 @@ jobs:
       subfolders_renderizados: ${{ steps.render_books.outputs.path }}
     env:
       SUBFOLDERS: ${{ needs.detectar.outputs.subfolders }}
+      QUARTO_BIN: ${{ needs.build.outputs.path_quarto_bin }}
+      QUARTO_DIR: ${{ needs.build.outputs.path_quarto_dir }}
+
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
 
-      - name: Baixar artefatos do Quarto
-        uses: actions/download-artifact@v4
-        with:
-          name: quarto-env
-
       - name: Configurar ambiente do Quarto
         run: |
-          mkdir -p /usr/local/bin/quarto
-          cp quarto-env/quarto /usr/local/bin/quarto
+          mkdir -p /usr/local/bin
+          cp "$QUARTO_BIN" /usr/local/bin/quarto
           chmod +x /usr/local/bin/quarto
-          cp -r quarto-env/quarto /usr/local/lib/quarto
+          mkdir -p /usr/local/lib/quarto
+          cp -r "$QUARTO_DIR"/* /usr/local/lib/quarto
 
       - name: Renderizar Livros Quarto
         id: render_books
