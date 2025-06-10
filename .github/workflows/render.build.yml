@@ -108,30 +108,43 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
   build:
-    - name: Instalar Quarto
-      uses: quarto-dev/quarto-actions/setup@v2
+    needs: [detectar, backend]
+    runs-on: ubuntu-latest
 
-    - name: Salvar artefatos do ambiente
-      run: |
-        mkdir -p quarto-env
-        cp -r /path/to/quarto quarto-env/
-        
-    - name: Upload artefatos
-      uses: actions/upload-artifact@v3
-      with:
-        name: quarto-env
-        path: quarto-env
+    steps:
+      - name: Instalar Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Salvar artefatos do ambiente
+        run: |
+          mkdir -p quarto-env
+          cp -r /path/to/quarto quarto-env/
+          
+      - name: Upload artefatos
+        uses: actions/upload-artifact@v3
+        with:
+          name: quarto-env
+          path: quarto-env
 
   renderizar:
-    needs: [detectar, backend,  build]
+    needs: [detectar, backend, build]
+    runs-on: ubuntu-latest
     outputs:
       subfolders_renderizados: ${{ steps.render_books.outputs.path }}
-    runs-on: ubuntu-latest
     env:
       SUBFOLDERS: ${{ needs.detectar.outputs.subfolders }}
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
+
+      - name: Baixar artefatos do Quarto
+        uses: actions/download-artifact@v3
+        with:
+          name: quarto-env
+
+      - name: Configurar ambiente do Quarto
+        run: |
+          cp -r quarto-env /path/to/quarto
 
       - name: Renderizar Livros Quarto
         id: render_books
