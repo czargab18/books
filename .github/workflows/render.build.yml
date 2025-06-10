@@ -115,11 +115,19 @@ jobs:
       - name: Instalar Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
+      - name: Verificar instalação do Quarto
+        run: |
+          if ! command -v quarto &> /dev/null; then
+            echo "Quarto não está instalado. Abortando."
+            exit 1
+          fi
+          echo "Quarto instalado com sucesso."
+
       - name: Salvar artefatos do ambiente
         run: |
           mkdir -p quarto-env
-          cp -r /path/to/quarto quarto-env/
-          
+          cp -r $(command -v quarto) quarto-env/
+
       - name: Upload artefatos
         uses: actions/upload-artifact@v4
         with:
