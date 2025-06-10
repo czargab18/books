@@ -150,4 +150,26 @@ jobs:
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Configurar usuário do Git
+        run: |
+          git config --global user.name "${{ secrets.USERNAME }}"
+          git config --global user.email "${{ secrets.USEREMAIL }}"
+
+      - name: Adicionar e commitar alterações
+        run: |
+          git add ${{ env.BOOKS_RENDER }}
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração para commitar."
+          else
+            git commit -m "chore: atualiza livros renderizados [ci skip]"
+          fi
+
+      - name: Enviar alterações para o GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" HEAD:${{ github.ref }}"
 
