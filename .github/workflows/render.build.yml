@@ -121,6 +121,11 @@ jobs:
       - name: Renderizar Livros Quarto
         id: render_books
         run: |
+          set -e
+          if [ -z "$SUBFOLDERS" ]; then
+            echo "Nenhum subdiretório encontrado. Abortando renderização."
+            exit 0
+          fi
           echo "Iniciando renderização dos livros..."
           for folder in $SUBFOLDERS; do
             echo "Renderizando build/$folder ..."
