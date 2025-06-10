@@ -108,7 +108,7 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
   build:
-    needs: [detectar, backend]
+    needs: [detectar]
     runs-on: ubuntu-latest
 
     steps:
@@ -121,7 +121,7 @@ jobs:
           cp -r /path/to/quarto quarto-env/
           
       - name: Upload artefatos
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: quarto-env
           path: quarto-env
@@ -138,7 +138,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Baixar artefatos do Quarto
-        uses: actions/download-artifact@v3
+        uses: actions/download-artifact@v4
         with:
           name: quarto-env
 
