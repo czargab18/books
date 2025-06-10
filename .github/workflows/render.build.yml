@@ -76,87 +76,18 @@ jobs:
           echo "Subdiretórios detectados: $SUBFOLDERS"
           echo "subfolders=$SUBFOLDERS" >> $GITHUB_OUTPUT
 
-  backend:
-    needs: [detectar]
-    runs-on: ubuntu-latest
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    steps:
-      - name: Checar o repositório
-        uses: actions/checkout@v4
-
-      - name: Clonar o repo:backend
-        uses: actions/checkout@v4
-        with:
-          repository: czargab18/backend
-          token: ${{ secrets.GITHUB_TOKEN }}
-          path: backend
-          ref: main
-
-      - name: Instalar Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.13'
-
-      - name: Instalar pacote backend
-        run: |
-          set -e
-          cd backend 
-          pip install -e .
-
-      - name: Instalar Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-
-  build:
-    needs: [detectar]
-    runs-on: ubuntu-latest
-    outputs:
-      path_quarto_bin: ${{ steps.save-path.outputs.quarto_bin }}
-      path_quarto_dir: ${{ steps.save-path.outputs.quarto_dir }}
-
-    steps:
-      - name: Instalar Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-
-      - name: Verificar instalação do Quarto
-        run: |
-          if ! command -v quarto &> /dev/null; then
-            echo "Quarto não está instalado. Abortando."
-            exit 1
-          fi
-          echo "Quarto instalado com sucesso."
-
-      - name: Salvar paths do Quarto
-        id: save-path
-        run: |
-          QUARTO_BIN=$(command -v quarto)
-          QUARTO_DIR=$(dirname "$QUARTO_BIN")
-          echo "quarto_bin=$QUARTO_BIN" >> $GITHUB_OUTPUT
-          echo "quarto_dir=$QUARTO_DIR" >> $GITHUB_OUTPUT
-
   renderizar:
-    needs: [detectar, backend, build]
+    needs: [detectar]
     runs-on: ubuntu-latest
     env:
       SUBFOLDERS: ${{ needs.detectar.outputs.subfolders }}
-      QUARTO_BIN: ${{ needs.build.outputs.path_quarto_bin }}
-      QUARTO_DIR: ${{ needs.build.outputs.path_quarto_dir }}
 
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
 
-      - name: Configurar ambiente do Quarto
-        run: |
-          if [ ! -f "$QUARTO_BIN" ]; then
-            echo "Executável do Quarto não encontrado em $QUARTO_BIN. Abortando."
-            exit 1
-          fi
-          mkdir -p /usr/local/bin
-          cp "$QUARTO_BIN" /usr/local/bin/quarto
-          chmod +x /usr/local/bin/quarto
-          mkdir -p /usr/local/lib/quarto
-          cp -r "$QUARTO_DIR"/* /usr/local/lib/quarto
+      - name: Instalar Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Renderizar Livros Quarto
         id: render_books
@@ -170,98 +101,53 @@ jobs:
             echo "Renderizando build/$folder ..."
             quarto render build/$folder --to html || echo "Falha ao renderizar build/$folder"
           done
-          echo "path=docs" >> $GITHUB_OUTPUT
+          echo "books_render=docs" >> $GITHUB_OUTPUT
 
-      - name: Remover arquivos temporários
+  backend:
+    needs: [detectar, renderizar]
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      books_render: ${{ steps.render_books.outputs.books_render }}
+
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      - name: Clonar o repo:backend
+        uses: actions/checkout@v4
+        with:
+          repository: czargab18/backend
+          token: ${{ secrets.GITHUB_TOKEN }}
+          path: backend
+          ref: main
+
+      - name: Instalar pacote backend
         run: |
-          for dir in delete ac; do
-            if [ -d "$dir" ]; then
-              echo "Excluindo diretório '$dir'..."
-              rm -rf "$dir"
-            else
-              echo "Diretório '$dir' não encontrado."
-            fi
-          done
+          set -e
+          pip install -e ./backend
 
+      # - name: adicion link_books a lista em ./index.html
+      #   run: echo "Em desenvolvido"
 
+      # - name: adicion link_books a lista em ./index.html
+      #   run: python backend/scripts/add_link_books.py
 
-# REFERENCIAS:
+      # - name: Corrigindo links de <head> dos books (com backend)
+      #   run: python backend/scripts/corrigir_links.py
 
-#   repositorio:
-#     needs: [renderizar]
-#     runs-on: ubuntu-latest
-#     env:
-#       PATHS: ${{ needs.renderizar.outputs.detect_subfolders }}
-#     steps:
-#       - name: Checar o repositório
-#         uses: actions/checkout@v4
-#         with:
-#           fetch-depth: 0
+  repositorio:
+    needs: [renderizar]
+    runs-on: ubuntu-latest
+    env:
+      BOOKS_RENDER: ${{ needs.renderizar.outputs.books_render }}
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
 
-#       - name: Buscar alterações dos jobs anteriores
-#         run: |
-#           git fetch origin ${{ github.ref_name }}
-#           git reset --hard origin/${{ github.ref_name }}
-
-#       - name: Configurar usuário do Git
-#         run: |
-#           git config --global user.name "${{ secrets.USERNAME }}"
-#           git config --global user.email "${{ secrets.USEREMAIL }}"
-
-#       - name: Adicionar e commitar alterações
-#         run: |
-#           git add ${{ env.PATHS }}
-#           if git diff --cached --quiet; then
-#             echo "Nenhuma alteração para commitar."
-#           else
-#             git commit -m "chore: atualiza livros renderizados [ci skip]"
-#           fi
-
-#       - name: Enviar alterações para o GitHub
-#         env:
-#           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         run: |
-#           git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" HEAD:${{ github.ref }}
-
-#       - name: Exibir arquivos alterados
-#         run: |
-#           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-#             echo "Arquivos alterados no PR:"
-#             gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" | jq -r '.[].filename'
-#           elif [[ "${{ github.event_name }}" == "push" || "${{ github.event_name }}" == "merge_group" ]]; then
-#             echo "Arquivos alterados no push ou merge_group:"
-#             git fetch origin ${{ github.ref_name }}
-#             git diff --name-only ${{ github.event.before }} ${{ github.sha }}
-#           else
-#             echo "Arquivos monitorados:"
-#             git ls-files "build/*.qmd" "build/*.yml"
-#           fi
-
-      # RESTOS DE CÓDIGOS 
-
-      # - name: Verificar tipo de evento
-      #   run: |
-      #     set -e
-
-      # - name: Listar arquivos modificados (evento PR)
-      #   if: ${{ github.event_name == 'pull_request' }}
-      #   id: arquivos_pr
-      #   env:
-      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      #   run: |
-      #     PR_NUMBER="${{ github.event.pull_request.number }}"
-      #     REPO="${{ github.repository }}"
-      #     FILES=$(curl -sSL -H "Authorization: Bearer $GITHUB_TOKEN" \
-      #       "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/files" | jq -r '.[].filename')
-      #     echo "$FILES" > arquivos_modificados.txt
-
-      # - name: Listar arquivos modificados (push/merge_group/outros)
-      #   if: ${{ github.event_name != 'pull_request' }}
-      #   id: arquivos_outros
-      #   run: |
-      #     if [[ "${{ github.event_name }}" == "push" || "${{ github.event_name }}" == "merge_group" ]]; then
-      #       FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-      #     else
-      #       FILES=$(git ls-files "build/*.qmd" "build/*.yml")
-      #     fi
-      #     echo "$FILES" > arquivos_modificados.txt
