@@ -126,7 +126,10 @@ jobs:
       - name: Salvar artefatos do ambiente
         run: |
           mkdir -p quarto-env
-          cp -r $(command -v quarto) quarto-env/
+          QUARTO_PATH=$(command -v quarto)
+          QUARTO_DIR=$(dirname "$QUARTO_PATH")
+          cp "$QUARTO_PATH" quarto-env/
+          cp -r "$QUARTO_DIR" quarto-env/
 
       - name: Upload artefatos
         uses: actions/upload-artifact@v4
@@ -152,7 +155,10 @@ jobs:
 
       - name: Configurar ambiente do Quarto
         run: |
-          cp -r quarto-env /path/to/quarto
+          mkdir -p /usr/local/bin/quarto
+          cp quarto-env/quarto /usr/local/bin/quarto
+          chmod +x /usr/local/bin/quarto
+          cp -r quarto-env/quarto /usr/local/lib/quarto
 
       - name: Renderizar Livros Quarto
         id: render_books
