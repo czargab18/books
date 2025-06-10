@@ -1,0 +1,164 @@
+name: "[build] Renderizar Books Quarto"
+
+on:
+  workflow_dispatch:
+  # schedule:
+  #   - cron: "0 0 27 8 *"
+  push:
+    branches: [main, dev1]
+    paths:
+      - "build/*.qmd"
+      - "build/*.yml"
+  pull_request:
+    branches: [main, dev1]
+    paths:
+      - "build/*.qmd"
+      - "build/*.yml"
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  detectar:
+    runs-on: ubuntu-latest
+    outputs:
+      subfolders: ${{ steps.detect-subfolders.outputs.subfolders }}
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+
+      - name: Armazenar API GitHub temporariamente
+        id: api_github
+#        if: ${{ github.event_name == 'pull_request' && github.event.pull_request.number }}
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          PR_NUMBER="${{ github.event.pull_request.number }}"
+          REPO="${{ github.repository }}"
+          if [ -z "$PR_NUMBER" ]; then
+            echo "Pull request number não definido. Pulando passo."
+            exit 0
+          fi
+          gh api repos/$REPO/pulls/$PR_NUMBER/files > api_github_temp.json || (echo "Falha ao acessar API do GitHub" && exit 0)
+          cat api_github_temp.json || true
+
+      - name: Identificar subdiretórios correspondentes
+        id: detect-subfolders
+        run: |
+          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            FILES=$(jq -r '.[].filename' api_github_temp.json)
+          elif [[ "${{ github.event_name }}" == "push" || "${{ github.event_name }}" == "merge_group" ]]; then
+            FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          else
+            FILES=$(git ls-files "build/*.qmd" "build/*.yml")
+          fi
+          SUBFOLDERS=$(echo "$FILES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' | cut -d'/' -f2 | sort | uniq | xargs)
+          echo "Subdiretórios detectados: $SUBFOLDERS"
+          echo "subfolders=$SUBFOLDERS" >> $GITHUB_OUTPUT
+
+  renderizar:
+    needs: [detectar]
+    runs-on: ubuntu-latest
+    outputs:
+      detect_subfolders: ${{ steps.render_books.outputs.path }}
+    env:
+      SUBFOLDERS: ${{ needs.detectar.outputs.subfolders }}
+
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Renderizar Livros Quarto
+        id: render_books
+        run: |
+          echo "Iniciando renderização dos livros..."
+          for folder in $SUBFOLDERS; do
+            echo "Renderizando build/$folder ..."
+            quarto render build/$folder --to html || echo "Falha ao renderizar build/$folder"
+          done
+          echo "path=docs" >> $GITHUB_OUTPUT
+      
+      - name: Remover arquivos temporários
+        run: |
+          set -e
+          for dir in delete ac; do
+            if [ -d "$dir" ]; then
+              echo "Excluindo diretório '$dir'..."
+              rm -rf "$dir"
+            else
+              echo "Diretório '$dir' não encontrado."
+            fi
+          done
+
+  repositorio:
+    needs: [renderizar]
+    runs-on: ubuntu-latest
+    env:
+      PATHS: ${{ needs.renderizar.outputs.detect_subfolders }}
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Buscar alterações dos jobs anteriores
+        run: |
+          git fetch origin ${{ github.ref_name }}
+          git reset --hard origin/${{ github.ref_name }}
+
+      - name: Configurar usuário do Git
+        run: |
+          git config --global user.name "${{ secrets.USERNAME }}"
+          git config --global user.email "${{ secrets.USEREMAIL }}"
+
+      - name: Adicionar e commitar alterações
+        run: |
+          git add ${{ env.PATHS }}
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração para commitar."
+          else
+            git commit -m "chore: atualiza livros renderizados [ci skip]"
+          fi
+
+      - name: Enviar alterações para o GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" HEAD:${{ github.ref }}
+
+
+
+# REFERENCIAS:
+
+      # RESTOS DE CÓDIGOS 
+
+      # - name: Verificar tipo de evento
+      #   run: |
+      #     set -e
+
+      # - name: Listar arquivos modificados (evento PR)
+      #   if: ${{ github.event_name == 'pull_request' }}
+      #   id: arquivos_pr
+      #   env:
+      #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      #   run: |
+      #     PR_NUMBER="${{ github.event.pull_request.number }}"
+      #     REPO="${{ github.repository }}"
+      #     FILES=$(curl -sSL -H "Authorization: Bearer $GITHUB_TOKEN" \
+      #       "https://api.github.com/repos/$REPO/pulls/$PR_NUMBER/files" | jq -r '.[].filename')
+      #     echo "$FILES" > arquivos_modificados.txt
+
+      # - name: Listar arquivos modificados (push/merge_group/outros)
+      #   if: ${{ github.event_name != 'pull_request' }}
+      #   id: arquivos_outros
+      #   run: |
+      #     if [[ "${{ github.event_name }}" == "push" || "${{ github.event_name }}" == "merge_group" ]]; then
+      #       FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+      #     else
+      #       FILES=$(git ls-files "build/*.qmd" "build/*.yml")
+      #     fi
+      #     echo "$FILES" > arquivos_modificados.txt

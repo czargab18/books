@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches: ["main"]
-    paths: [ "**/*.html", "**/*.css", "**/*.js"]
+    paths: [ "docs/**/*.html", "docs/**/*.css", "docs/**/*.js"]
   pull_request:
     branches: ["main"]
-    paths: [ "**/*.html", "**/*.css", "**/*.js"]
+    paths: [ "docs/**/*.html", "docs/**/*.css", "docs/**/*.js"]
 
 permissions:
   contents: read
@@ -35,7 +35,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: '.'
+          path: 'docs'
     
       - name: Deploy to GitHub Pages
         id: deployment
