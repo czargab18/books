@@ -109,7 +109,7 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
-      books_render: ${{ steps.render_books.outputs.books_render }}
+      docs_books_render: ${{ steps.render_books.outputs.books_render }}
 
     steps:
       - name: Checar o repositório
@@ -142,14 +142,37 @@ jobs:
       # - name: Corrigindo links de <head> dos books (com backend)
       #   run: python backend/scripts/corrigir_links.py
 
+  formatar:
+    needs: [detectar, renderizar]
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      BOOKS_RENDER: ${{ needs.renderizar.outputs.books_render }}
+    outputs:
+      DOCS_BOOKS_RENDER: ${{ steps.format.outputs.books_render }}
+
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar Prettier
+        run: npm install -g prettier
+
+      - name: Formatar arquivos HTML
+        id: format
+        run: |
+          prettier --write "${{ env.BOOKS_RENDER }}/**/*.{html,css,js}"
+          echo "books_render=${{ env.BOOKS_RENDER }}" >> $GITHUB_OUTPUT
+
   repositorio:
-    needs: [renderizar, backend]
+    needs: [renderizar, backend, formatar]
     runs-on: ubuntu-latest
     env:
       BOOKS_RENDER: ${{ needs.renderizar.outputs.books_render }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       USERNAME: ${{ secrets.USERNAME }}
       USEREMAIL: ${{ secrets.USEREMAIL }}
+
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
