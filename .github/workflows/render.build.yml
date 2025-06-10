@@ -158,11 +158,16 @@ jobs:
       - name: Instalar Prettier
         run: npm install -g prettier
 
-      - name: Formatar arquivos HTML
+      - name: Formatar arquivos HTML, CSS e JS
         id: format
         run: |
-          prettier --write "${{ env.BOOKS_RENDER }}/**/*.{html,css,js}"
-          echo "books_render=${{ env.BOOKS_RENDER }}" >> $GITHUB_OUTPUT
+          if [ -d "${{ env.BOOKS_RENDER }}" ]; then
+            prettier --write "${{ env.BOOKS_RENDER }}/**/*.{html,css,js}"
+            echo "books_render=${{ env.BOOKS_RENDER }}" >> $GITHUB_OUTPUT
+          else
+            echo "Diretório ${{ env.BOOKS_RENDER }} não encontrado. Abortando."
+            exit 1
+          fi
 
   repositorio:
     needs: [formatar]
