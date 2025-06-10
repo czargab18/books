@@ -76,7 +76,7 @@ jobs:
           echo "Subdiretórios detectados: $SUBFOLDERS"
           echo "subfolders=$SUBFOLDERS" >> $GITHUB_OUTPUT
 
-  build:
+  backend:
     needs: [detectar]
     runs-on: ubuntu-latest
     env:
@@ -107,8 +107,23 @@ jobs:
       - name: Instalar Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
+  build:
+    - name: Instalar Quarto
+      uses: quarto-dev/quarto-actions/setup@v2
+
+    - name: Salvar artefatos do ambiente
+      run: |
+        mkdir -p quarto-env
+        cp -r /path/to/quarto quarto-env/
+        
+    - name: Upload artefatos
+      uses: actions/upload-artifact@v3
+      with:
+        name: quarto-env
+        path: quarto-env
+
   renderizar:
-    needs: [detectar, build]
+    needs: [detectar, backend,  build]
     outputs:
       subfolders_renderizados: ${{ steps.render_books.outputs.path }}
     runs-on: ubuntu-latest
