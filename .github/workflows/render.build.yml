@@ -137,8 +137,6 @@ jobs:
   renderizar:
     needs: [detectar, backend, build]
     runs-on: ubuntu-latest
-    outputs:
-      subfolders_renderizados: ${{ steps.render_books.outputs.path }}
     env:
       SUBFOLDERS: ${{ needs.detectar.outputs.subfolders }}
       QUARTO_BIN: ${{ needs.build.outputs.path_quarto_bin }}
@@ -150,6 +148,10 @@ jobs:
 
       - name: Configurar ambiente do Quarto
         run: |
+          if [ ! -f "$QUARTO_BIN" ]; then
+            echo "Executável do Quarto não encontrado em $QUARTO_BIN. Abortando."
+            exit 1
+          fi
           mkdir -p /usr/local/bin
           cp "$QUARTO_BIN" /usr/local/bin/quarto
           chmod +x /usr/local/bin/quarto
