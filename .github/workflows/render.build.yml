@@ -107,106 +107,42 @@ jobs:
       - name: Instalar Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-  # renderizar:
-  #   needs: [detectar, build]
-  #   outputs:
-  #     detect_subfolders: ${{ steps.render_books.outputs.path }}
-  #   runs-on: ubuntu-latest
-  #   env:
-  #     SUBFOLDERS: ${{ needs.detectar.outputs.subfolders }}
-  #   steps:
-  #     - name: Checar o repositório
-  #       uses: actions/checkout@v4
+  renderizar:
+    needs: [detectar, build]
+    outputs:
+      subfolders_renderizados: ${{ steps.render_books.outputs.path }}
+    runs-on: ubuntu-latest
+    env:
+      SUBFOLDERS: ${{ needs.detectar.outputs.subfolders }}
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+
+      - name: Renderizar Livros Quarto
+        id: render_books
+        run: |
+          echo "Iniciando renderização dos livros..."
+          for folder in $SUBFOLDERS; do
+            echo "Renderizando build/$folder ..."
+            quarto render build/$folder --to html || echo "Falha ao renderizar build/$folder"
+          done
+          echo "path=docs" >> $GITHUB_OUTPUT
+
+      - name: Remover arquivos temporários
+        run: |
+          set -e
+          for dir in delete ac; do
+            if [ -d "$dir" ]; then
+              echo "Excluindo diretório '$dir'..."
+              rm -rf "$dir"
+            else
+              echo "Diretório '$dir' não encontrado."
+            fi
+          done
+
 
 
 # REFERENCIAS:
-      # - name: Renderizar Livros Quarto
-      #   id: render_books
-      #   run: |
-      #     echo "Iniciando renderização dos livros..."
-      #     for folder in ${{ needs.detectar.outputs.subfolders }}; do
-      #       echo "Renderizando build/$folder ..."
-      #       quarto render build/$folder --to html || echo "Falha ao renderizar build/$folder"
-      #     done
-      #     echo "path=docs" >> $GITHUB_OUTPUT
-
-      # - name: Remover arquivos temporários
-      #   run: |
-      #     set -e
-      #     for dir in delete ac; do
-      #       if [ -d "$dir" ]; then
-      #         echo "Excluindo diretório '$dir'..."
-      #         rm -rf "$dir"
-      #       else
-      #         echo "Diretório '$dir' não encontrado."
-      #       fi
-      #     done
-#       - name: Configurar variáveis da API do GitHub
-#         id: config_api_github
-#         run: |
-#           API_PATH="repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
-#           echo "API_PATH=$API_PATH" >> $GITHUB_ENV
-#           echo "API_PATH gerado: $API_PATH"
-
-#       - name: Armazenar API GitHub temporariamente
-#         id: api_github
-#         # if: ${{ github.event_name == 'pull_request' && github.event.pull_request.number }}
-#         env:
-#           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-#         run: |
-#           gh api "$API_PATH" > api_github_temp.json || (echo "Falha ao acessar API do GitHub" && exit 0)
-#           cat api_github_temp.json || true
-
-#       - name: Identificar subdiretórios correspondentes
-#         id: detect-subfolders
-#         run: |
-#           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-#             FILES=$(jq -r '.[].filename' api_github_temp.json)
-#           elif [[ "${{ github.event_name }}" == "push" || "${{ github.event_name }}" == "merge_group" ]]; then
-#             FILES=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-#           else
-#             FILES=$(git ls-files "build/*.qmd" "build/*.yml")
-#           fi
-#           SUBFOLDERS=$(echo "$FILES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' | cut -d'/' -f2 | sort | uniq | xargs)
-#           echo "Subdiretórios detectados: $SUBFOLDERS"
-#           echo "subfolders=$SUBFOLDERS" >> $GITHUB_OUTPUT
-
-#   renderizar:
-#     needs: [detectar]
-#     runs-on: ubuntu-latest
-#     outputs:
-#       detect_subfolders: ${{ steps.render_books.outputs.path }}
-#     env:
-#       SUBFOLDERS: ${{ needs.detectar.outputs.subfolders }}
-
-#     steps:
-#       - name: Checar o repositório
-#         uses: actions/checkout@v4
-
-#       - name: Instalar Quarto
-#         uses: quarto-dev/quarto-actions/setup@v2
-
-#       - name: Renderizar Livros Quarto
-#         id: render_books
-#         run: |
-#           echo "Iniciando renderização dos livros..."
-#           for folder in $SUBFOLDERS; do
-#             echo "Renderizando build/$folder ..."
-#             quarto render build/$folder --to html || echo "Falha ao renderizar build/$folder"
-#           done
-#           echo "path=docs" >> $GITHUB_OUTPUT
-      
-#       - name: Remover arquivos temporários
-#         run: |
-#           set -e
-#           for dir in delete ac; do
-#             if [ -d "$dir" ]; then
-#               echo "Excluindo diretório '$dir'..."
-#               rm -rf "$dir"
-#             else
-#               echo "Diretório '$dir' não encontrado."
-#             fi
-#           done
 
 #   repositorio:
 #     needs: [renderizar]
