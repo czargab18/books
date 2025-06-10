@@ -1,5 +1,9 @@
 name: "[build] Renderizar Books Quarto"
 
+permissions:
+  contents: write
+  pull-requests: read
+
 on:
   workflow_dispatch:
   push:
@@ -12,10 +16,6 @@ on:
     paths:
       - "build/*.qmd"
       - "build/*.yml"
-
-permissions:
-  contents: write
-  pull-requests: read
 
 jobs:
   detectar:
@@ -147,6 +147,10 @@ jobs:
     runs-on: ubuntu-latest
     env:
       BOOKS_RENDER: ${{ needs.renderizar.outputs.books_render }}
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      RENDER_BOOKS: ${{ secrets.RENDER_BOOKS }}
+      USERNAME: ${{ secrets.USERNAME }}
+      USEREMAIL: ${{ secrets.USEREMAIL }}
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
@@ -168,8 +172,6 @@ jobs:
           fi
 
       - name: Enviar alterações para o GitHub
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          git push "https://x-access-token:${GITHUB_TOKEN}@github.com/${{ github.repository }}.git" HEAD:${{ github.ref }}"
+          git push origin HEAD:${{ github.ref }}
 
