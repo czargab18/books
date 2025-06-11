@@ -1,8 +1,37 @@
+# Variáveis de ambiente (env):
+# GITHUB_TOKEN
+# GITHUB_TOKEN
+# TIPO_EVENTO
+# SUBFOLDERS
+# BOOKS_RENDER
+# USERNAME
+# USEREMAIL
+# Outputs e variáveis criadas por steps:
+# steps.detect-subfolders.outputs.subfolders
+# steps.tipo_evento.outputs.tipo_event
+# steps.render_books.outputs.books_render
+# needs.detectar.outputs.subfolders
+# needs.renderizar.outputs.books_render
+# Parâmetros especiais do GitHub:
+# github.event_name
+# github.repository
+# github.event.pull_request.number
+# github.event.before
+# github.sha
+
+
+
 name: "[build] Renderizar Books Quarto"
 
 permissions:
   contents: write
   pull-requests: read
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  USERNAME: ${{ secrets.USERNAME }}
+  USEREMAIL: ${{ secrets.USEREMAIL }}
+
 
 on:
   workflow_dispatch:
