@@ -212,3 +212,14 @@ jobs:
         run: |
           git push origin books
 
+  estatistica:
+    #  mover os arquivos de docs do repo: books , `repo:books/docs`, para a pasta books do repo: estatistica, repo:estatistica/books.
+    # Atualizando os arquivos de books/docs em estatistica/books, caso estejam desatualizados, ou adicionando caso não existam em estatistica/books.
+    needs: [formatar]
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      BOOKS_RENDER: ${{ needs.renderizar.outputs.books_render }}
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
