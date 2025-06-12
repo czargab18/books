@@ -176,7 +176,6 @@ jobs:
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
       BOOKS_RENDER: ${{ needs.formatar.outputs.books_formatados }}
-
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
@@ -198,6 +197,11 @@ jobs:
 
       - name: Adicionar e commitar alterações
         run: |
+          if [ ! -d "${{ env.BOOKS_RENDER }}" ]; then
+            echo "Diretório ${{ env.BOOKS_RENDER }} não encontrado."
+            exit 1
+          fi
+          # Verifica se há alterações a serem commitadas
           git add ${{ env.BOOKS_RENDER }}
           if git diff --cached --quiet; then
             echo "Nenhuma alteração para commitar."
