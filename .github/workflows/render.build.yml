@@ -7,11 +7,10 @@ permissions:
 env:
   REPO_SYNC: ${{ secrets.REPO_SYNC }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  USEREMAIL: ${{ secrets.USEREMAIL }}
   USERNAME: ${{ github.repository_owner }}        # dono do repositório (owner)
   REPO_NAME: ${{ github.event.repository.name }}  # nome do repositório
   REPO_FULL: ${{ github.repository }}             # nome completo (owner/repo)
-  USEREMAIL: ${{ secrets.USEREMAIL }}
-
 
 on:
   workflow_dispatch:
