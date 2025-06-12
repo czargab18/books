@@ -129,12 +129,11 @@ jobs:
           set -e
           pip install -e ./backend
 
-      # - name: adicion link_books a lista em ./index.html
-      #   id: backend_books
-      #   run: |
-      #       python backend/scripts/add_link_books.py
-      #       python backend/scripts/corrigir_links.py
-      #       echo "automacao_books=docs" >> $GITHUB_OUTPUT
+      - name: Automacação de livros (backend)
+        id: backend_books
+        run: |
+          python backend/test/renderbook.py
+          echo "automacao_books=docs" >> $GITHUB_OUTPUT
 
   formatar:
     needs: [renderizar, backend]
