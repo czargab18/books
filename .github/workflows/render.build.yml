@@ -17,9 +17,6 @@ permissions:
   contents: write
   pull-requests: read
 
-environment:
-  name: ENVIRONMENT
-
 env:
   REPO_SYNC: ${{ secrets.ENVIRONMENT.REPO_SYNC }}
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
