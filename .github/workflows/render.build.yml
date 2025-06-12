@@ -17,13 +17,13 @@ permissions:
   contents: write
   pull-requests: read
 
-env:
-  REPO_SYNC: ${{ secrets.ENVIRONMENT.REPO_SYNC }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  USEREMAIL: ${{ secrets.ENVIRONMENT.USEREMAIL }}
-  USERNAME: ${{ github.repository_owner }}        # dono do repositório (owner)
-  REPO_NAME: ${{ github.event.repository.name }}  # nome do repositório
-  REPO_FULL: ${{ github.repository }}             # nome completo (owner/repo)
+# env:
+#   REPO_SYNC: ${{ secrets.ENVIRONMENT.REPO_SYNC }}
+#   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+#   USEREMAIL: ${{ secrets.ENVIRONMENT.USEREMAIL }}
+#   USERNAME: ${{ github.repository_owner }}        # dono do repositório (owner)
+#   REPO_NAME: ${{ github.event.repository.name }}  # nome do repositório
+#   REPO_FULL: ${{ github.repository }}             # nome completo (owner/repo)
 
 jobs:
   detectar:
@@ -31,7 +31,7 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
-      subfolders: ${{ steps.detect-subfolders.outputs.subfolders }}
+      subfolders: ${{ steps.export_subfolders.outputs.subfolders }}
 
     steps: 
       - name: Checar o repositório 
@@ -67,7 +67,7 @@ jobs:
           fi
 
       - name: Identificar subdiretórios correspondentes
-        id: detect-subfolders
+        id: export_subfolders
         run: |
           FILES=$(cat arquivos.txt)
           SUBFOLDERS=$(echo "$FILES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' | cut -d'/' -f2 | sort | uniq | xargs)
@@ -79,7 +79,7 @@ jobs:
     env:
       SUBFOLDERS: ${{ needs.detectar.outputs.subfolders }}
     outputs:
-      BOOKS_RENDER: ${{ steps.render_books.outputs.books_render }}
+      BOOKS_RENDER: ${{ steps.renderizar_books.outputs.books_render }}
 
     steps:
       - name: Checar o repositório
@@ -89,7 +89,7 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
 
       - name: Renderizar Livros Quarto
-        id: render_books
+        id: renderizar_books
         run: |
           if [ -z "$SUBFOLDERS" ]; then
             echo "Nenhum subdiretório encontrado."
@@ -104,14 +104,14 @@ jobs:
   backend:
     needs: [detectar, renderizar]
     runs-on: ubuntu-latest
-    environment:
-      name: ENVIRONMENT
+    # environment:
+    #   name: ENVIRONMENT
     env:
-      REPO_SYNC: ${{ secrets.REPO_SYNC }}
-      USEREMAIL: ${{ secrets.USEREMAIL }}
-      BOOKS_RENDER: ${{ steps.render_books.outputs.books_render }}
+      REPO_SYNC: ${{ secrets.ENVIRONMENT.REPO_SYNC }}
+      USEREMAIL: ${{ secrets.ENVIRONMENT.USEREMAIL }}
+      BOOKS_RENDER: ${{ needs.renderizar.outputs.books_render }}
     outputs:
-      BOOKS_RENDER: ${{ steps.var_backend.outputs.books_backend }}
+      BOOKS_RENDER: ${{ steps.backend_books.outputs.automacao_books }}
 
     steps:
       - name: Checar o repositório
@@ -138,26 +138,20 @@ jobs:
           pip install -e ./backend
 
       # - name: adicion link_books a lista em ./index.html
-      #   run: echo "Em desenvolvido"
-
-      # - name: adicion link_books a lista em ./index.html
-      #   run: python backend/scripts/add_link_books.py
-
-      # - name: Corrigindo links de <head> dos books (com backend)
-      #   run: python backend/scripts/corrigir_links.py
-      - name: Exportar variáveis de ambiente
-        id: var_backend
-        run: |
-          echo "books_backend=docs" >> $GITHUB_OUTPUT
+      #   id: backend_books
+      #   run: |
+      #       python backend/scripts/add_link_books.py
+      #       python backend/scripts/corrigir_links.py
+      #       echo "automacao_books=docs" >> $GITHUB_OUTPUT
 
   formatar:
     needs: [renderizar, backend]
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      BOOKS_RENDER: ${{ steps.var_backend.outputs.books_backend }}
-    # outputs:
-    #   DOCS_BOOKS_RENDER: ${{ steps.books_backend.outputs.books_backend }}
+      BOOKS_RENDER: ${{ needs.backend.outputs.books_render }}
+    outputs:
+      BOOKS_RENDER: ${{ steps.format_books.outputs.books_formatados }}
 
     steps:
       - name: Checar o repositório
@@ -167,7 +161,7 @@ jobs:
         run: npm install -g prettier
 
       - name: Formatar arquivos HTML, CSS e JS
-        id: format
+        id: format_books
         run: |
           if [ -d "${{ env.BOOKS_RENDER }}" ]; then
             prettier --write "${{ env.BOOKS_RENDER }}/**/*.{html,css,js}"
@@ -176,19 +170,15 @@ jobs:
             echo "Diretório ${{ env.BOOKS_RENDER }} não encontrado."
             exit 1
           fi
-
-      - name: Exportar variáveis de ambiente
-        id: var_formatar
-        run: |
-          echo "books_backend=docs" >> $GITHUB_OUTPUT
+          echo "books_formatados=docs" >> $GITHUB_OUTPUT
 
   repositorio:
     needs: [formatar]
     runs-on: ubuntu-latest
     env:
-      BOOKS_RENDER: ${{ needs.var_formatar.outputs.books_backend }}
-      USERNAME: ${{ secrets.USERNAME }}
-      USEREMAIL: ${{ secrets.USEREMAIL }}
+      BOOKS_RENDER: ${{ needs.formatar.outputs.books_formatados }}
+      USERNAME: ${{ secrets.ENVIRONMENT.USERNAME }}
+      USEREMAIL: ${{ secrets.ENVIRONMENT.USEREMAIL }}
 
     steps:
       - name: Checar o repositório
@@ -231,7 +221,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      BOOKS_RENDER: ${{ needs.formatar.outputs.docs_books_render }}
+      BOOKS_RENDER: ${{ needs.formatar.outputs.books_formatados }}
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
