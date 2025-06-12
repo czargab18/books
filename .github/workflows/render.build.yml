@@ -4,14 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches-ignore: [main]
-    paths:
-      - "build/*.qmd"
-      - "build/*.yml"
+    paths: ["build/**/*.qmd", "build/**/*.yml"]
   pull_request:
     branches-ignore: [main]
-    paths:
-      - "build/*.qmd"
-      - "build/*.yml"
+    paths: ["build/**/*.qmd", "build/**/*.yml"]
 
 permissions:
   contents: write
