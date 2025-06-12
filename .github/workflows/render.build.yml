@@ -78,6 +78,8 @@ jobs:
     runs-on: ubuntu-latest
     env:
       SUBFOLDERS: ${{ needs.detectar.outputs.subfolders }}
+    outputs:
+      BOOKS_RENDER: ${{ steps.render_books.outputs.books_render }}
 
     steps:
       - name: Checar o repositório
@@ -107,8 +109,9 @@ jobs:
     env:
       REPO_SYNC: ${{ secrets.REPO_SYNC }}
       USEREMAIL: ${{ secrets.USEREMAIL }}
+      BOOKS_RENDER: ${{ steps.render_books.outputs.books_render }}
     outputs:
-      docs_books_render: ${{ steps.render_books.outputs.books_render }}
+      BOOKS_RENDER: ${{ steps.var_backend.outputs.books_backend }}
 
     steps:
       - name: Checar o repositório
@@ -142,15 +145,19 @@ jobs:
 
       # - name: Corrigindo links de <head> dos books (com backend)
       #   run: python backend/scripts/corrigir_links.py
+      - name: Exportar variáveis de ambiente
+        id: var_backend
+        run: |
+          echo "books_backend=docs" >> $GITHUB_OUTPUT
 
   formatar:
     needs: [renderizar, backend]
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      BOOKS_RENDER: ${{ needs.backend.outputs.docs_books_render }}
-    outputs:
-      DOCS_BOOKS_RENDER: ${{ steps.format.outputs.books_render }}
+      BOOKS_RENDER: ${{ steps.var_backend.outputs.books_backend }}
+    # outputs:
+    #   DOCS_BOOKS_RENDER: ${{ steps.books_backend.outputs.books_backend }}
 
     steps:
       - name: Checar o repositório
@@ -170,11 +177,16 @@ jobs:
             exit 1
           fi
 
+      - name: Exportar variáveis de ambiente
+        id: var_formatar
+        run: |
+          echo "books_backend=docs" >> $GITHUB_OUTPUT
+
   repositorio:
     needs: [formatar]
     runs-on: ubuntu-latest
     env:
-      BOOKS_RENDER: ${{ needs.formatar.outputs.DOCS_BOOKS_RENDER }}
+      BOOKS_RENDER: ${{ needs.var_formatar.outputs.books_backend }}
       USERNAME: ${{ secrets.USERNAME }}
       USEREMAIL: ${{ secrets.USEREMAIL }}
 
