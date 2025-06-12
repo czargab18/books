@@ -3,10 +3,10 @@ name: "[build] Renderizar Books Quarto"
 on:
   workflow_dispatch:
   push:
-    branches-ignore: [main]
+    # branches-ignore: [main]
     paths: ["build/**/*.qmd", "build/**/*.yml"]
   pull_request:
-    branches-ignore: [main]
+    # branches-ignore: [main]
     paths: ["build/**/*.qmd", "build/**/*.yml"]
 
 permissions:
