@@ -165,7 +165,6 @@ jobs:
             echo "Diretório ${{ env.BOOKS_RENDER }} não encontrado."
             exit 1
           fi
-          echo "books_formatados=docs" >> $GITHUB_OUTPUT
 
   repositorio:
     needs: [formatar]
@@ -175,7 +174,8 @@ jobs:
     env:
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
-      BOOKS_RENDER: ${{ needs.formatar.outputs.books_formatados }}
+      BOOKS_RENDER: ${{ needs.formatar.outputs.BOOKS_RENDER }}
+
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
