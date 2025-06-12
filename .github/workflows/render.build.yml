@@ -37,23 +37,18 @@ jobs:
       - name: Checar o repositório 
         uses: actions/checkout@v4
 
-      - name: Verificar tido evento
+      - name: Verificar tipo de evento
         id: tipo_evento
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "Evento: Dispatch Manual"
             echo "tipo_event=dispatch" >> $GITHUB_OUTPUT
           elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "Evento: Pull Request"
             echo "tipo_event=pull" >> $GITHUB_OUTPUT
           elif [[ "${{ github.event_name }}" == "push" ]]; then
-            echo "Evento: Push"
             echo "tipo_event=push" >> $GITHUB_OUTPUT
           elif [[ "${{ github.event_name }}" == "merge_group" ]]; then
-            echo "Evento: Merge Group"
             echo "tipo_event=mergegroups" >> $GITHUB_OUTPUT
           else
-            echo "Evento: Outros"
             echo "tipo_event=outro" >> $GITHUB_OUTPUT
           fi
           cat $GITHUB_OUTPUT
@@ -67,10 +62,6 @@ jobs:
             gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" | jq -r '.[].filename' > arquivos.txt
           elif [[ "${TIPO_EVENTO}" == "push" ]]; then
             git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt
-          elif [[ "${TIPO_EVENTO}" == "mergegroups" ]]; then
-            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt
-          elif [[ "${TIPO_EVENTO}" == "dispatch" ]]; then
-            git ls-files "build/*.qmd" "build/*.yml" > arquivos.txt
           else
             git ls-files "build/*.qmd" "build/*.yml" > arquivos.txt
           fi
@@ -78,10 +69,8 @@ jobs:
       - name: Identificar subdiretórios correspondentes
         id: detect-subfolders
         run: |
-          set -e
           FILES=$(cat arquivos.txt)
           SUBFOLDERS=$(echo "$FILES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' | cut -d'/' -f2 | sort | uniq | xargs)
-          echo "Subdiretórios detectados: $SUBFOLDERS"
           echo "subfolders=$SUBFOLDERS" >> $GITHUB_OUTPUT
 
   renderizar:
@@ -101,10 +90,9 @@ jobs:
         id: render_books
         run: |
           if [ -z "$SUBFOLDERS" ]; then
-            echo "Nenhum subdiretório encontrado. Abortando renderização."
+            echo "Nenhum subdiretório encontrado."
             exit 0
           fi
-          echo "Iniciando renderização dos livros..."
           for folder in $SUBFOLDERS; do
             echo "Renderizando build/$folder ..."
             quarto render build/$folder --to html || echo "Falha ao renderizar build/$folder"
@@ -178,7 +166,7 @@ jobs:
             prettier --write "${{ env.BOOKS_RENDER }}/**/*.{html,css,js}"
             echo "books_render=${{ env.BOOKS_RENDER }}" >> $GITHUB_OUTPUT
           else
-            echo "Diretório ${{ env.BOOKS_RENDER }} não encontrado. Abortando."
+            echo "Diretório ${{ env.BOOKS_RENDER }} não encontrado."
             exit 1
           fi
 
@@ -186,8 +174,7 @@ jobs:
     needs: [formatar]
     runs-on: ubuntu-latest
     env:
-      BOOKS_RENDER: ${{ needs.formatar.outputs.docs_books_render }}
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      BOOKS_RENDER: ${{ needs.formatar.outputs.DOCS_BOOKS_RENDER }}
       USERNAME: ${{ secrets.USERNAME }}
       USEREMAIL: ${{ secrets.USEREMAIL }}
 
