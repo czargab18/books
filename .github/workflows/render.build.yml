@@ -185,8 +185,9 @@ jobs:
           git config --global user.name "${{ secrets.USERNAME }}"
           git config --global user.email "${{ secrets.USEREMAIL }}"
 
-      - name: Verificar e criar branch "books" se necessário
+      - name: Garantir branch 'books' atualizado e pronto
         run: |
+          git fetch origin books || true
           if ! git show-ref --verify --quiet refs/heads/books; then
             echo "Branch 'books' não existe. Criando..."
             git checkout -b books
@@ -194,13 +195,7 @@ jobs:
             echo "Branch 'books' já existe. Alternando para ela..."
             git checkout books
           fi
-
-      - name: Verificar se há alterações
-        run: |
-          if [ ! -d "${{ env.BOOKS_RENDER }}" ]; then
-            echo "Diretório ${{ env.BOOKS_RENDER }} não encontrado."
-            exit 1
-          fi
+          git pull --rebase origin books || true
 
       - name: Adicionar e commitar alterações
         run: |
