@@ -252,3 +252,5 @@ jobs:
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
