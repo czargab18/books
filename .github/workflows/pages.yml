@@ -1,13 +1,4 @@
-name: deploy_pages
-
-on:
-  workflow_dispatch:
-  push:
-    branches: ["main"]
-    paths: [ "docs/**/*.html", "docs/**/*.css", "docs/**/*.js"]
-  pull_request:
-    branches: ["main"]
-    paths: [ "docs/**/*.html", "docs/**/*.css", "docs/**/*.js"]
+name: GitHub Pages
 
 permissions:
   contents: read
@@ -18,11 +9,17 @@ concurrency:
   group: "pages"
   cancel-in-progress: false
 
+on:
+  workflow_dispatch:
+  push:
+    branches: ["main"]
+    paths: [ "docs/**/*.html", "docs/**/*.css", "docs/**/*.js"]
+  pull_request:
+    branches: ["main"]
+    paths: [ "docs/**/*.html", "docs/**/*.css", "docs/**/*.js"]
+
 jobs:
   deploy:
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     
     steps:
