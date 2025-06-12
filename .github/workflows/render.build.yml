@@ -104,11 +104,11 @@ jobs:
   backend:
     needs: [detectar, renderizar]
     runs-on: ubuntu-latest
-    # environment:
-    #   name: ENVIRONMENT
+    environment:
+      name: ENVIRONMENT
     env:
-      REPO_SYNC: ${{ secrets.ENVIRONMENT.REPO_SYNC }}
-      USEREMAIL: ${{ secrets.ENVIRONMENT.USEREMAIL }}
+      REPO_SYNC: ${{ secrets.REPO_SYNC }}
+      USEREMAIL: ${{ secrets.USEREMAIL }}
       BOOKS_RENDER: ${{ needs.renderizar.outputs.books_render }}
     outputs:
       BOOKS_RENDER: ${{ steps.backend_books.outputs.automacao_books }}
@@ -175,10 +175,12 @@ jobs:
   repositorio:
     needs: [formatar]
     runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
     env:
+      USEREMAIL: ${{ secrets.USEREMAIL }}
+      USERNAME: ${{ secrets.USERNAME }}
       BOOKS_RENDER: ${{ needs.formatar.outputs.books_formatados }}
-      USERNAME: ${{ secrets.ENVIRONMENT.USERNAME }}
-      USEREMAIL: ${{ secrets.ENVIRONMENT.USEREMAIL }}
 
     steps:
       - name: Checar o repositório
@@ -219,7 +221,11 @@ jobs:
     # Atualizando os arquivos de books/docs em estatistica/books, caso estejam desatualizados, ou adicionando caso não existam em estatistica/books.
     needs: [formatar]
     runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
     env:
+      REPO_SYNC: ${{ secrets.REPO_SYNC }}
+      USEREMAIL: ${{ secrets.USEREMAIL }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       BOOKS_RENDER: ${{ needs.formatar.outputs.books_formatados }}
     steps:
