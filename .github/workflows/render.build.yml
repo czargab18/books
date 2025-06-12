@@ -1,17 +1,5 @@
 name: "[build] Renderizar Books Quarto"
 
-permissions:
-  contents: write
-  pull-requests: read
-
-env:
-  REPO_SYNC: ${{ secrets.REPO_SYNC }}
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  USEREMAIL: ${{ secrets.USEREMAIL }}
-  USERNAME: ${{ github.repository_owner }}        # dono do repositório (owner)
-  REPO_NAME: ${{ github.event.repository.name }}  # nome do repositório
-  REPO_FULL: ${{ github.repository }}             # nome completo (owner/repo)
-
 on:
   workflow_dispatch:
   push:
@@ -24,6 +12,21 @@ on:
     paths:
       - "build/*.qmd"
       - "build/*.yml"
+
+permissions:
+  contents: write
+  pull-requests: read
+
+environment:
+  name: ENVIRONMENT
+
+env:
+  REPO_SYNC: ${{ secrets.ENVIRONMENT.REPO_SYNC }}
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  USEREMAIL: ${{ secrets.ENVIRONMENT.USEREMAIL }}
+  USERNAME: ${{ github.repository_owner }}        # dono do repositório (owner)
+  REPO_NAME: ${{ github.event.repository.name }}  # nome do repositório
+  REPO_FULL: ${{ github.repository }}             # nome completo (owner/repo)
 
 jobs:
   detectar:
