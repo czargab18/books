@@ -136,7 +136,7 @@ jobs:
     needs: [detectar, renderizar]
     runs-on: ubuntu-latest
     env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      REPO_SYNC: ${{ secrets.REPO_SYNC }}
     outputs:
       docs_books_render: ${{ steps.render_books.outputs.books_render }}
 
@@ -153,7 +153,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: czargab18/backend
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_SYNC }}
           path: backend
           ref: main
 
