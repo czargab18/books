@@ -117,8 +117,11 @@ jobs:
   backend:
     needs: [detectar, renderizar]
     runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
     env:
       REPO_SYNC: ${{ secrets.REPO_SYNC }}
+      USEREMAIL: ${{ secrets.USEREMAIL }}
     outputs:
       docs_books_render: ${{ steps.render_books.outputs.books_render }}
 
@@ -126,7 +129,7 @@ jobs:
       - name: Checar o repositório
         uses: actions/checkout@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_SYNC }}
 
       - name: Instalar Python
         uses: actions/setup-python@v4
