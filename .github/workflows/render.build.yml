@@ -138,11 +138,7 @@ jobs:
   formatar:
     needs: [renderizar, backend]
     runs-on: ubuntu-latest
-    environment:
-      name: ENVIRONMENT
     env:
-      USEREMAIL: ${{ secrets.USEREMAIL }}
-      USERNAME: ${{ github.repository_owner }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       BOOKS_RENDER: ${{ needs.backend.outputs.books_render }}
     outputs:
