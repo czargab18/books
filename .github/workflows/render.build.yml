@@ -160,7 +160,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      BOOKS_RENDER: ${{ needs.renderizar.outputs.books_render }}
+      BOOKS_RENDER: ${{ needs.renderizar.outputs.docs_books_render }}
     outputs:
       DOCS_BOOKS_RENDER: ${{ steps.format.outputs.books_render }}
 
