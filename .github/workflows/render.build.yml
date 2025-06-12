@@ -7,7 +7,6 @@ on:
     paths: ["build/**/*.qmd", "build/**/*.yml"]
   pull_request:
     branches: [main]
-    paths: ["build/**/*.qmd", "build/**/*.yml"]
 
 permissions:
   contents: write
