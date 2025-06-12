@@ -160,7 +160,7 @@ jobs:
         run: |
           if [ -d "${{ env.BOOKS_RENDER }}" ]; then
             prettier --write "${{ env.BOOKS_RENDER }}/**/*.{html,css,js}"
-            echo "books_render=${{ env.BOOKS_RENDER }}" >> $GITHUB_OUTPUT
+            echo "books_formatados=${{ env.BOOKS_RENDER }}" >> $GITHUB_OUTPUT
           else
             echo "Diretório ${{ env.BOOKS_RENDER }} não encontrado."
             exit 1
