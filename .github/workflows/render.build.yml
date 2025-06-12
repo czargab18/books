@@ -186,7 +186,7 @@ jobs:
     needs: [formatar]
     runs-on: ubuntu-latest
     env:
-      BOOKS_RENDER: ${{ needs.renderizar.outputs.books_render }}
+      BOOKS_RENDER: ${{ needs.renderizar.outputs.docs_books_render }}
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       USERNAME: ${{ secrets.USERNAME }}
       USEREMAIL: ${{ secrets.USEREMAIL }}
@@ -232,7 +232,7 @@ jobs:
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      BOOKS_RENDER: ${{ needs.renderizar.outputs.books_render }}
+      BOOKS_RENDER: ${{ needs.renderizar.outputs.docs_books_render }}
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
