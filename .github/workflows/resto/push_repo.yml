@@ -1,0 +1,64 @@
+
+
+jobs:
+  repositorio:
+    needs: [formatar]
+    runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    env:
+      USEREMAIL: ${{ secrets.USEREMAIL }}
+      USERNAME: ${{ github.repository_owner }}
+      BOOKS_RENDER: ${{ needs.formatar.outputs.BOOKS_RENDER }}
+
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+
+      - name: Configurar usuário do Git
+        run: |
+          git config --global user.name "${{ secrets.USERNAME }}"
+          git config --global user.email "${{ secrets.USEREMAIL }}"
+
+      - name: Garantir branch 'books' atualizado e pronto
+        run: |
+          git fetch origin books || true
+          if ! git show-ref --verify --quiet refs/heads/books; then
+            echo "Branch 'books' não existe. Criando..."
+            git checkout -b books
+          else
+            echo "Branch 'books' já existe. Alternando para ela..."
+            git checkout books
+          fi
+          git pull --rebase origin books || true
+
+      - name: Adicionar e commitar alterações
+        run: |
+          git add ${{ env.BOOKS_RENDER }}
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração para commitar."
+          else
+            git commit -m "chore: atualiza livros renderizados [ci skip]"
+          fi
+
+      - name: Enviar alterações para o GitHub
+        run: |
+          git push origin books --force || echo "Falha ao enviar alterações para a branch 'books'."
+
+  # estatistica:
+  #   #  mover os arquivos de docs do repo: books , `repo:books/docs`, para a pasta books do repo: estatistica, repo:estatistica/books.
+  #   # Atualizando os arquivos de books/docs em estatistica/books, caso estejam desatualizados, ou adicionando caso não existam em estatistica/books.
+  #   needs: [formatar]
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: ENVIRONMENT
+  #   env:
+  #     REPO_SYNC: ${{ secrets.REPO_SYNC }}
+  #     USEREMAIL: ${{ secrets.USEREMAIL }}
+  #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  #     BOOKS_RENDER: ${{ needs.formatar.outputs.books_formatados }}
+  #   steps:
+  #     - name: Checar o repositório
+  #       uses: actions/checkout@v4
+  #       with:
+  #         token: ${{ secrets.GITHUB_TOKEN }}
