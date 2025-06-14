@@ -1,0 +1,212 @@
+name: "Renderizar Books Quarto"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["build/**/*.qmd", "build/**/*.yml"]
+  pull_request:
+    branches: [main]
+    paths: ["build/**/*.qmd", "build/**/*.yml"]
+
+permissions:
+  contents: write
+  pull-requests: read
+
+jobs:
+  detectar:
+    if: github.event_name == 'push' ||
+          github.event_name == 'workflow_dispatch' ||
+            (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      subfolders: ${{ steps.export_subfolders.outputs.subfolders }}
+
+    steps: 
+      - name: Checar o repositório 
+        uses: actions/checkout@v4
+
+      - name: Verificar tipo de evento
+        id: tipo_evento
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "tipo_event=dispatch" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "tipo_event=pull" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "tipo_event=push" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "merge_group" ]]; then
+            echo "tipo_event=mergegroups" >> $GITHUB_OUTPUT
+          else
+            echo "tipo_event=outro" >> $GITHUB_OUTPUT
+          fi
+          cat $GITHUB_OUTPUT
+
+      - name: Identificar arquivos alterados
+        id: arquivos-alterados
+        env:
+          TIPO_EVENTO: ${{ steps.tipo_evento.outputs.tipo_event }}
+        run: |
+          if [[ "${TIPO_EVENTO}" == "pull" ]]; then
+            gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" | jq -r '.[].filename' > arquivos.txt
+          elif [[ "${TIPO_EVENTO}" == "push" ]]; then
+            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt
+          else
+            git ls-files "build/*.qmd" "build/*.yml" > arquivos.txt
+          fi
+          echo "Exibindo arquivos alterados: $(cat arquivos.txt)"
+
+      - name: Identificar subdiretórios correspondentes
+        id: export_subfolders
+        run: |
+          FILES=$(cat arquivos.txt)
+          SUBFOLDERS=$(echo "$FILES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' | cut -d'/' -f2 | sort | uniq | xargs)
+          echo "subfolders=$SUBFOLDERS" >> $GITHUB_OUTPUT
+          echo "Exibindo subdiretórios alterados: $SUBFOLDERS"
+
+  renderizar:
+    needs: [detectar]
+    runs-on: ubuntu-latest
+    env:
+      SUBFOLDERS: ${{ needs.detectar.outputs.subfolders }}
+    outputs:
+      BOOKS_RENDER: ${{ steps.renderizar_books.outputs.books_render }}
+
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 60
+
+      - name: Instalar Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Renderizar Livros Quarto
+        id: renderizar_books
+        run: |
+          if [ -z "$SUBFOLDERS" ]; then
+            echo "Nenhum subdiretório encontrado."
+            exit 0
+          fi
+          for folder in $SUBFOLDERS; do
+            echo "Renderizando build/$folder ..."
+            quarto render build/$folder --to html || echo "Falha ao renderizar build/$folder"
+          done
+          echo "books_render=docs" >> $GITHUB_OUTPUT
+
+  backend:
+    needs: [detectar, renderizar]
+    runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    env:
+      REPO_SYNC: ${{ secrets.REPO_SYNC }}
+      USEREMAIL: ${{ secrets.USEREMAIL }}
+      BOOKS_RENDER: ${{ needs.renderizar.outputs.books_render }}
+    outputs:
+      BOOKS_RENDER: ${{ steps.backend_books.outputs.automacao_books }}
+
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+        with:
+          token: ${{ secrets.REPO_SYNC }}
+
+      - name: Clonar o repo:backend
+        uses: actions/checkout@v4
+        with:
+          repository: czargab18/backend
+          token: ${{ secrets.REPO_SYNC }}
+          path: backend
+          ref: main
+
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      - name: Instalar pacote backend
+        run: |
+          set -e
+          pip install -e ./backend
+
+      - name: Automacação de livros (backend)
+        id: backend_books
+        run: |
+          python backend/test/renderbook.py
+          echo "automacao_books=docs" >> $GITHUB_OUTPUT
+
+  formatar:
+    needs: [renderizar, backend]
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      BOOKS_RENDER: ${{ needs.backend.outputs.books_render }}
+    outputs:
+      BOOKS_RENDER: ${{ steps.format_books.outputs.books_formatados }}
+
+    steps:
+      - name: Checar o repositório
+        uses: actions/checkout@v4
+
+      - name: Instalar Prettier
+        run: npm install -g prettier
+
+      - name: Formatar arquivos HTML, CSS e JS
+        id: format_books
+        run: |
+          if [ -d "${{ env.BOOKS_RENDER }}" ]; then
+            prettier --write "${{ env.BOOKS_RENDER }}/**/*.{html,css,js}"
+            echo "books_formatados=${{ env.BOOKS_RENDER }}" >> $GITHUB_OUTPUT
+          else
+            echo "Diretório ${{ env.BOOKS_RENDER }} não encontrado."
+            exit 1
+          fi
+
+
+      - name: Upload livros formatados como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: books-formatados
+          path: ${{ env.BOOKS_RENDER }}
+
+  pages:
+    needs: [formatar]
+    runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    env:
+      USEREMAIL: ${{ secrets.USEREMAIL }}
+      USERNAME: ${{ github.repository_owner }}
+      BOOKS_RENDER: ${{ needs.formatar.outputs.BOOKS_RENDER }}
+
+    steps:
+      - name: Baixar artefato dos livros formatados
+        uses: actions/download-artifact@v4
+        with:
+          name: books-formatados
+          path: ${{ env.BOOKS_RENDER }}
+
+      - name: Deploy para GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ${{ env.BOOKS_RENDER }}
+          publish_branch: books
+          disable_nojekyll: true
+
+      - name: Remover .nojekyll do diretório de publicação
+        run: rm -f "${{ env.BOOKS_RENDER }}/.nojekyll"
+
+  # estatistica:
+  #   needs: [formatar]
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: ENVIRONMENT
+  #   env:
+  #     REPO_SYNC: ${{ secrets.REPO_SYNC }}
+  #     USEREMAIL: ${{ secrets.USEREMAIL }}
+  #     USERNAME: ${{ github.repository_owner }}
+  #     BOOKS_RENDER: ${{ needs.formatar.outputs.BOOKS_RENDER }}
