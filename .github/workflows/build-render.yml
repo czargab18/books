@@ -201,13 +201,58 @@ jobs:
       - name: Remover .nojekyll do diretório de publicação
         run: rm -f "${{ env.BOOKS_RENDER }}/.nojekyll"
 
-  # estatistica:
-  #   needs: [formatar]
-  #   runs-on: ubuntu-latest
-  #   environment:
-  #     name: ENVIRONMENT
-  #   env:
-  #     REPO_SYNC: ${{ secrets.REPO_SYNC }}
-  #     USEREMAIL: ${{ secrets.USEREMAIL }}
-  #     USERNAME: ${{ github.repository_owner }}
-  #     BOOKS_RENDER: ${{ needs.formatar.outputs.BOOKS_RENDER }}
+  estatistica:
+    needs: [formatar]
+    runs-on: ubuntu-latest
+    env:
+      REPO_SYNC: ${{ secrets.REPO_SYNC }}
+      USEREMAIL: ${{ secrets.USEREMAIL }}
+      USERNAME: ${{ github.repository_owner }}
+      BOOKS_RENDER: ${{ needs.formatar.outputs.BOOKS_RENDER }}
+
+    steps:
+      - name: Baixar artefato dos livros formatados
+        uses: actions/download-artifact@v4
+        with:
+          name: books-formatados
+          path: ${{ env.BOOKS_RENDER }}
+
+      - name: Clonar czargab18/estatistica (branch main)
+        uses: actions/checkout@v4
+        with:
+          repository: czargab18/estatistica
+          token: ${{ secrets.REPO_SYNC }}
+          path: estatistica
+          ref: main
+          # fetch-depth: 60
+
+      - name: Copiar livros para czargab18/estatistica/books
+        run: |
+          rm -rf estatistica/books/*
+          cp -r ${{ env.BOOKS_RENDER }}/* estatistica/books/
+          cd estatistica
+          git add books/
+          git status
+
+      - name: Criar ou atualizar branch 'books' em czargab18/estatistica
+        run: |
+          cd estatistica
+          # Verifica se a branch 'books' existe no remoto
+          if git ls-remote --exit-code --heads origin books; then
+            echo "Branch 'books' já existe no remoto."
+            git checkout books
+            git merge main || true
+          else
+            echo "Criando branch 'books' a partir de main."
+            git checkout -b books main
+          fi
+
+      - name: Commit e push para repo estatistica:books
+        run: |
+          git add books/
+          if git diff --cached --quiet; then
+            echo "Nenhuma alteração para enviar."
+          else
+            git commit -m "Atualiza livros a partir do repo books (Automático via GitHub Actions)"
+            git push --set-upstream origin books
+          fi
