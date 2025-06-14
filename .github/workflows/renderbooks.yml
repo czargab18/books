@@ -1,4 +1,4 @@
-name: "[build] Renderizar Books Quarto"
+name: "Renderizar Books Quarto"
 
 on:
   workflow_dispatch:
