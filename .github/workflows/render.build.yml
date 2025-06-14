@@ -193,6 +193,7 @@ jobs:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ${{ env.BOOKS_RENDER }}
           branch: books
+          disable_nojekyll: true
 
       - name: Remover .nojekyll do diretório de publicação
         run: rm -f "${{ env.BOOKS_RENDER }}/.nojekyll"
