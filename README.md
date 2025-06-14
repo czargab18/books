@@ -14,6 +14,12 @@ Este repositório contém anotações, códigos e projetos desenvolvidos utiliza
 - **Python:** Processamento de dados e automações.
 - **Jupyter Notebook:** Notas interativas e experimentos.
 
+## Estrutura das branchs
+- **main:** Contém os arquivos principais e anotações.
+- **stag:** Ambiente de estágio (staging) para testes e validações. 
+- **dev1:** Branch de desenvolvimento para novas funcionalidades e testes.
+- **books:** usada para deploy do GitHub Pages.
+
 ## Como Usar
 
 1. Clone o repositório:
