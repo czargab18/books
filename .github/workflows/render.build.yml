@@ -192,8 +192,19 @@ jobs:
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
           publish_dir: ${{ env.BOOKS_RENDER }}
-          branch: books
+          publish_branch: books
           disable_nojekyll: true
 
       - name: Remover .nojekyll do diretório de publicação
         run: rm -f "${{ env.BOOKS_RENDER }}/.nojekyll"
+
+  # estatistica:
+  #   needs: [formatar]
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: ENVIRONMENT
+  #   env:
+  #     REPO_SYNC: ${{ secrets.REPO_SYNC }}
+  #     USEREMAIL: ${{ secrets.USEREMAIL }}
+  #     USERNAME: ${{ github.repository_owner }}
+  #     BOOKS_RENDER: ${{ needs.formatar.outputs.BOOKS_RENDER }}
