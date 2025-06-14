@@ -1,4 +1,4 @@
-name: "Renderizar Books Quarto"
+name: "[build] - Renderizar Books Quarto"
 
 on:
   workflow_dispatch:
@@ -11,6 +11,7 @@ on:
 
 permissions:
   contents: write
+  pages: write
   pull-requests: read
 
 jobs:
