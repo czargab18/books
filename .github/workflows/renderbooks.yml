@@ -233,7 +233,7 @@ jobs:
       - name: Garante branch 'book'
         run: |
           cd estatistica
-          if git ls-remote --exit-code --heads origin book > /dev/null; then
+          if [[ git ls-remote --exit-code --heads origin book > /dev/null ]]; then
             git fetch origin book:book
             git checkout book
           else
