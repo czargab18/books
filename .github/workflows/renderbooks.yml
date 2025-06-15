@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches: [main, dev1]
-    paths: ["build/**/*.qmd", "build/**/*.yml"]
+    paths: [".github/**/*.yml","build/**/*.qmd", "build/**/*.yml"]
   pull_request:
     branches: [main, dev1]
-    paths: ["build/**/*.qmd", "build/**/*.yml"]
+    paths: [".github/**/*.yml","build/**/*.qmd", "build/**/*.yml"]
 
 permissions:
   contents: write
@@ -220,15 +220,25 @@ jobs:
           name: books-formatados
           path: books-formatados
 
-      - name: Clona repositório estatistica (apenas branch book)
+      - name: Clona repositório estatistica (branch main)
         uses: actions/checkout@v4
         with:
           repository: czargab18/estatistica
           token: ${{ secrets.REPO_SYNC }}
           path: estatistica
-          ref: book
+          ref: main
           fetch-depth: 0
           persist-credentials: false
+
+      - name: Garante branch 'book'
+        run: |
+          cd estatistica
+          if git ls-remote --exit-code --heads origin book > /dev/null; then
+            git fetch origin book:book
+            git checkout book
+          else
+            git checkout -b book
+          fi
 
       - name: Configura usuário Git
         run: |
@@ -256,6 +266,7 @@ jobs:
       - name: Lista arquivos para debug
         run: |
           ls -lR estatistica/books/
+
 
   cleanup:
     needs: [pages, estatistica]
