@@ -1,0 +1,24 @@
+name: "[build] - Renderizar Books Quarto"
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main, dev1]
+    paths: ["build/**/*.qmd", "build/**/*.yml"]
+  pull_request:
+    branches: [main, dev1]
+    paths: ["build/**/*.qmd", "build/**/*.yml"]
+
+permissions:
+  contents: write
+  pages: write
+  pull-requests: read
+
+jobs:
+  detectar:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Verificar se há alterações
+        id: check_changes
+        run: |
+          echo "Verificando alterações..."
