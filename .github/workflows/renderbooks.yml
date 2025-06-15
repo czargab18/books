@@ -3,10 +3,10 @@ name: "[build] - Renderizar Books Quarto"
 on:
   workflow_dispatch:
   push:
-    branches: [main,dev1]
+    branches: [main, dev1]
     paths: ["build/**/*.qmd", "build/**/*.yml"]
   pull_request:
-    branches: [main,dev1]
+    branches: [main, dev1]
     paths: ["build/**/*.qmd", "build/**/*.yml"]
 
 permissions:
@@ -17,16 +17,16 @@ permissions:
 jobs:
   detectar:
     if: github.event_name == 'push' ||
-          github.event_name == 'workflow_dispatch' ||
-            (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
     runs-on: ubuntu-latest
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
       subfolders: ${{ steps.export_subfolders.outputs.subfolders }}
 
-    steps: 
-      - name: Checar o repositório 
+    steps:
+      - name: Checar o repositório
         uses: actions/checkout@v4
 
       - name: Verificar tipo de evento
@@ -126,7 +126,7 @@ jobs:
       - name: Instalar Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13'
+          python-version: "3.13"
 
       - name: Instalar pacote backend
         run: |
@@ -165,7 +165,6 @@ jobs:
             echo "Diretório ${{ env.BOOKS_RENDER }} não encontrado."
             exit 1
           fi
-
 
       - name: Upload livros formatados como artefato
         uses: actions/upload-artifact@v4
@@ -283,16 +282,21 @@ jobs:
           cd estatistica
           git checkout -b book main
 
+      - name: Lista arquivos para debug
+        run: |
+          cd estatistica
+          ls -lR books/
+
       - name: Commit e push para repo estatistica:book
         run: |
           cd estatistica
-          git add ${{ env.BOOKS_RENDER }}
+          git add books/
           if git diff --cached --quiet; then
             echo "Nenhuma alteração para enviar."
           else
             git commit -m "Atualiza livros a partir do repo books (Automático via GitHub Actions)"
             git push --set-upstream origin book
-          fi  
+          fi
 
   cleanup:
     needs: [pages, estatistica]
@@ -301,4 +305,4 @@ jobs:
       - name: Deleta todos os artefatos
         uses: geekyeggo/delete-artifact@v5
         with:
-          name: '*'
+          name: "*"
