@@ -1,4 +1,4 @@
-name: "[build] - Renderizar Books Quarto"
+name: "Renderizar Books Quarto"
 
 on:
   workflow_dispatch:
@@ -11,7 +11,6 @@ on:
 
 permissions:
   contents: write
-  pages: write
   pull-requests: read
 
 jobs:
@@ -57,7 +56,6 @@ jobs:
           else
             git ls-files "build/*.qmd" "build/*.yml" > arquivos.txt
           fi
-          echo "Exibindo arquivos alterados: $(cat arquivos.txt)"
 
       - name: Identificar subdiretórios correspondentes
         id: export_subfolders
@@ -65,7 +63,6 @@ jobs:
           FILES=$(cat arquivos.txt)
           SUBFOLDERS=$(echo "$FILES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' | cut -d'/' -f2 | sort | uniq | xargs)
           echo "subfolders=$SUBFOLDERS" >> $GITHUB_OUTPUT
-          echo "Exibindo subdiretórios alterados: $SUBFOLDERS"
 
   renderizar:
     needs: [detectar]
@@ -115,6 +112,11 @@ jobs:
         with:
           token: ${{ secrets.REPO_SYNC }}
 
+      - name: Instalar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
       - name: Clonar o repo:backend
         uses: actions/checkout@v4
         with:
@@ -122,11 +124,6 @@ jobs:
           token: ${{ secrets.REPO_SYNC }}
           path: backend
           ref: main
-
-      - name: Instalar Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.13'
 
       - name: Instalar pacote backend
         run: |
@@ -201,89 +198,13 @@ jobs:
       - name: Remover .nojekyll do diretório de publicação
         run: rm -f "${{ env.BOOKS_RENDER }}/.nojekyll"
 
-  estatistica:
-    needs: [formatar]
-    runs-on: ubuntu-latest
-    environment:
-      name: ENVIRONMENT
-    env:
-      REPO_SYNC: ${{ secrets.REPO_SYNC }}
-      USEREMAIL: ${{ secrets.USEREMAIL }}
-      USERNAME: ${{ github.repository_owner }}
-      BOOKS_RENDER: ${{ needs.formatar.outputs.BOOKS_RENDER }}
-
-    steps:
-      - name: Baixa artefato dos livros formatados
-        uses: actions/download-artifact@v4
-        with:
-          name: books-formatados
-          path: ${{ env.BOOKS_RENDER }}
-
-      - name: Clona Repositório estatistica
-        uses: actions/checkout@v4
-        with:
-          repository: czargab18/estatistica
-          token: ${{ secrets.REPO_SYNC }}
-          path: estatistica
-          ref: main
-          fetch-depth: 0
-
-      - name: Copia livros para czargab18/estatistica/books
-        run: |
-          rm -rf estatistica/books/*
-          cp -r ${{ env.BOOKS_RENDER }}/* estatistica/books/
-          cd estatistica
-          git add books/
-          git status
-
-      - name: Configura usuário Git
-        run: |
-          cd estatistica
-          git config user.email "${{ env.USEREMAIL }}"
-          git config user.name "${{ env.USERNAME }}"
-
-      - name: Atualiza refs remotas
-        run: |
-          cd estatistica
-          git fetch origin
-
-      - name: Garante que main está atualizada
-        run: |
-          cd estatistica
-          git checkout main
-          git pull origin main
-
-      - name: Verifica se branch 'books' existe remotamente
-        id: check_books_branch
-        run: |
-          cd estatistica
-          if git ls-remote --exit-code --heads origin books; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Checkout e merge main em books (caso exista)
-        if: steps.check_books_branch.outputs.exists == 'true'
-        run: |
-          cd estatistica
-          git checkout books
-          git pull origin books
-          git merge main -X theirs || true
-
-      - name: Cria a branch books a partir de main (caso não exista)
-        if: steps.check_books_branch.outputs.exists == 'false'
-        run: |
-          cd estatistica
-          git checkout -b books main
-
-      - name: Commit e push para repo estatistica:books
-        run: |
-          cd estatistica
-          git add books/
-          if git diff --cached --quiet; then
-            echo "Nenhuma alteração para enviar."
-          else
-            git commit -m "Atualiza livros a partir do repo books (Automático via GitHub Actions)"
-            git push --set-upstream origin books
-          fi
+  # estatistica:
+  #   needs: [formatar]
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: ENVIRONMENT
+  #   env:
+  #     REPO_SYNC: ${{ secrets.REPO_SYNC }}
+  #     USEREMAIL: ${{ secrets.USEREMAIL }}
+  #     USERNAME: ${{ github.repository_owner }}
+  #     BOOKS_RENDER: ${{ needs.formatar.outputs.BOOKS_RENDER }}
