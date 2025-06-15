@@ -227,11 +227,12 @@ jobs:
           path: estatistica
           ref: main
           fetch-depth: 0
+          persist-credentials: false   # Evita conflito de credenciais
 
       - name: Copia livros para czargab18/estatistica/books
         run: |
           rm -rf estatistica/books/*
-          cp -r ${{ env.BOOKS_RENDER }}/* estatistica/books/
+          cp -r "${{ env.BOOKS_RENDER }}/." estatistica/books/
           cd estatistica
           git add books/
           git status
@@ -257,7 +258,7 @@ jobs:
         id: check_books_branch
         run: |
           cd estatistica
-          if git ls-remote --exit-code --heads origin -- books; then
+          if git ls-remote --exit-code --heads origin books > /dev/null; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
