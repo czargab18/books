@@ -159,10 +159,14 @@ jobs:
           path: books/docs
 
   backend:
-    # AUTOMAÇAO DOS BOOKS COM BACKEND PACKAGE
+    # AUTOMAÇÃO DOS BOOKS COM BACKEND PACKAGE
     needs: [renderizar, build]
     runs-on: ubuntu-latest
     if: needs.detectar.outputs.FOLDERS_LISTA != ''
+    env:
+      FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
+    outputs:
+      BOOKS_RENDERIZADOS: ${{ steps.backend_books.outputs.automacao_books }}
 
     steps:
       - name: Baixar artefatos WORKSPACE
@@ -182,30 +186,47 @@ jobs:
         with:
           python-version: '3.13'
 
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
       - name: Instalar pacote backend
         run: |
           set -e
           pip install -e backend
 
-      - name: Automacação de livros (backend)
+      - name: Automação de livros (backend)
         id: backend_books
         run: | 
           python backend/test/renderbook.py
-          echo "automacao_books=docs" >> $GITHUB_OUTPUT
+          echo "automacao_books=_books" >> $GITHUB_OUTPUT
 
-# REFERENCIAS:
+      - name: Exportar livros renderizados atualizados
+        uses: actions/upload-artifact@v4
+        with:
+          name: books_renderizados
+          path: backend/_books
 
-# # SETUP QUARTO AND PYTHON
-# - name: Instalar Quarto
-#   uses: quarto-dev/quarto-actions/setup@v2
+  pages:
+    needs: [renderizar, backend]
+    runs-on: ubuntu-latest
+    env:
+      USEREMAIL: ${{ secrets.USEREMAIL }}
+      USERNAME: ${{ github.repository_owner }}
 
-# - name: Instalar Python
-#   uses: actions/setup-python@v4
-#   with:
-#     python-version: '3.13'
+    steps:
+      - name: Baixar artefato dos livros renderizados
+        uses: actions/download-artifact@v4
+        with:
+          name: books_renderizados
+          path: "."
 
-# # SETUP PACKAGE BACKEND
-# - name: Instalar pacote backend
-#   run: |
-#     set -e
-#     pip install -e backend
+      - name: Deploy para GitHub Pages
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: .
+          publish_branch: books
+          disable_nojekyll: true
+
+      - name: Remover .nojekyll do diretório de publicação
+        run: rm -f "./.nojekyll"
