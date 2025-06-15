@@ -15,10 +15,197 @@ permissions:
   pull-requests: read
 
 jobs:
+  envento:
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' ||
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
+    env:
+      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    outputs:
+      EVENTO: ${{ steps.tipo_evento.outputs.evento }}
+    
+    steps:
+      - name: Verificar tipo de evento
+        id: tipo_evento
+        run: |
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "evento=dispatch" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
+            echo "evento=pull" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "push" ]]; then
+            echo "evento=push" >> $GITHUB_OUTPUT
+          elif [[ "${{ github.event_name }}" == "merge_group" ]]; then
+            echo "evento=mergegroups" >> $GITHUB_OUTPUT
+          else
+            echo "evento=outro" >> $GITHUB_OUTPUT
+          fi
+          cat $GITHUB_OUTPUT  
+
+  build:
+    needs: [evento]
+    runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    env:
+      REPO_SYNC: ${{ secrets.REPO_SYNC }}
+      USEREMAIL: ${{ secrets.USEREMAIL }}
+      USERNAME: ${{ github.repository_owner }}
+
+    steps:
+      # SETUP REPOSITORY
+      - name: Clonar o repo:BOOKS
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.USERNAME  }}/books
+          token: ${{ secrets.REPO_SYNC }}
+          path: books
+          ref: main
+
+      - name: Clonar o repo:BACKEND
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.USERNAME  }}/backend
+          token: ${{ secrets.REPO_SYNC }}
+          path: backend
+          ref: main
+
+      # SETUP ARTEFATOS
+      - name: Exportar workspace como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: workspace
+          path: |
+            books
+            backend
+
   detectar:
     runs-on: ubuntu-latest
+    needs: [build, evento]
+    env:
+      TIPO_EVENTO: ${{ needs.envento.outputs.EVENTO }}
+    outputs:
+      FOLDERS_LISTA: ${{ steps.lista.outputs.folders_lista }}
+
     steps:
-      - name: Verificar se há alterações
-        id: check_changes
+
+      - name: Baixar artefatos
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+
+      - name: Checar o repositório Books
         run: |
-          echo "Verificando alterações..."
+          cd books
+
+      - name: Identificar arquivos alterados
+        id: arquivos-alterados
+        env:
+          TIPO_EVENTO: ${{ steps.tipo_evento.outputs.tipo_event }}
+        run: |
+          cd books # Naveguando para repositório "books" 
+          echo Verificando o tipo de evento 
+          if [[ "${TIPO_EVENTO}" == "pull" ]]; then
+            gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" | jq -r '.[].filename' > arquivos.txt
+          elif [[ "${TIPO_EVENTO}" == "push" ]]; then
+            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt
+          else
+            git ls-files "build/*.qmd" "build/*.yml" > arquivos.txt
+          fi
+          echo "Exibindo arquivos alterados: $(cat arquivos.txt)"
+
+      - name: Identificar subdiretórios correspondentes
+        id: lista
+        run: |
+          FILES_NAMES=$(cat arquivos.txt)
+          FOLDERS_NAMES=$(echo "$FILES_NAMES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' | cut -d'/' -f2 | sort | uniq | xargs)
+          echo "folders_lista=$FOLDERS_NAMES" >> $GITHUB_OUTPUT
+          echo "Exibindo subdiretórios alterados: $FOLDERS_LISTA"
+
+  renderizar:
+    needs: [detectar, build]
+    runs-on: ubunto-latest
+    if: needs.detectar.outputs.FOLDERS_LISTA != ''
+    env:
+      FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
+    
+    steps:
+      - name: Baixar artefatos
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Renderizar livros Quarto
+        id: renderizar_books
+        run: |
+          cd books
+          echo "Renderizando livro: $FOLDERS_LISTA"
+          for folder in $FOLDERS_LISTA; do
+            quarto render "build/${folder}" --to html --execute --no-preview
+          done
+
+      - name: Exibir livros renderizados (salvos em ./docs/)
+        run: |
+          echo "Livros renderizados com sucesso!"
+          ls books/docs
+
+      - name: Exportar livros renderizados
+        uses: actions/upload-artifact@v4
+        with:
+          name: books_renderizados
+          path: books/docs
+
+  backend:
+    # AUTOMAÇAO DOS BOOKS COM BACKEND PACKAGE
+    needs: [renderizar, build]
+    runs-on: ubuntu-latest
+    if: needs.detectar.outputs.FOLDERS_LISTA != ''
+
+    steps:
+      - name: Baixar artefatos WORKSPACE
+        uses: actions/download-artifact@v4
+        with:
+          name: workspace
+          path: .
+
+      - name: Baixar artefatos BOOKS RENDERIZADOS
+        uses: actions/download-artifact@v4
+        with:
+          name: books_renderizados
+          path: ./backend/_books/
+
+      - name: Setup Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      - name: Instalar pacote backend
+        run: |
+          set -e
+          pip install -e backend
+
+      - name: Automacação de livros (backend)
+        id: backend_books
+        run: | 
+          python backend/test/renderbook.py
+          echo "automacao_books=docs" >> $GITHUB_OUTPUT
+
+# REFERENCIAS:
+
+# # SETUP QUARTO AND PYTHON
+# - name: Instalar Quarto
+#   uses: quarto-dev/quarto-actions/setup@v2
+
+# - name: Instalar Python
+#   uses: actions/setup-python@v4
+#   with:
+#     python-version: '3.13'
+
+# # SETUP PACKAGE BACKEND
+# - name: Instalar pacote backend
+#   run: |
+#     set -e
+#     pip install -e backend
