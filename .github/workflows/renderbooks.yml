@@ -3,10 +3,10 @@ name: "[build] - Renderizar Books Quarto"
 on:
   workflow_dispatch:
   push:
-    branches: [main]
+    branches: [main,dev1]
     paths: ["build/**/*.qmd", "build/**/*.yml"]
   pull_request:
-    branches: [main]
+    branches: [main,dev1]
     paths: ["build/**/*.qmd", "build/**/*.yml"]
 
 permissions:
@@ -289,7 +289,7 @@ jobs:
           fi
 
   cleanup:
-    needs: build
+    needs: [pages, estatistica]
     runs-on: ubuntu-latest
     steps:
       - name: Deleta todos os artefatos
