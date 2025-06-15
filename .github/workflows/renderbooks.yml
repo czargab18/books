@@ -28,6 +28,8 @@ jobs:
     steps:
       - name: Checar o repositório
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 60
 
       - name: Verificar tipo de evento
         id: tipo_evento
