@@ -15,7 +15,7 @@ permissions:
   pull-requests: read
 
 jobs:
-  envento:
+  evento:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
@@ -51,6 +51,7 @@ jobs:
       REPO_SYNC: ${{ secrets.REPO_SYNC }}
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
+      TIPO_EVENTO: ${{ needs.evento.outputs.EVENTO }}
 
     steps:
       # SETUP REPOSITORY
@@ -83,7 +84,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [build, evento]
     env:
-      TIPO_EVENTO: ${{ needs.envento.outputs.EVENTO }}
+      TIPO_EVENTO: ${{ needs.evento.outputs.EVENTO }}
     outputs:
       FOLDERS_LISTA: ${{ steps.lista.outputs.folders_lista }}
 
