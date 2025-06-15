@@ -257,7 +257,7 @@ jobs:
         id: check_books_branch
         run: |
           cd estatistica
-          if git ls-remote --exit-code --heads origin books; then
+          if git ls-remote --exit-code --heads origin -- books; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
@@ -287,3 +287,12 @@ jobs:
             git commit -m "Atualiza livros a partir do repo books (Automático via GitHub Actions)"
             git push --set-upstream origin books
           fi
+
+  cleanup:
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deleta todos os artefatos
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: '*'
