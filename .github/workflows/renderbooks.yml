@@ -149,11 +149,8 @@ jobs:
       BOOKS_RENDER: ${{ needs.backend.outputs.books_render }}
     outputs:
       BOOKS_RENDER: ${{ steps.format_books.outputs.books_formatados }}
-
+          if [ -d "${{ env.BOOKS_RENDER }}" ]; then
     steps:
-      - name: Checar o repositório
-        uses: actions/checkout@v4
-
       - name: Instalar Prettier
         run: npm install -g prettier
 
@@ -266,7 +263,6 @@ jobs:
       - name: Lista arquivos para debug
         run: |
           ls -lR estatistica/books/
-
 
   cleanup:
     needs: [pages, estatistica]
