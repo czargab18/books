@@ -218,76 +218,29 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: books-formatados
-          path: ${{ env.BOOKS_RENDER }}
+          path: books-formatados
 
-      - name: Clona Repositório estatistica
+      - name: Clona repositório estatistica (apenas branch book)
         uses: actions/checkout@v4
         with:
           repository: czargab18/estatistica
           token: ${{ secrets.REPO_SYNC }}
           path: estatistica
-          ref: main
+          ref: book
           fetch-depth: 0
           persist-credentials: false
-
-      - name: Ajusta remote para usar token
-        run: |
-          cd estatistica
-          git remote set-url origin https://${{ env.USERNAME }}:${{ secrets.REPO_SYNC }}@github.com/${{ env.USERNAME }}/estatistica.git
-
-      - name: Copia livros para czargab18/estatistica/books
-        run: |
-          rm -rf estatistica/books/*
-          cp -r "${{ env.BOOKS_RENDER }}/." estatistica/books/
-          cd estatistica
-          git add books/
-          git status
 
       - name: Configura usuário Git
         run: |
           cd estatistica
           git config user.email "${{ env.USEREMAIL }}"
           git config user.name "${{ env.USERNAME }}"
+          git remote set-url origin https://${{ env.USERNAME }}:${{ env.REPO_SYNC }}@github.com/${{ env.USERNAME }}/estatistica.git
 
-      - name: Atualiza refs remotas
+      - name: Limpa e copia livros para estatistica/books
         run: |
-          cd estatistica
-          git fetch origin
-
-      - name: Garante que main está atualizada
-        run: |
-          cd estatistica
-          git checkout main
-          git pull origin main
-
-      - name: Verifica se branch 'book' existe remotamente
-        id: check_book_branch
-        run: |
-          cd estatistica
-          if git ls-remote --exit-code --heads origin book > /dev/null; then
-            echo "exists=true" >> $GITHUB_OUTPUT
-          else
-            echo "exists=false" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Checkout e merge main em book (caso exista)
-        if: steps.check_book_branch.outputs.exists == 'true'
-        run: |
-          cd estatistica
-          git checkout book
-          git pull origin book
-          git merge main -X theirs || true
-
-      - name: Cria a branch book a partir de main (caso não exista)
-        if: steps.check_book_branch.outputs.exists == 'false'
-        run: |
-          cd estatistica
-          git checkout -b book main
-
-      - name: Lista arquivos para debug
-        run: |
-          cd estatistica
-          ls -lR books/
+          rm -rf estatistica/books/*
+          cp -r books-formatados/. estatistica/books/
 
       - name: Commit e push para repo estatistica:book
         run: |
@@ -296,9 +249,13 @@ jobs:
           if git diff --cached --quiet; then
             echo "Nenhuma alteração para enviar."
           else
-            git commit -m "Atualiza livros a partir do repo books (Automático via GitHub Actions)"
-            git push --set-upstream origin book
+            git commit -m "Atualiza livros via artefato GitHub Actions"
+            git push origin book
           fi
+
+      - name: Lista arquivos para debug
+        run: |
+          ls -lR estatistica/books/
 
   cleanup:
     needs: [pages, estatistica]
