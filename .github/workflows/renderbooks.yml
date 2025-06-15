@@ -4,10 +4,10 @@ on:
   workflow_dispatch:
   push:
     branches: [main, dev1]
-    paths: [".github/**/*.yml","build/**/*.qmd", "build/**/*.yml"]
+    paths: ["build/**/*.qmd", "build/**/*.yml"]
   pull_request:
     branches: [main, dev1]
-    paths: [".github/**/*.yml","build/**/*.qmd", "build/**/*.yml"]
+    paths: ["build/**/*.qmd", "build/**/*.yml"]
 
 permissions:
   contents: write
