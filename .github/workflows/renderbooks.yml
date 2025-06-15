@@ -229,6 +229,11 @@ jobs:
           fetch-depth: 0
           persist-credentials: false
 
+      - name: Ajusta remote para usar token
+        run: |
+          cd estatistica
+          git remote set-url origin https://${{ env.USERNAME }}:${{ secrets.REPO_SYNC }}@github.com/${{ env.USERNAME }}/estatistica.git
+
       - name: Copia livros para czargab18/estatistica/books
         run: |
           rm -rf estatistica/books/*
