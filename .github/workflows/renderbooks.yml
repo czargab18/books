@@ -286,7 +286,7 @@ jobs:
       - name: Commit e push para repo estatistica:book
         run: |
           cd estatistica
-          git add books/
+          git add ${{ env.BOOKS_RENDER }}
           if git diff --cached --quiet; then
             echo "Nenhuma alteração para enviar."
           else
