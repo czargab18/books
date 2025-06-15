@@ -227,7 +227,7 @@ jobs:
           path: estatistica
           ref: main
           fetch-depth: 0
-          persist-credentials: false   # Evita conflito de credenciais
+          persist-credentials: false
 
       - name: Copia livros para czargab18/estatistica/books
         run: |
@@ -254,31 +254,31 @@ jobs:
           git checkout main
           git pull origin main
 
-      - name: Verifica se branch 'books' existe remotamente
-        id: check_books_branch
+      - name: Verifica se branch 'book' existe remotamente
+        id: check_book_branch
         run: |
           cd estatistica
-          if git ls-remote --exit-code --heads origin books > /dev/null; then
+          if git ls-remote --exit-code --heads origin book > /dev/null; then
             echo "exists=true" >> $GITHUB_OUTPUT
           else
             echo "exists=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Checkout e merge main em books (caso exista)
-        if: steps.check_books_branch.outputs.exists == 'true'
+      - name: Checkout e merge main em book (caso exista)
+        if: steps.check_book_branch.outputs.exists == 'true'
         run: |
           cd estatistica
-          git checkout books
-          git pull origin books
+          git checkout book
+          git pull origin book
           git merge main -X theirs || true
 
-      - name: Cria a branch books a partir de main (caso não exista)
-        if: steps.check_books_branch.outputs.exists == 'false'
+      - name: Cria a branch book a partir de main (caso não exista)
+        if: steps.check_book_branch.outputs.exists == 'false'
         run: |
           cd estatistica
-          git checkout -b books main
+          git checkout -b book main
 
-      - name: Commit e push para repo estatistica:books
+      - name: Commit e push para repo estatistica:book
         run: |
           cd estatistica
           git add books/
@@ -286,8 +286,8 @@ jobs:
             echo "Nenhuma alteração para enviar."
           else
             git commit -m "Atualiza livros a partir do repo books (Automático via GitHub Actions)"
-            git push --set-upstream origin books
-          fi
+            git push --set-upstream origin book
+          fi  
 
   cleanup:
     needs: [pages, estatistica]
