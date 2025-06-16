@@ -101,10 +101,14 @@ jobs:
       FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
     
     steps:
-      - name: Baixar artefatos
-        uses: actions/download-artifact@v4
+      - name: Clona o Repositório BOOKS
+        uses: actions/checkout@v4
         with:
-          name: workspace
+          repository: ${{ env.USERNAME  }}/books
+          token: ${{ secrets.REPO_SYNC }}
+          path: books
+          ref: main
+          fetch-depth: 2
 
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -140,11 +144,23 @@ jobs:
       BOOKS_RENDERIZADOS: ${{ steps.backend_books.outputs.automacao_books }}
 
     steps:
-      - name: Baixar artefatos WORKSPACE
-        uses: actions/download-artifact@v4
+      - name: Setup Python
+        uses: actions/setup-python@v4
         with:
-          name: workspace
-          path: .
+          python-version: '3.13'
+
+      - name: Clona o Repositório BACKEND
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.USERNAME  }}/backend
+          token: ${{ secrets.REPO_SYNC }}
+          path: backend
+          ref: main
+
+      - name: Instalar pacote backend
+        run: |
+          set -e
+          pip install -e backend
 
       - name: Baixar artefatos BOOKS RENDERIZADOS
         uses: actions/download-artifact@v4
@@ -152,26 +168,13 @@ jobs:
           name: books_renderizados
           path: ./backend/_books/
 
-      - name: Setup Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.13'
-
-      - name: Setup Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-
-      - name: Instalar pacote backend
-        run: |
-          set -e
-          pip install -e backend
-
       - name: Automação de livros (backend)
         id: backend_books
         run: | 
           python backend/test/renderbook.py
           echo "automacao_books=_books" >> $GITHUB_OUTPUT
 
-      - name: Exportar livros renderizados atualizados
+      - name: Exporta atualizações dos livros renderizados
         uses: actions/upload-artifact@v4
         with:
           name: books_renderizados
