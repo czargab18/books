@@ -24,7 +24,6 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
       EVENTO: ${{ steps.tipo_evento.outputs.evento }}
-    
     steps:
       - name: Verificar tipo de evento
         id: tipo_evento
@@ -54,7 +53,6 @@ jobs:
       TIPO_EVENTO: ${{ needs.evento.outputs.EVENTO }}
     outputs:
       FOLDERS_LISTA: ${{ steps.lista.outputs.folders_lista }}
-
     steps:
       - name: Clona o Repositório BOOKS
         uses: actions/checkout@v4
@@ -68,7 +66,7 @@ jobs:
       - name: Lista Estrutura do Workspace
         run: |
           echo "Estrutura do workspace:"
-          ls 
+          ls books
 
       - name: Identificar arquivos alterados
         id: arquivos-alterados
@@ -80,7 +78,6 @@ jobs:
           elif [[ "$TIPO_EVENTO" == "push" ]]; then
             git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt
           else
-            # Lista todos os arquivos .qmd e .yml dentro de build e subpastas
             git ls-files | grep -E '^build/.*\.(qmd|yml)$' > arquivos.txt
           fi
           echo "Arquivos detectados:"
@@ -99,9 +96,7 @@ jobs:
           if [ -z "$FILES_NAMES" ]; then
             echo "AVISO: arquivos.txt está vazio, nenhum diretório será listado!"
           fi
-          # Mostra o padrão de extração de diretório para debug
           echo "$FILES_NAMES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' || echo "Nenhum diretório encontrado pelo grep"
-          # Salva o resultado do grep em um arquivo temporário
           echo "$FILES_NAMES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' | cut -d'/' -f2 > subdirs.txt
 
       - name: Montar lista única de subdiretórios e exportar output
@@ -111,7 +106,38 @@ jobs:
           FOLDERS_NAMES=$(cat subdirs.txt | sort | uniq | xargs)
           echo "folders_lista=$FOLDERS_NAMES" >> $GITHUB_OUTPUT
           echo "Exibindo subdiretórios alterados: $FOLDERS_NAMES"
-      
+
+  renderizar:
+    needs: [detectar]
+    runs-on: ubuntu-latest
+    if: needs.detectar.outputs.FOLDERS_LISTA != ''
+    env:
+      FOLDERS_LISTA: ${{ needs.detecar.outputs.FOLDERS_LISTA }}
+      REPO_SYNC: ${{ secrets.REPO_SYNC }}
+      USEREMAIL: ${{ secrets.USEREMAIL }}
+      USERNAME: ${{ github.repository_owner }}
+    steps:
+      - name: Clona o Repositório BOOKS
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.USERNAME  }}/books
+          token: ${{ secrets.REPO_SYNC }}
+          path: books
+          ref: main
+          fetch-depth: 2
+
+      - name: Setup Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Renderizar livros Quarto
+        id: renderizar_books
+        run: |
+          cd books
+          echo "Renderizando livro: $FOLDERS_LISTA"
+          for folder in $FOLDERS_LISTA; do
+            quarto render "build/${folder}" --to html --execute --no-preview
+          done
+
       - name: Mover livros renderizados para _books
         run: |
           cd books
@@ -124,59 +150,27 @@ jobs:
             fi
           done
 
-      - name: Exportar livros renderizados
-        uses: actions/upload-artifact@v4
-        with:
-          name: books_renderizados
-          path: _books
-
-  renderizar:
-    needs: [detectar]
-    runs-on: ubuntu-latest
-    if: needs.detectar.outputs.FOLDERS_LISTA != ''
-    env:
-      FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
-    
-    steps:
-      - name: Baixar Artefatos
-        uses: actions/download-artifact@v4
-        with:
-          name: books_renderizados
-          path: _books
-
-      - name: Setup Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
-
-      - name: Renderizar livros Quarto
-        id: renderizar_books
-        run: |
-          cd _books
-          echo "Renderizando livro: $FOLDERS_LISTA"
-          for folder in $FOLDERS_LISTA; do
-            quarto render "${folder}" --to html --execute --no-preview
-          done
-
-      - name: Exibir livros renderizados (salvos em ./docs/)
+      - name: Exibir livros renderizados (salvos em ./_books/)
         run: |
           echo "Livros renderizados com sucesso!"
-          ls _books/docs
+          ls ../_books || true
 
       - name: Exportar livros renderizados
         uses: actions/upload-artifact@v4
         with:
           name: books_renderizados
-          path: _books/docs
+          path: books/../_books
 
   backend:
-    # AUTOMAÇÃO DOS BOOKS COM BACKEND PACKAGE
     needs: [renderizar]
     runs-on: ubuntu-latest
     if: needs.detectar.outputs.FOLDERS_LISTA != ''
     env:
       FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
+      USERNAME: ${{ github.repository_owner }}
+      REPO_SYNC: ${{ secrets.REPO_SYNC }}
     outputs:
       BOOKS_RENDERIZADOS: ${{ steps.backend_books.outputs.automacao_books }}
-
     steps:
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -220,7 +214,6 @@ jobs:
     env:
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
-
     steps:
       - name: Baixar artefato dos livros renderizados
         uses: actions/download-artifact@v4
