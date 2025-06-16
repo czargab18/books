@@ -80,7 +80,7 @@ jobs:
           elif [[ "${TIPO_EVENTO}" == "push" ]]; then
             git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt
           else
-            git ls-files "build/*.qmd" "build/*.yml" > arquivos.txt
+            git ls-files "build/**/*.qmd" "build/**/*.yml" > arquivos.txt
           fi
           echo "Exibindo arquivos alterados: $(cat arquivos.txt)"
 
