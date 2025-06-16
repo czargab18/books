@@ -42,9 +42,9 @@ jobs:
           fi
           cat $GITHUB_OUTPUT  
 
-  build:
-    needs: [evento]
+  detectar:
     runs-on: ubuntu-latest
+    needs: [evento]
     environment:
       name: ENVIRONMENT
     env:
@@ -52,59 +52,37 @@ jobs:
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
       TIPO_EVENTO: ${{ needs.evento.outputs.EVENTO }}
+    outputs:
+      FOLDERS_LISTA: ${{ steps.lista.outputs.folders_lista }}
 
     steps:
-      # SETUP REPOSITORY
-      - name: Clonar o repo:BOOKS
+      - name: Clona o Repositório BOOKS
         uses: actions/checkout@v4
         with:
           repository: ${{ env.USERNAME  }}/books
           token: ${{ secrets.REPO_SYNC }}
           path: books
           ref: main
+          fetch-depth: 0
 
-      - name: Clonar o repo:BACKEND
+      - name: Clona o Repositório BACKEND
         uses: actions/checkout@v4
         with:
           repository: ${{ env.USERNAME  }}/backend
           token: ${{ secrets.REPO_SYNC }}
           path: backend
           ref: main
+          fetch-depth: 0
 
-      # SETUP ARTEFATOS
-      - name: Exportar workspace como artefato
-        uses: actions/upload-artifact@v4
-        with:
-          name: workspace
-          path: |
-            books
-            backend
-
-  detectar:
-    runs-on: ubuntu-latest
-    needs: [build, evento]
-    env:
-      TIPO_EVENTO: ${{ needs.evento.outputs.EVENTO }}
-    outputs:
-      FOLDERS_LISTA: ${{ steps.lista.outputs.folders_lista }}
-
-    steps:
-
-      - name: Baixar artefatos
-        uses: actions/download-artifact@v4
-        with:
-          name: workspace
-
-      - name: Checar o repositório Books
+      - name: Lista Estrutura do Workspace
         run: |
-          cd books
+          echo "Estrutura do workspace:"
+          ls 
 
       - name: Identificar arquivos alterados
         id: arquivos-alterados
-        env:
-          TIPO_EVENTO: ${{ steps.tipo_evento.outputs.tipo_event }}
         run: |
-          cd books # Naveguando para repositório "books" 
+          cd books # Navegando para repositório "books" 
           echo Verificando o tipo de evento 
           if [[ "${TIPO_EVENTO}" == "pull" ]]; then
             gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" | jq -r '.[].filename' > arquivos.txt
@@ -124,8 +102,8 @@ jobs:
           echo "Exibindo subdiretórios alterados: $FOLDERS_LISTA"
 
   renderizar:
-    needs: [detectar, build]
-    runs-on: ubunto-latest
+    needs: [detectar]
+    runs-on: ubuntu-latest
     if: needs.detectar.outputs.FOLDERS_LISTA != ''
     env:
       FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
@@ -161,7 +139,7 @@ jobs:
 
   backend:
     # AUTOMAÇÃO DOS BOOKS COM BACKEND PACKAGE
-    needs: [renderizar, build]
+    needs: [renderizar]
     runs-on: ubuntu-latest
     if: needs.detectar.outputs.FOLDERS_LISTA != ''
     env:
