@@ -73,25 +73,37 @@ jobs:
       - name: Identificar arquivos alterados
         id: arquivos-alterados
         run: |
-          cd books # Navegando para repositório "books" 
-          echo Verificando o tipo de evento 
-          if [[ "${TIPO_EVENTO}" == "pull" ]]; then
+          cd books
+          echo "Verificando o tipo de evento: $TIPO_EVENTO"
+          if [[ "$TIPO_EVENTO" == "pull" ]]; then
             gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" | jq -r '.[].filename' > arquivos.txt
-          elif [[ "${TIPO_EVENTO}" == "push" ]]; then
+          elif [[ "$TIPO_EVENTO" == "push" ]]; then
             git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt
           else
-            git ls-files "build/**/*.qmd" "build/**/*.yml" > arquivos.txt
+            # Lista todos os arquivos .qmd e .yml dentro de build e subpastas
+            git ls-files | grep -E '^build/.*\.(qmd|yml)$' > arquivos.txt
           fi
-          echo "Exibindo arquivos alterados: $(cat arquivos.txt)"
+          echo "Arquivos detectados:"
+          cat arquivos.txt || true
+          if [ ! -s arquivos.txt ]; then
+            echo "AVISO: Nenhum arquivo alterado foi detectado para o evento $TIPO_EVENTO"
+          fi
 
       - name: Identificar subdiretórios correspondentes
         id: lista
         run: |
           cd books
+          echo "Arquivos encontrados:"
+          cat arquivos.txt || true
           FILES_NAMES=$(cat arquivos.txt)
+          if [ -z "$FILES_NAMES" ]; then
+            echo "AVISO: arquivos.txt está vazio, nenhum diretório será listado!"
+          fi
+          # Mostra o padrão de extração de diretório para debug
+          echo "$FILES_NAMES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' || echo "Nenhum diretório encontrado pelo grep"
           FOLDERS_NAMES=$(echo "$FILES_NAMES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' | cut -d'/' -f2 | sort | uniq | xargs)
           echo "folders_lista=$FOLDERS_NAMES" >> $GITHUB_OUTPUT
-          echo "Exibindo subdiretórios alterados: $FOLDERS_LISTA"
+          echo "Exibindo subdiretórios alterados: $FOLDERS_NAMES"
 
   renderizar:
     needs: [detectar]
