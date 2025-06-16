@@ -111,6 +111,8 @@ jobs:
     needs: [detectar]
     runs-on: ubuntu-latest
     if: needs.detectar.outputs.FOLDERS_LISTA != ''
+    environment:
+      name: ENVIRONMENT
     env:
       FOLDERS_LISTA: ${{ needs.detecar.outputs.FOLDERS_LISTA }}
       REPO_SYNC: ${{ secrets.REPO_SYNC }}
