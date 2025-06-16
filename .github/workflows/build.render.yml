@@ -63,7 +63,7 @@ jobs:
           token: ${{ secrets.REPO_SYNC }}
           path: books
           ref: main
-          fetch-depth: 0
+          fetch-depth: 2
 
       - name: Clona o Repositório BACKEND
         uses: actions/checkout@v4
@@ -72,7 +72,6 @@ jobs:
           token: ${{ secrets.REPO_SYNC }}
           path: backend
           ref: main
-          fetch-depth: 0
 
       - name: Lista Estrutura do Workspace
         run: |
@@ -96,7 +95,7 @@ jobs:
       - name: Identificar subdiretórios correspondentes
         id: lista
         run: |
-          FILES_NAMES=$(cat arquivos.txt)
+          FILES_NAMES=$(cat books/arquivos.txt)
           FOLDERS_NAMES=$(echo "$FILES_NAMES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' | cut -d'/' -f2 | sort | uniq | xargs)
           echo "folders_lista=$FOLDERS_NAMES" >> $GITHUB_OUTPUT
           echo "Exibindo subdiretórios alterados: $FOLDERS_LISTA"
