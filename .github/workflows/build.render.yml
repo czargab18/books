@@ -187,7 +187,7 @@ jobs:
       #       fi
       #     done
 
-      - name: Exibir e limpar livros renderizados (salvos em ./_books/)
+      - name: Excluindo pastas '**/delete'
         run: |
           # Excluir o diretório 'delete' se ele existir
           if [ -d "docs/delete" ]; then
@@ -195,6 +195,8 @@ jobs:
             rm -rf docs/delete
           fi
 
+      - name: Exibindo livros renderizados
+        run: |
           # Listar os livros renderizados
           echo "books_renderizados=$(ls docs || true)" >> $GITHUB_OUTPUT
           echo "Livros renderizados:"
@@ -214,8 +216,6 @@ jobs:
       FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
       USERNAME: ${{ github.repository_owner }}
       REPO_SYNC: ${{ secrets.REPO_SYNC }}
-    outputs:
-      BOOKS_RENDERIZADOS: ${{ steps.backend_books.outputs.automacao_books }}
     steps:
       - name: Setup Python
         uses: actions/setup-python@v4
@@ -243,15 +243,41 @@ jobs:
 
       - name: Automação de livros (backend)
         id: backend_books
-        run: | 
-          python backend/test/renderbook.py
-          echo "automacao_books=_books" >> $GITHUB_OUTPUT
+        run: |
+          set -e
+          python backend/test/renderbook.py 2>&1 | tee backend_output.log
+          if grep -i "warning\|error" backend_output.log; then
+            echo "Erros ou warnings detectados durante a execução do script!"
+            exit 1
+          fi
 
       - name: Exporta atualizações dos livros renderizados
         uses: actions/upload-artifact@v4
         with:
-          name: books_renderizados
+          name: books_backend
           path: backend/_books
+
+
+
+  estatistica:
+    needs: [renderizar]
+    runs-on: ubuntu-latest
+    if: needs.detectar.outputs.FOLDERS_LISTA != ''
+    env:
+      FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
+      USERNAME: ${{ github.repository_owner }}
+      REPO_SYNC: ${{ secrets.REPO_SYNC }}
+    steps:
+      - name: Clona o Repositório ESTATISTICA
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.USERNAME  }}/estatistica
+          token: ${{ secrets.REPO_SYNC }}
+
+
+
+
+
 
   pages:
     needs: [renderizar, backend]
@@ -263,7 +289,7 @@ jobs:
       - name: Baixar artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
-          name: books_renderizados
+          name: books_backend
           path: "."
 
       - name: Deploy para GitHub Pages
