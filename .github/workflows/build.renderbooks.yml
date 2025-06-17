@@ -150,12 +150,18 @@ jobs:
           echo "$FOLDERS_LISTA" | tr ' ' '\n' | while read folder; do
             if [ -d "${folder}" ]; then
               echo "Renderizando livro: $folder"
-              mkdir -p "../docs/${folder}"
-              quarto render "${folder}" --to html --execute --output-dir "../docs/${folder}"
+              quarto render "${folder}" --to html --execute --output-dir "../../docs/${folder}"
             else
               echo "Pasta não encontrada: $folder"
             fi
           done
+      - name: Verificar se houve erros na renderização
+        run: |
+          if grep -i "error\|warning" docs/*/*.html; then
+            echo "Erros ou warnings detectados durante a renderização dos livros!"
+            exit 1
+          fi
+          ls -l docs
 
       - name: Exibindo livros renderizados
         id: renderizar
