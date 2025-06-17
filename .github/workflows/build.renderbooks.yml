@@ -204,11 +204,6 @@ jobs:
         with:
           name: books_backend
           path: ./backend/_books/
-      
-      - name: Exclui artefato antigo 'books_detectados'
-        uses: actions/delete-artifact@v1
-        with:
-          name: books_detectados
 
   sync_artefato:
     needs: [backend]
@@ -243,11 +238,6 @@ jobs:
         with:
           name: artefato_completo
           path: "books"
-
-      - name: Deletar artefato Antigo 'books_detectados'
-        uses: actions/delete-artifact@v1
-        with:
-          name: books_detectados
 
   pages:
     needs: [sync_artefato]
