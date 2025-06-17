@@ -271,7 +271,7 @@ jobs:
   pages:
     needs: [backend]
     runs-on: ubuntu-latest
-    enviroment:
+    environment:
       name: ENVIRONMENT
     env:
       USEREMAIL: ${{ secrets.USEREMAIL }}
@@ -284,12 +284,6 @@ jobs:
           path: "."
 
       - name: Deploy para GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: actions/deploy-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: "."
-          publish_branch: books
-          disable_nojekyll: true
-
-      - name: Remover .nojekyll do diretório de publicação
-        run: rm -f "./.nojekyll"
+          folder: "."
