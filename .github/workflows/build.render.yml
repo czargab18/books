@@ -122,6 +122,12 @@ jobs:
             fi
           done
 
+      # Exclusão antes do upload, se desejar garantir limpeza (opcional, mas não necessário pois nome é único)
+      # - name: Excluir artefato antigo books_detectados
+      #   uses: GeekyEggo/delete-artifact@v5
+      #   with:
+      #     name: books_detectados
+
       - name: Exportar lista de livros alterados
         uses: actions/upload-artifact@v4
         with:
@@ -149,6 +155,12 @@ jobs:
           name: books_detectados
           path: "_books"
 
+      # Excluir artefato antigo ANTES do upload do novo books_renderizados
+      - name: Excluir artefato antigo books_renderizados
+        uses: GeekyEggo/delete-artifact@v5
+        with:
+          name: books_renderizados
+
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
@@ -168,7 +180,6 @@ jobs:
 
       - name: Excluindo pastas '**/delete'
         run: |
-          # Excluir o diretório 'delete' se ele existir
           if [ -d "docs/delete" ]; then
             echo "Excluindo diretório 'delete'..."
             rm -rf docs/delete
@@ -184,11 +195,6 @@ jobs:
         with:
           name: books_renderizados
           path: docs
-
-      - name: Excluir artefato antigo books_detectados
-        uses: GeekyEggo/delete-artifact@v5
-        with:
-          name: books_detectados
 
   backend:
     needs: [renderizar]
@@ -225,6 +231,12 @@ jobs:
           name: books_renderizados
           path: ./backend/_books/
 
+      # Excluir artefato antigo ANTES do upload do novo books_backend
+      - name: Excluir artefato antigo books_backend
+        uses: GeekyEggo/delete-artifact@v5
+        with:
+          name: books_backend
+
       - name: Automação de livros (backend)
         id: backend_books
         run: |
@@ -240,11 +252,6 @@ jobs:
         with:
           name: books_backend
           path: backend/_books
-
-      - name: Excluir artefato antigo books_renderizados
-        uses: GeekyEggo/delete-artifact@v5
-        with:
-          name: books_renderizados
 
   estatistica:
     needs: [backend]
