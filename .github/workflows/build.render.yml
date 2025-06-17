@@ -328,21 +328,10 @@ jobs:
           name: artefato_completo
           path: _books
 
-      - name: Sincronizar arquivos do artefato com a branch books
-        run: |
-          rsync -av --delete _books/ estatistica/books/
-
-      - name: Configura credenciais do Git
-        working-directory: estatistica
-        run: |
-          git config user.name "${{ env.USERNAME }}"
-          git config user.email "${{ env.USEREMAIL }}"
-          git remote set-url origin https://x-access-token:${{ env.REPO_SYNC }}@github.com/${{ env.USERNAME }}/estatistica.git
-
       - name: Garante que a branch books existe e faz checkout
         working-directory: estatistica
         run: |
-          if [[! git rev-parse --verify books >/dev/null 2>&1]]; then
+          if ! git rev-parse --verify books >/dev/null 2>&1; then
             git checkout --orphan books
             git rm -rf .
             git commit --allow-empty -m "Cria branch books inicial"
@@ -354,6 +343,13 @@ jobs:
       - name: Sincronizar arquivos do artefato com a branch books
         run: |
           rsync -av --delete _books/ estatistica/books/
+
+      - name: Configura credenciais do Git
+        working-directory: estatistica
+        run: |
+          git config user.name "${{ env.USERNAME }}"
+          git config user.email "${{ env.USEREMAIL }}"
+          git remote set-url origin https://x-access-token:${{ env.REPO_SYNC }}@github.com/${{ env.USERNAME }}/estatistica.git
 
       - name: Commit e Push dos livros renderizados
         working-directory: estatistica
