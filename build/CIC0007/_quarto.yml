@@ -1,7 +1,7 @@
 project:
   title: "Introdução a Ciência da Computação"
   type: book
-  output-dir: "../docs/EST0033"
+#  output-dir: "../../docs/EST0033"
   lib-dir: "../ac/site_libs"
   preview:
     port: 4200

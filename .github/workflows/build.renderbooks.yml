@@ -64,18 +64,26 @@ jobs:
           ref: main
           fetch-depth: 30
 
-      - name: Identificar arquivos alterados
-        id: arquivos-alterados
+      - name: Identificar arquivos alterados (pull request)
+        if: github.event_name == 'pull_request'
+        id: arquivos-alterados-pull
         run: |
           cd books
-          echo "Verificando o tipo de evento: $EVENTO"
-          if [[ "$EVENTO" == "pull" ]]; then
-            gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" | jq -r '.[].filename' > arquivos.txt
-          elif [[ "$EVENTO" == "push" ]]; then
-            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt
-          else
-            git ls-files | grep -E '^build/.*\.(qmd|yml)$' > arquivos.txt
-          fi
+          gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" | jq -r '.[].filename' > arquivos.txt
+
+      - name: Identificar arquivos alterados (push)
+        if: github.event_name == 'push'
+        id: arquivos-alterados-push
+        run: |
+          cd books
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt
+
+      - name: Identificar arquivos alterados (outros eventos)
+        if: (github.event_name != 'pull_request') && (github.event_name != 'push')
+        id: arquivos-alterados-outros
+        run: |
+          cd books
+          git ls-files | grep -E '^build/.*\.(qmd|yml)$' > arquivos.txt
 
       - name: Extrair nomes de subdiretórios dos arquivos alterados
         id: extrair_subdirs
@@ -130,17 +138,30 @@ jobs:
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
+      - name: Pasta para salvar os livros renderizados
+        run: mkdir -p docs
+
       - name: Renderizar livros Quarto
         env:
           FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
         run: |
+          set -e
           cd _books
           echo "$FOLDERS_LISTA" | tr ' ' '\n' | while read folder; do
             if [ -d "${folder}" ]; then
               echo "Renderizando livro: $folder"
-              quarto render "${folder}" --to html --execute
+              quarto render "${folder}" --to html --execute --output-dir "../../docs/${folder}"
+            else
+              echo "Pasta não encontrada: $folder"
             fi
           done
+      - name: Verificar se houve erros na renderização
+        run: |
+          if grep -i "error\|warning" docs/*/*.html; then
+            echo "Erros ou warnings detectados durante a renderização dos livros!"
+            exit 1
+          fi
+          ls -l docs
 
       - name: Exibindo livros renderizados
         id: renderizar
@@ -202,7 +223,7 @@ jobs:
       - name: Exporta atualizações dos livros renderizados
         uses: actions/upload-artifact@v4
         with:
-          name: books_detectados
+          name: books_backend
           path: ./backend/_books/
 
   sync_artefato:
@@ -224,7 +245,7 @@ jobs:
       - name: Baixar artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
-          name: books_detectados
+          name: books_backend
           path: _books
 
       - name: Sincronizar arquivos do artefato com a branch books
@@ -239,13 +260,8 @@ jobs:
           name: artefato_completo
           path: "books"
 
-      - name: Deletar artefato Antigo 'books_detectados'
-        uses: actions/delete-artifact@v2
-        with:
-          name: books_detectados
-
   pages:
-    needs: [artefato]
+    needs: [sync_artefato]
     runs-on: ubuntu-latest
     environment:
       name: ENVIRONMENT
@@ -262,7 +278,7 @@ jobs:
           folder: ""
 
   estatistica:
-    needs: [artefato]
+    needs: [sync_artefato]
     runs-on: ubuntu-latest
     if: needs.detectar.outputs.FOLDERS_LISTA != ''
     environment:
