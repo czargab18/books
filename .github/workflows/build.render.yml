@@ -139,6 +139,9 @@ jobs:
       REPO_SYNC: ${{ secrets.REPO_SYNC }}
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
+    outputs:
+      BOOKS_RENDERIZADOS: ${{ steps.renderizar.outputs.books_renderizados }}
+
     steps:
       # - name: Clona o Repositório BOOKS
       #   uses: actions/checkout@v4
@@ -186,8 +189,8 @@ jobs:
 
       - name: Exibir livros renderizados (salvos em ./_books/)
         run: |
-          echo "Livros renderizados com sucesso!"
-          ls docs || true
+          echo "books_renderizados=$(ls docs || true)" >> $GITHUB_OUTPUT
+          echo "Livros renderizados: $(ls docs || true)"
 
       - name: Exportar livros renderizados
         uses: actions/upload-artifact@v4
