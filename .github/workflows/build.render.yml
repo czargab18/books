@@ -271,6 +271,8 @@ jobs:
   pages:
     needs: [backend]
     runs-on: ubuntu-latest
+    enviroment:
+      name: ENVIRONMENT
     env:
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
@@ -285,7 +287,7 @@ jobs:
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: .
+          publish_dir: "."
           publish_branch: books
           disable_nojekyll: true
 
