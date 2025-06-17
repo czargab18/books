@@ -135,7 +135,7 @@ jobs:
     environment:
       name: ENVIRONMENT
     env:
-      FOLDERS_LISTA: ${{ needs.detecar.outputs.FOLDERS_LISTA }}
+      FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
       REPO_SYNC: ${{ secrets.REPO_SYNC }}
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
@@ -197,10 +197,8 @@ jobs:
 
       - name: Exibindo livros renderizados
         run: |
-          # Listar os livros renderizados
-          echo "books_renderizados=$(ls docs || true)" >> $GITHUB_OUTPUT
-          echo "Livros renderizados:"
-          ls docs || true
+          books=$(find docs -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | xargs)
+          echo "books_renderizados=$books" >> $GITHUB_OUTPUT
 
       - name: Exportar livros renderizados
         uses: actions/upload-artifact@v4
@@ -260,7 +258,7 @@ jobs:
 
 
   estatistica:
-    needs: [renderizar]
+    needs: [backend]
     runs-on: ubuntu-latest
     if: needs.detectar.outputs.FOLDERS_LISTA != ''
     env:
@@ -275,12 +273,8 @@ jobs:
           token: ${{ secrets.REPO_SYNC }}
 
 
-
-
-
-
   pages:
-    needs: [renderizar, backend]
+    needs: [backend]
     runs-on: ubuntu-latest
     env:
       USEREMAIL: ${{ secrets.USEREMAIL }}
