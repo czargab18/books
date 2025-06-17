@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: "./../../docs/TAS0000"
+  output-dir: "../docs/TAS0000"
   lib-dir:  "./../delete/site_libs"
   preview:
     port: 4200
@@ -24,4 +24,3 @@ format:
       - brand
     code-link: true
     search: true
-    include-in-header: formulas.tex
