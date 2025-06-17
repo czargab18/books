@@ -238,7 +238,7 @@ jobs:
       - name: Baixar artefatos BOOKS RENDERIZADOS
         uses: actions/download-artifact@v4
         with:
-          name: books_renderizados
+          name: books_detectados
           path: ./backend/_books/
 
       - name: Automação de livros (backend)
