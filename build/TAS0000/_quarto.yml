@@ -1,8 +1,7 @@
 project:
   type: book
-  output-dir: "./../../TAS0000"
+  output-dir: "./../../docs/TAS0000"
   lib-dir:  "./../delete/site_libs"
-  #post-render: "./../automacao.py"
   preview:
     port: 4200
     browser: false
@@ -12,17 +11,17 @@ number-sections: false
 book:
   chapters:
     - index.qmd
-    - references.qmd
+    - postextuais/references.qmd
 
-bibliography: references.bib
+bibliography: postextuais/references.bib
 
 format:
   html:
-    include-in-header: "./../../../ac/components/1/pt_BR/books/head.html"
     toc: false
-    sidebar: 
+    sidebar:
     theme:
       - cosmo
       - brand
     code-link: true
     search: true
+    include-in-header: formulas.tex

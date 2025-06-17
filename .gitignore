@@ -1,66 +1,31 @@
-.Rproj.user
-.Rhistory
-*_cache
-*_files
-_main.rds
-_book
-*.md
-search_index.json
-libs
-*.rds
-_main.*
-tmp-pdfcrop-*
-figures
-*libs
-test_*
-*.venv/
-*/.venv/
+###########################################
+################## pastas:#################
+###########################################
+##### IGNORAR
+*.pdf
+/delete
+/ac
+**/.gitignore
+##### NÃO IGNORAR
+# !fluxograma.pdf
+!/.gitignore
 
-# Ignorar todos as subpasta dentro de diretórios
-**/*cache*
-**/*/*/ac/
-**/*/*/wss/
+###########################################
+#################### R ####################
+###########################################
+##### IGNORAR
+renv/*
+renv/.gitignore
+renv/library/
+renv/local/
+renv/cellar/
+renv/lock/
+renv/python/
+renv/sandbox/
+renv/staging/
 
-book/*/.quarto/
-# book/*/index_files/
-book/*/site_libs/
-book/*/.gitignore
-book/*/conteudo/*/*.html
-
-
-## OGANIZAR ESTAS LISTAS REPOSITÓRIO: cesargabrielphd/curso
-*.Rproj
-*.Rproj.*
-*.Rhistory
-*.RData
-*.Ruserdata
-*.Renviron
-*.Renviron.*
-
-*.httr-oauth
-*.DS_Store
-*.quarto
-*.DBF
-*.xlsx
-*.xls
-*.csv
-
-Trabalho 1/dataProject
-Trabalho 1/data.Need.Project/
-Trabalho 2/dataProject
-Trabalho 2/dataProject/
-Atividaes/PadronTaxas/dataProject
-Atividaes/PadronTaxas/dataProject/
-SINGAGE.XLS
-
-################################################################################
-################################## NÃO IGNORA ##################################
-################################################################################
-!**/CODE_OF_CONDUCT.md
-!**/plausible.html
-!**/wss/
-!**/public.html
-!**/.gitignore
-!**/backend/*
-!**/docs/
-!**/docs/ac/*_libs
+##### NÃO IGNORAR
+!**/renv/activate.R
+!**/renv/settings.json
+!.Rprofile
+!renv.lock
