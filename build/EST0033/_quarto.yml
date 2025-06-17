@@ -1,7 +1,7 @@
 project:
   type: book
-  output-dir: "./../../EST0033"
-  lib-dir: "./../delete/site_libs"
+  output-dir: "../docs/EST0033"
+  #lib-dir: "./../delete/site_libs"
   preview:
     navigate: true
     browser: false
@@ -38,7 +38,6 @@ bibliography: postextuais/bibliografia/references.bib
 
 format:
   html:
-    include-in-header: "./../../../ac/components/1/pt_BR/books/head.html"
     toc: false
     sidebar: true
     theme:

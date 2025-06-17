@@ -1,7 +1,7 @@
 project:
   title: "Introdução a Ciência da Computação"
   type: book
-  output-dir: "../../EST0033"
+  output-dir: "../docs/EST0033"
   lib-dir: "../ac/site_libs"
   preview:
     port: 4200
@@ -43,7 +43,7 @@ format:
     theme:
       - cosmo
       - brand
-      - "../ac/r4ds.scss"
+      # - "../ac/r4ds.scss"
     code-link: true
     author-meta: "César Gabriel"
     callout-appearance: simple
@@ -70,7 +70,7 @@ format:
       - "/ac/site_libs/quarto-search/autocomplete.umd.js"
       - "/ac/site_libs/quarto-search/fuse.min.js"
       - "/ac/site_libs/quarto-search/quarto-search.js"
-      - "/ac/r4ds.scss"
+      # - "/ac/r4ds.scss"
 
   pdf:
     documentclass: scrreprt

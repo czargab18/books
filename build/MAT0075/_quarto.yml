@@ -1,9 +1,8 @@
 project:
   title: "CALCULO DE PROBABILIDADE"
   type: book
-  output-dir: "./../../MAT0075"
-  lib-dir: "./../delete/site_libs"
-  #post-render: "./../automacao.py"
+  output-dir: "../docs/MAT0075"
+  lib-dir:  "./../delete/site_libs"
   preview:
     port: 4200
     browser: false
@@ -24,7 +23,6 @@ book:
 
 format:
   html:
-    include-in-header: "./../../../ac/components/1/pt_BR/books/head.html"
     toc: false
     sidebar: true
     theme:
