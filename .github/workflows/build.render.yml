@@ -158,17 +158,17 @@ jobs:
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Movendo livros detectados para _books
-        if: steps.lista.outputs.folders_lista != ''
+      - name: Renderizar livros Quarto
         env:
-          FOLDERS_LISTA: ${{ steps.lista.outputs.folders_lista }}
+          FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
         run: |
           cd _books
           echo "$FOLDERS_LISTA" | tr ' ' '\n' | while read folder; do
-            if [ -d "build/${folder}" ]; then
-              mv "build/${folder}" ../_books/
+            if [ -d "${folder}" ]; then
+              echo "Renderizando livro: $folder"
+              quarto render "${folder}" --to html --execute --no-preview
             else
-              echo "Diretório build/${folder} não encontrado!"
+              echo "Diretório ${folder} não encontrado!"
             fi
           done
 
