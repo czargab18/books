@@ -11,8 +11,9 @@ on:
 
 permissions:
   contents: write
-  pages: write
   pull-requests: read
+  pages: write
+  id-token: write
 
 jobs:
   evento:
@@ -271,25 +272,44 @@ jobs:
   pages:
     needs: [backend]
     runs-on: ubuntu-latest
-    enviroment:
+    environment:
       name: ENVIRONMENT
     env:
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
     steps:
+      - name: Checkout padrão (main ou default)
+        uses: actions/checkout@v4
+        with:
+          path: "."
+          ref: books
+          fetch-depth: 0
+          persist-credentials: false
+
       - name: Baixar artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
           name: books_backend
-          path: "."
+          path: _books
+
+      - name: Sincronizar arquivos do artefato com a branch books
+        run: |
+          rsync -av --delete _books/ ./
+
+      - name: Configura credenciais do Git
+        run: |
+          git config user.name "${{ env.USERNAME }}"
+          git config user.email "${{ env.USEREMAIL }}"
+
+      - name: Commit e Push dos livros renderizados
+        run: |
+          git add .
+          git commit -m "Atualiza livros renderizados a partir do artefato do backend" || echo "Nada a commitar"
+          git push origin books
 
       - name: Deploy para GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
+        uses: actions/deploy-pages@v4
         with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: "."
+          folder: "."
           publish_branch: books
           disable_nojekyll: true
-
-      - name: Remover .nojekyll do diretório de publicação
-        run: rm -f "./.nojekyll"
