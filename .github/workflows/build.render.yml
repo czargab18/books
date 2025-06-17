@@ -126,7 +126,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: folders_lista
-          path: books/../_books
+          path: _books
 
   renderizar:
     needs: [detectar]
