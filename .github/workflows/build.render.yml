@@ -263,10 +263,10 @@ jobs:
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
     steps:
-      - name: Checkout da branch books (ou cria se não existir)
+      - name: Checkout da branch books
         uses: actions/checkout@v4
         with:
-          ref: main
+          ref: books
           fetch-depth: 0
 
       - name: Baixar artefato dos livros renderizados
@@ -279,29 +279,22 @@ jobs:
         run: |
           rsync -av --delete _books/ ./
 
-      - name: Configura credenciais do Git
-        run: |
-          git config user.name "${{ env.USERNAME }}"
-          git config user.email "${{ env.USEREMAIL }}"
-          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
-
-      - name: Commit e Push dos livros renderizados
-        run: |
-          git add .
-          git commit -m "Atualiza livros renderizados a partir do artefato do backend" || echo "Nada a commitar"
-          git push origin books
-
+      - name: Salvar artefato completo para deploy
+        uses: actions/upload-artifact@v4
+        with:
+          name: artefato_completo
+          path: "."
 
   pages:
-    needs: [ artefato ]
+    needs: [artefato]
     runs-on: ubuntu-latest
     environment:
       name: ENVIRONMENT
     steps:
-      - name: Baixar artefato dos livros renderizados
+      - name: Baixar artefato completo para deploy
         uses: actions/download-artifact@v4
         with:
-          name: books_backend
+          name: artefato_completo
           path: _site
 
       - name: Deploy para GitHub Pages
@@ -309,19 +302,62 @@ jobs:
         with:
           folder: "_site"
 
-  # estatistica:
-  #   needs: [ artefato ]
-  #   runs-on: ubuntu-latest
-  #   if: needs.detectar.outputs.FOLDERS_LISTA != ''
-  #   environment:
-  #     name: ENVIRONMENT
-  #   env:
-  #     FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
-  #     USERNAME: ${{ github.repository_owner }}
-  #     REPO_SYNC: ${{ secrets.REPO_SYNC }}
-  #   steps:
-  #     - name: Clona o Repositório ESTATISTICA
-  #       uses: actions/checkout@v4
-  #       with:
-  #         repository: ${{ env.USERNAME  }}/estatistica
-  #         token: ${{ secrets.REPO_SYNC }}
+  estatistica:
+    needs: [ artefato ]
+    runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    env:
+      FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
+      USERNAME: ${{ github.repository_owner }}
+      USEREMAIL: ${{ secrets.USEREMAIL }} 
+      REPO_SYNC: ${{ secrets.REPO_SYNC }}
+    steps:
+      - name: Clona o Repositório ESTATISTICA
+        uses: actions/checkout@v4
+        with:
+          ref: books
+          path: estatistica
+          fetch-depth: 0
+          repository: ${{ env.USERNAME }}/estatistica
+          token: ${{ secrets.REPO_SYNC }}
+
+      - name: Baixar artefato dos livros renderizados
+        uses: actions/download-artifact@v4
+        with:
+          name: artefato_completo
+          path: _books
+
+      - name: Sincronizar arquivos do artefato com a branch books
+        run: |
+          rsync -av --delete _books/ estatistica/books/
+
+      - name: Configura credenciais do Git
+        working-directory: estatistica
+        run: |
+          git config user.name "${{ env.USERNAME }}"
+          git config user.email "${{ env.USEREMAIL }}"
+          git remote set-url origin https://x-access-token:${{ env.REPO_SYNC }}@github.com/${{ env.USERNAME }}/estatistica.git
+
+      - name: Garante que a branch books existe e faz checkout
+        working-directory: estatistica
+        run: |
+          if [[! git rev-parse --verify books >/dev/null 2>&1]]; then
+            git checkout --orphan books
+            git rm -rf .
+            git commit --allow-empty -m "Cria branch books inicial"
+            git push origin books
+          else
+            git checkout books
+          fi
+
+      - name: Sincronizar arquivos do artefato com a branch books
+        run: |
+          rsync -av --delete _books/ estatistica/books/
+
+      - name: Commit e Push dos livros renderizados
+        working-directory: estatistica
+        run: |
+          git add books/
+          git commit -m "books: atualiza books a partir do repo:books" || echo "Nada a commitar"
+          git push --force origin books
