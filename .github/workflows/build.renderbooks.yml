@@ -202,8 +202,13 @@ jobs:
       - name: Exporta atualizações dos livros renderizados
         uses: actions/upload-artifact@v4
         with:
-          name: books_detectados
+          name: books_backend
           path: ./backend/_books/
+      
+      - name: Exclui artefato antigo 'books_detectados'
+        uses: actions/delete-artifact@v2
+        with:
+          name: books_detectados
 
   sync_artefato:
     needs: [backend]
@@ -224,7 +229,7 @@ jobs:
       - name: Baixar artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
-          name: books_detectados
+          name: books_backend
           path: _books
 
       - name: Sincronizar arquivos do artefato com a branch books
