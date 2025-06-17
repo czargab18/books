@@ -64,11 +64,6 @@ jobs:
           ref: main
           fetch-depth: 2
 
-      - name: Lista Estrutura do Workspace
-        run: |
-          echo "Estrutura do workspace:"
-          ls books
-
       - name: Identificar arquivos alterados
         id: arquivos-alterados
         run: |
@@ -81,23 +76,12 @@ jobs:
           else
             git ls-files | grep -E '^build/.*\.(qmd|yml)$' > arquivos.txt
           fi
-          echo "Arquivos detectados:"
-          cat arquivos.txt || true
-          if [ ! -s arquivos.txt ]; then
-            echo "AVISO: Nenhum arquivo alterado foi detectado para o evento $TIPO_EVENTO"
-          fi
 
       - name: Extrair nomes de subdiretórios dos arquivos alterados
         id: extrair_subdirs
         run: |
           cd books
-          echo "Arquivos encontrados:"
-          cat arquivos.txt || true
           FILES_NAMES=$(cat arquivos.txt)
-          if [ -z "$FILES_NAMES" ]; then
-            echo "AVISO: arquivos.txt está vazio, nenhum diretório será listado!"
-          fi
-          echo "$FILES_NAMES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' || echo "Nenhum diretório encontrado pelo grep"
           echo "$FILES_NAMES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' | cut -d'/' -f2 > subdirs.txt
 
       - name: Montar lista única de subdiretórios e exportar output
@@ -105,7 +89,6 @@ jobs:
         run: |
           cd books
           FOLDERS_NAMES=$(cat subdirs.txt | sort | uniq | xargs)
-          echo "Exibindo subdiretórios alterados: $FOLDERS_NAMES"
           echo "folders_lista=$FOLDERS_NAMES" >> $GITHUB_OUTPUT
 
       - name: Movendo livros detectados para _books
@@ -118,18 +101,11 @@ jobs:
           for folder in $FOLDERS_LISTA; do
             if [ -d "build/${folder}" ]; then
               mv "build/${folder}" ../_books/
-            else
-              echo "Diretório build/${folder} não encontrado!"
             fi
           done
 
-      # Exclusão antes do upload, se desejar garantir limpeza (opcional, mas não necessário pois nome é único)
-      # - name: Excluir artefato antigo books_detectados
-      #   uses: GeekyEggo/delete-artifact@v5
-      #   with:
-      #     name: books_detectados
-
       - name: Exportar lista de livros alterados
+        if: steps.lista.outputs.folders_lista != ''
         uses: actions/upload-artifact@v4
         with:
           name: books_detectados
@@ -156,12 +132,6 @@ jobs:
           name: books_detectados
           path: "_books"
 
-      # Excluir artefato antigo ANTES do upload do novo books_renderizados
-      - name: Excluir artefato antigo books_renderizados
-        uses: GeekyEggo/delete-artifact@v5
-        with:
-          name: books_renderizados
-
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
@@ -174,19 +144,11 @@ jobs:
             if [ -d "${folder}" ]; then
               echo "Renderizando livro: $folder"
               quarto render "${folder}" --to html --execute
-            else
-              echo "Diretório ${folder} não encontrado!"
             fi
           done
 
-      - name: Excluindo pastas '**/delete'
-        run: |
-          if [ -d "docs/delete" ]; then
-            echo "Excluindo diretório 'delete'..."
-            rm -rf docs/delete
-          fi
-
       - name: Exibindo livros renderizados
+        id: renderizar
         run: |
           books=$(find docs -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | xargs)
           echo "books_renderizados=$books" >> $GITHUB_OUTPUT
@@ -231,12 +193,6 @@ jobs:
         with:
           name: books_renderizados
           path: ./backend/_books/
-
-      # Excluir artefato antigo ANTES do upload do novo books_backend
-      - name: Excluir artefato antigo books_backend
-        uses: GeekyEggo/delete-artifact@v5
-        with:
-          name: books_backend
 
       - name: Automação de livros (backend)
         id: backend_books
@@ -303,8 +259,9 @@ jobs:
           folder: "_site"
 
   estatistica:
-    needs: [ artefato ]
+    needs: [artefato]
     runs-on: ubuntu-latest
+    if: needs.detectar.outputs.FOLDERS_LISTA != ''
     environment:
       name: ENVIRONMENT
     env:
