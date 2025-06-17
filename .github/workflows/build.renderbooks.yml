@@ -153,12 +153,10 @@ jobs:
             fi
           done
 
-      - name: Listar pastas e arquivos na raiz
+      - name: Listar pastas e arquivos recursivamente
         run: |
-          echo "Pastas:"
-          ls -d */
-          echo "Arquivos:"
-          ls -p | grep -v /
+          echo "Listando toda a estrutura de diretórios e arquivos:"
+          ls -R
 
       - name: Exibindo livros renderizados
         id: renderizar
