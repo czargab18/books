@@ -125,7 +125,7 @@ jobs:
       - name: Exportar lista de livros alterados
         uses: actions/upload-artifact@v4
         with:
-          name: folders_lista
+          name: books_detectados
           path: _books
 
   renderizar:
@@ -140,38 +140,49 @@ jobs:
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
     steps:
-      - name: Clona o Repositório BOOKS
-        uses: actions/checkout@v4
+      # - name: Clona o Repositório BOOKS
+      #   uses: actions/checkout@v4
+      #   with:
+      #     repository: ${{ env.USERNAME  }}/books
+      #     token: ${{ secrets.REPO_SYNC }}
+      #     path: books
+      #     ref: main
+      #     fetch-depth: 2
+
+      - name: Baixar artefato com lista de livros alterados
+        uses: actions/download-artifact@v4
         with:
-          repository: ${{ env.USERNAME  }}/books
-          token: ${{ secrets.REPO_SYNC }}
-          path: books
-          ref: main
-          fetch-depth: 2
+          name: books_detectados
+          path: "_books"
 
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Renderizar livros Quarto
-        id: renderizar_books
+      - name: Movendo livros detectados para _books
+        if: steps.lista.outputs.folders_lista != ''
+        env:
+          FOLDERS_LISTA: ${{ steps.lista.outputs.folders_lista }}
         run: |
-          cd books
-          echo "Renderizando livro: $FOLDERS_LISTA"
-          for folder in $FOLDERS_LISTA; do
-            quarto render "build/${folder}" --to html --execute --no-preview
-          done
-
-      - name: Mover livros renderizados para _books
-        run: |
-          cd books
-          mkdir -p ../_books
-          for folder in $FOLDERS_LISTA; do
-            if [ -d "docs/${folder}" ]; then
-              mv "docs/${folder}" ../_books/
+          cd _books
+          echo "$FOLDERS_LISTA" | tr ' ' '\n' | while read folder; do
+            if [ -d "build/${folder}" ]; then
+              mv "build/${folder}" ../_books/
             else
-              echo "Diretório docs/${folder} não encontrado!"
+              echo "Diretório build/${folder} não encontrado!"
             fi
           done
+
+      # - name: Mover livros renderizados para _books
+      #   run: |
+      #     cd books
+      #     mkdir -p ../_books
+      #     for folder in $FOLDERS_LISTA; do
+      #       if [ -d "docs/${folder}" ]; then
+      #         mv "docs/${folder}" ../_books/
+      #       else
+      #         echo "Diretório docs/${folder} não encontrado!"
+      #       fi
+      #     done
 
       - name: Exibir livros renderizados (salvos em ./_books/)
         run: |
