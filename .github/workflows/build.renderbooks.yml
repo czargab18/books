@@ -138,15 +138,22 @@ jobs:
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
+      - name: Pasta para salvar os livros renderizados
+        run: mkdir -p docs
+
       - name: Renderizar livros Quarto
         env:
           FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
         run: |
+          set -e
           cd _books
           echo "$FOLDERS_LISTA" | tr ' ' '\n' | while read folder; do
             if [ -d "${folder}" ]; then
               echo "Renderizando livro: $folder"
-              quarto render "${folder}" --to html --execute
+              mkdir -p "../docs/${folder}"
+              quarto render "${folder}" --to html --execute --output-dir "../docs/${folder}"
+            else
+              echo "Pasta não encontrada: $folder"
             fi
           done
 

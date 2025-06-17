@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: "../../docs/EST0033"
+#  output-dir: "../../docs/EST0033"
   #lib-dir: "./../delete/site_libs"
   preview:
     navigate: true

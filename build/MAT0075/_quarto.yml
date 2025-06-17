@@ -1,7 +1,7 @@
 project:
   title: "CALCULO DE PROBABILIDADE"
   type: book
-  output-dir: "../../docs/MAT0075"
+#  output-dir: "../../docs/MAT0075"
   # lib-dir: "./../delete/site_libs"
   preview:
     port: 4200
