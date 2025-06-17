@@ -161,7 +161,7 @@ jobs:
       - name: Exportar livros renderizados
         uses: actions/upload-artifact@v4
         with:
-          name: books_detectados
+          name: books_renderizados
           path: "./_docs"
 
   backend:
@@ -196,7 +196,7 @@ jobs:
       - name: Baixar artefatos BOOKS RENDERIZADOS
         uses: actions/download-artifact@v4
         with:
-          name: books_detectados
+          name: books_renderizados
           path: ./backend/_books/
 
       - name: Automação de livros (backend)
