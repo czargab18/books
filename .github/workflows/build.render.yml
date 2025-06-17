@@ -135,8 +135,8 @@ jobs:
     environment:
       name: ENVIRONMENT
     env:
-      FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
       REPO_SYNC: ${{ secrets.REPO_SYNC }}
+      FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
     outputs:
@@ -198,22 +198,24 @@ jobs:
       - name: Exibindo livros renderizados
         run: |
           books=$(find docs -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | xargs)
-          echo "books_renderizados=$books" >> $GITHUB_OUTPUT
+          echo "books_detectados=$books" >> $GITHUB_OUTPUT
 
       - name: Exportar livros renderizados
         uses: actions/upload-artifact@v4
         with:
-          name: books_renderizados
+          name: books_detectados
           path: docs
 
   backend:
     needs: [renderizar]
     runs-on: ubuntu-latest
     if: needs.detectar.outputs.FOLDERS_LISTA != ''
+    environment:
+      name: ENVIRONMENT
     env:
+      REPO_SYNC: ${{ secrets.REPO_SYNC }}
       FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
       USERNAME: ${{ github.repository_owner }}
-      REPO_SYNC: ${{ secrets.REPO_SYNC }}
     steps:
       - name: Setup Python
         uses: actions/setup-python@v4
