@@ -264,7 +264,7 @@ jobs:
       - name: Deploy para GitHub Pages
         uses: actions/deploy-pages@v4
         with:
-          folder: ""
+          folder: "."
 
   estatistica:
     needs: [sync_artefato]
