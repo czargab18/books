@@ -206,7 +206,7 @@ jobs:
           path: ./backend/_books/
       
       - name: Exclui artefato antigo 'books_detectados'
-        uses: actions/delete-artifact@v2
+        uses: actions/delete-artifact@v1
         with:
           name: books_detectados
 
@@ -245,7 +245,7 @@ jobs:
           path: "books"
 
       - name: Deletar artefato Antigo 'books_detectados'
-        uses: actions/delete-artifact@v2
+        uses: actions/delete-artifact@v1
         with:
           name: books_detectados
 
