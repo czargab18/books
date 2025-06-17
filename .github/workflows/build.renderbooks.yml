@@ -245,7 +245,7 @@ jobs:
           name: books_detectados
 
   pages:
-    needs: [artefato]
+    needs: [sync_artefato]
     runs-on: ubuntu-latest
     environment:
       name: ENVIRONMENT
@@ -262,7 +262,7 @@ jobs:
           folder: ""
 
   estatistica:
-    needs: [artefato]
+    needs: [sync_artefato]
     runs-on: ubuntu-latest
     if: needs.detectar.outputs.FOLDERS_LISTA != ''
     environment:
