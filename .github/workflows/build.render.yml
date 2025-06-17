@@ -115,13 +115,8 @@ jobs:
     needs: [detectar]
     runs-on: ubuntu-latest
     if: needs.detectar.outputs.FOLDERS_LISTA != ''
-    environment:
-      name: ENVIRONMENT
     env:
-      REPO_SYNC: ${{ secrets.REPO_SYNC }}
       FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
-      USEREMAIL: ${{ secrets.USEREMAIL }}
-      USERNAME: ${{ github.repository_owner }}
     outputs:
       BOOKS_RENDERIZADOS: ${{ steps.renderizar.outputs.books_renderizados }}
 
