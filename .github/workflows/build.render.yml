@@ -187,13 +187,13 @@ jobs:
       - name: Exibir livros renderizados (salvos em ./_books/)
         run: |
           echo "Livros renderizados com sucesso!"
-          ls ../_books || true
+          ls docs || true
 
       - name: Exportar livros renderizados
         uses: actions/upload-artifact@v4
         with:
           name: books_renderizados
-          path: books/../_books
+          path: docs
 
   backend:
     needs: [renderizar]
