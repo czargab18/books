@@ -24,4 +24,3 @@ format:
       - brand
     code-link: true
     search: true
-    include-in-header: formulas.tex

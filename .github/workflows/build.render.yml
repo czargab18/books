@@ -187,10 +187,18 @@ jobs:
       #       fi
       #     done
 
-      - name: Exibir livros renderizados (salvos em ./_books/)
+      - name: Exibir e limpar livros renderizados (salvos em ./_books/)
         run: |
+          # Excluir o diretório 'delete' se ele existir
+          if [ -d "docs/delete" ]; then
+            echo "Excluindo diretório 'delete'..."
+            rm -rf docs/delete
+          fi
+
+          # Listar os livros renderizados
           echo "books_renderizados=$(ls docs || true)" >> $GITHUB_OUTPUT
-          echo "Livros renderizados: $(ls docs || true)"
+          echo "Livros renderizados:"
+          ls docs || true
 
       - name: Exportar livros renderizados
         uses: actions/upload-artifact@v4
