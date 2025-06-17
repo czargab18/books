@@ -240,7 +240,7 @@ jobs:
           path: "books"
 
       - name: Deletar artefato Antigo 'books_detectados'
-        use: actions/delete-artifact@v2
+        uses: actions/delete-artifact@v2
         with:
           name: books_detectados
 
