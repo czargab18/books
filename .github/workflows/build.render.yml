@@ -278,13 +278,11 @@ jobs:
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
     steps:
-      - name: Checkout padrão (main ou default)
+      - name: Checkout da branch books (ou cria se não existir)
         uses: actions/checkout@v4
         with:
-          path: "."
           ref: books
           fetch-depth: 0
-          persist-credentials: false
 
       - name: Baixar artefato dos livros renderizados
         uses: actions/download-artifact@v4
@@ -300,6 +298,7 @@ jobs:
         run: |
           git config user.name "${{ env.USERNAME }}"
           git config user.email "${{ env.USEREMAIL }}"
+          git remote set-url origin https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git
 
       - name: Commit e Push dos livros renderizados
         run: |
@@ -311,5 +310,3 @@ jobs:
         uses: actions/deploy-pages@v4
         with:
           folder: "."
-          publish_branch: books
-          disable_nojekyll: true
