@@ -166,7 +166,7 @@ jobs:
           echo "$FOLDERS_LISTA" | tr ' ' '\n' | while read folder; do
             if [ -d "${folder}" ]; then
               echo "Renderizando livro: $folder"
-              quarto render "${folder}" --to html --execute --no-preview
+              quarto render "${folder}" --to html --execute --quiet
             else
               echo "Diretório ${folder} não encontrado!"
             fi
