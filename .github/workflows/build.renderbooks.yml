@@ -64,18 +64,26 @@ jobs:
           ref: main
           fetch-depth: 30
 
-      - name: Identificar arquivos alterados
-        id: arquivos-alterados
+      - name: Identificar arquivos alterados (pull request)
+        if: github.event_name == 'pull_request'
+        id: arquivos-alterados-pull
         run: |
           cd books
-          echo "Verificando o tipo de evento: $EVENTO"
-          if [[ "$EVENTO" == "pull" ]]; then
-            gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" | jq -r '.[].filename' > arquivos.txt
-          elif [[ "$EVENTO" == "push" ]]; then
-            git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt
-          else
-            git ls-files | grep -E '^build/.*\.(qmd|yml)$' > arquivos.txt
-          fi
+          gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" | jq -r '.[].filename' > arquivos.txt
+
+      - name: Identificar arquivos alterados (push)
+        if: github.event_name == 'push'
+        id: arquivos-alterados-push
+        run: |
+          cd books
+          git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt
+
+      - name: Identificar arquivos alterados (outros eventos)
+        if: (github.event_name != 'pull_request') && (github.event_name != 'push')
+        id: arquivos-alterados-outros
+        run: |
+          cd books
+          git ls-files | grep -E '^build/.*\.(qmd|yml)$' > arquivos.txt
 
       - name: Extrair nomes de subdiretórios dos arquivos alterados
         id: extrair_subdirs
