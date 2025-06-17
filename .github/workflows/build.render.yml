@@ -125,7 +125,7 @@ jobs:
       - name: Exportar lista de livros alterados
         uses: actions/upload-artifact@v4
         with:
-          name: books_lista_detectados
+          name: books_detectados
           path: _books
 
   renderizar:
@@ -146,7 +146,7 @@ jobs:
       - name: Baixar artefato com lista de livros alterados
         uses: actions/download-artifact@v4
         with:
-          name: books_lista_detectados
+          name: books_detectados
           path: "_books"
 
       - name: Setup Quarto
@@ -184,6 +184,11 @@ jobs:
         with:
           name: books_renderizados
           path: docs
+
+      - name: Excluir artefato antigo books_detectados
+        uses: GeekyEggo/delete-artifact@v5
+        with:
+          name: books_detectados
 
   backend:
     needs: [renderizar]
@@ -235,6 +240,11 @@ jobs:
         with:
           name: books_backend
           path: backend/_books
+
+      - name: Excluir artefato antigo books_renderizados
+        uses: GeekyEggo/delete-artifact@v5
+        with:
+          name: books_renderizados
 
   estatistica:
     needs: [backend]
