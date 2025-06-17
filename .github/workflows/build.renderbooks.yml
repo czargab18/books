@@ -147,7 +147,7 @@ jobs:
           echo "$FOLDERS_LISTA" | tr ' ' '\n' | while read folder; do
             if [ -d "${folder}" ]; then
               echo "Renderizando livro: $folder"
-              quarto render "${folder}" --to html --execute --output-dir "../../docs/${folder}"
+              quarto render "${folder}" --to html --execute --output-dir "../../_docs/${folder}"
             else
               echo "Pasta não encontrada: $folder"
             fi
@@ -158,17 +158,11 @@ jobs:
           echo "Listando toda a estrutura de diretórios e arquivos:"
           ls -R
 
-      - name: Exibindo livros renderizados
-        id: renderizar
-        run: |
-          books=$(find docs -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | xargs)
-          echo "books_renderizados=$books" >> $GITHUB_OUTPUT
-
       - name: Exportar livros renderizados
         uses: actions/upload-artifact@v4
         with:
           name: books_detectados
-          path: docs
+          path: "./_docs"
 
   backend:
     needs: [renderizar]
