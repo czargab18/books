@@ -104,8 +104,28 @@ jobs:
         run: |
           cd books
           FOLDERS_NAMES=$(cat subdirs.txt | sort | uniq | xargs)
-          echo "folders_lista=$FOLDERS_NAMES" >> $GITHUB_OUTPUT
           echo "Exibindo subdiretórios alterados: $FOLDERS_NAMES"
+          echo "folders_lista=$FOLDERS_NAMES" >> $GITHUB_OUTPUT
+
+      - name: Movendo livros detectados para _books
+        if: steps.lista.outputs.folders_lista != ''
+        run: |
+          cd books
+            mkdir -p ../_books
+            for folder in $FOLDERS_NAMES; do
+              if [ -d "build/${folder}" ]; then
+                mv "build/${folder}" "../_books/"
+              else
+                echo "Diretório build/${folder} não encontrado!"
+              fi
+            done
+          fi
+
+      - name: Exportar lista de livros alterados
+        use: actions/upload-artifact@v4
+        with:
+          name: books_detectados
+          path: "_books"
 
   renderizar:
     needs: [detectar]
