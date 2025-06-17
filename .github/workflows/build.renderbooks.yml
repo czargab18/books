@@ -24,10 +24,10 @@ jobs:
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     outputs:
-      EVENTO: ${{ steps.tipo_evento.outputs.evento }}
+      EVENTO: ${{ steps.evento.outputs.evento }}
     steps:
       - name: Verificar tipo de evento
-        id: tipo_evento
+        id: evento
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
             echo "evento=dispatch" >> $GITHUB_OUTPUT
@@ -51,7 +51,7 @@ jobs:
       REPO_SYNC: ${{ secrets.REPO_SYNC }}
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
-      TIPO_EVENTO: ${{ needs.evento.outputs.EVENTO }}
+      EVENTO: ${{ needs.evento.outputs.EVENTO }}
     outputs:
       FOLDERS_LISTA: ${{ steps.lista.outputs.folders_lista }}
     steps:
@@ -62,16 +62,16 @@ jobs:
           token: ${{ secrets.REPO_SYNC }}
           path: books
           ref: main
-          fetch-depth: 2
+          fetch-depth: 30
 
       - name: Identificar arquivos alterados
         id: arquivos-alterados
         run: |
           cd books
-          echo "Verificando o tipo de evento: $TIPO_EVENTO"
-          if [[ "$TIPO_EVENTO" == "pull" ]]; then
+          echo "Verificando o tipo de evento: $EVENTO"
+          if [[ "$EVENTO" == "pull" ]]; then
             gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" | jq -r '.[].filename' > arquivos.txt
-          elif [[ "$TIPO_EVENTO" == "push" ]]; then
+          elif [[ "$EVENTO" == "push" ]]; then
             git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt
           else
             git ls-files | grep -E '^build/.*\.(qmd|yml)$' > arquivos.txt
@@ -96,15 +96,15 @@ jobs:
         env:
           FOLDERS_LISTA: ${{ steps.lista.outputs.folders_lista }}
         run: |
+          mkdir -p _books
           cd books
-          mkdir -p ../_books
           for folder in $FOLDERS_LISTA; do
             if [ -d "build/${folder}" ]; then
               mv "build/${folder}" ../_books/
             fi
           done
 
-      - name: Exportar lista de livros alterados
+      - name: Exporta Books como Artefato
         if: steps.lista.outputs.folders_lista != ''
         uses: actions/upload-artifact@v4
         with:
@@ -121,11 +121,11 @@ jobs:
       BOOKS_RENDERIZADOS: ${{ steps.renderizar.outputs.books_renderizados }}
 
     steps:
-      - name: Baixar artefato com lista de livros alterados
+      - name: Baixa artefato
         uses: actions/download-artifact@v4
         with:
           name: books_detectados
-          path: "_books"
+          path: _books
 
       - name: Setup Quarto
         uses: quarto-dev/quarto-actions/setup@v2
@@ -151,7 +151,7 @@ jobs:
       - name: Exportar livros renderizados
         uses: actions/upload-artifact@v4
         with:
-          name: books_renderizados
+          name: books_detectados
           path: docs
 
   backend:
@@ -186,7 +186,7 @@ jobs:
       - name: Baixar artefatos BOOKS RENDERIZADOS
         uses: actions/download-artifact@v4
         with:
-          name: books_renderizados
+          name: books_detectados
           path: ./backend/_books/
 
       - name: Automação de livros (backend)
@@ -202,10 +202,10 @@ jobs:
       - name: Exporta atualizações dos livros renderizados
         uses: actions/upload-artifact@v4
         with:
-          name: books_backend
-          path: backend/_books
+          name: books_detectados
+          path: ./backend/_books/
 
-  artefato:
+  sync_artefato:
     needs: [backend]
     runs-on: ubuntu-latest
     environment:
@@ -214,27 +214,35 @@ jobs:
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
     steps:
-      - name: Checkout da branch books
+      - name: Checkout da branch 'books'
         uses: actions/checkout@v4
         with:
           ref: books
+          path: books
           fetch-depth: 0
 
       - name: Baixar artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
-          name: books_backend
+          name: books_detectados
           path: _books
 
       - name: Sincronizar arquivos do artefato com a branch books
+        # A branch books:book tem só os arquivos renderizados anteriormente
+        # e não deve ser deletada, mas sim atualizada com os novos livros 
         run: |
-          rsync -av --delete _books/ ./
+          rsync -av --update _books/ books/
 
       - name: Salvar artefato completo para deploy
         uses: actions/upload-artifact@v4
         with:
           name: artefato_completo
-          path: "."
+          path: "books"
+
+      - name: Deletar artefato Antigo 'books_detectados'
+        use: actions/delete-artifact@v2
+        with:
+          name: books_detectados
 
   pages:
     needs: [artefato]
@@ -246,12 +254,12 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: artefato_completo
-          path: _site
+          path: "."
 
       - name: Deploy para GitHub Pages
         uses: actions/deploy-pages@v4
         with:
-          folder: "_site"
+          folder: ""
 
   estatistica:
     needs: [artefato]
@@ -294,7 +302,7 @@ jobs:
 
       - name: Sincronizar arquivos do artefato com a branch books
         run: |
-          rsync -av --delete _books/ estatistica/books/
+          rsync -av --update _books/ estatistica/books/
 
       - name: Configura credenciais do Git
         working-directory: estatistica
