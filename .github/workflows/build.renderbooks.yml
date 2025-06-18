@@ -255,16 +255,16 @@ jobs:
     environment:
       name: ENVIRONMENT
     steps:
-      - name: Baixar artefato completo para deploy
-        uses: actions/download-artifact@v4
-        with:
-          name: artefatos_books
-          path: "."
+      # - name: Baixar artefato completo para deploy
+      #   uses: actions/download-artifact@v4
+      #   with:
+      #     name: artefatos_books
+      #     path: "."
 
       - name: Deploy para GitHub Pages
         uses: actions/deploy-pages@v4
         with:
-          folder: "."
+          # folder: "."
           artifact_name: artefatos_books
 
   estatistica:
