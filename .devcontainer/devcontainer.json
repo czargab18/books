@@ -1,0 +1,10 @@
+{
+  "name": "R + Python",
+  "image": "mcr.microsoft.com/devcontainers/r:latest",
+  "features": {
+    "ghcr.io/devcontainers/features/python:1": {
+      "version": "latest"
+    }
+  },
+  "postCreateCommand": "R --version && python --version"
+}
