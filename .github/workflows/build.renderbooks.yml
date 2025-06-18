@@ -40,7 +40,7 @@ jobs:
           else
             echo "evento=outro" >> $GITHUB_OUTPUT
           fi
-          cat $GITHUB_OUTPUT  
+          cat $GITHUB_OUTPUT
 
   detectar:
     runs-on: ubuntu-latest
@@ -179,7 +179,7 @@ jobs:
       - name: Setup Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.13'
+          python-version: "3.13"
 
       - name: Clona o Repositório BACKEND
         uses: actions/checkout@v4
@@ -248,21 +248,6 @@ jobs:
           name: artefatos_books
           path: "books"
 
-      # - name: Limpa artefato books_backend
-      #   uses: actions/delete-artifact@v4
-      #   with:
-      #     name: books_backend
-
-      # - name: Limpa artefato books_detectados
-      #   uses: actions/delete-artifact@v4
-      #   with:
-      #     name: books_detectados
-
-      # - name: Limpar artefato books_renderizados
-      #   uses: actions/delete-artifact@v4
-      #   with:
-      #     name: books_renderizados
-
   pages:
     needs: [sync_artefato]
     runs-on: ubuntu-latest
@@ -295,7 +280,7 @@ jobs:
     env:
       FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
       USERNAME: ${{ github.repository_owner }}
-      USEREMAIL: ${{ secrets.USEREMAIL }} 
+      USEREMAIL: ${{ secrets.USEREMAIL }}
       REPO_SYNC: ${{ secrets.REPO_SYNC }}
     steps:
       - name: Clona o Repositório ESTATISTICA
@@ -344,43 +329,14 @@ jobs:
           git push --force origin book
 
   cleanup:
-    needs: [sync_artefato, pages, estatistica]
+    needs: [pages, estatistica]
     runs-on: ubuntu-latest
-    strategy:
-      matrix:
-        artifact:
-          - books_backend
-          - books_detectados
-          - books_renderizados
-          - artefatos_books
-          - github-pages
     steps:
-      - name: Limpar artefato ${{ matrix.artifact }}
-        uses: actions/delete-artifact@v4
+      - uses: geekyeggo/delete-artifact@v5
         with:
-          name: ${{ matrix.artifact }}
-    
-      - name: Limpa artefato books_backend
-        uses: actions/delete-artifact@v4
-        with:
-          name: books_backend
-
-      - name: Limpa artefato books_detectados
-        uses: actions/delete-artifact@v4
-        with:
-          name: books_detectados
-
-      - name: Limpar artefato books_renderizados
-        uses: actions/delete-artifact@v4
-        with:
-          name: books_renderizados
-
-      - name: Limpar artefato artefatos_books
-        uses: actions/delete-artifact@v4
-        with:
-          name: artefatos_books
-
-      - name: Limpar artefato artefatos_books
-        uses: actions/delete-artifact@v4
-        with:
-          name: github-pages
+          name: |
+            github-pages
+            books_renderizados
+            books_detectados
+            books_backend
+            artefatos_books
