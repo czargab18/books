@@ -153,10 +153,11 @@ jobs:
             fi
           done
 
-      - name: Listar pastas e arquivos recursivamente
+      - name: Limpando diretórios '_docs/ac/site_libs' e '_docs/delete'
         run: |
-          echo "Listando toda a estrutura de diretórios e arquivos:"
-          ls -R
+          cd _docs
+          rm -rf ac/site_libs
+          rm -rf delete
 
       - name: Exportar livros renderizados
         uses: actions/upload-artifact@v4
