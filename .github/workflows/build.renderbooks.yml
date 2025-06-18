@@ -246,7 +246,7 @@ jobs:
       - name: Salvar artefato completo para deploy
         uses: actions/upload-artifact@v4
         with:
-          name: artefato_completo
+          name: artefato_books
           path: "books"
 
   pages:
@@ -258,7 +258,7 @@ jobs:
       - name: Baixar artefato completo para deploy
         uses: actions/download-artifact@v4
         with:
-          name: artefato_completo
+          name: artefato_books
           path: "."
 
       - name: Deploy para GitHub Pages
@@ -290,7 +290,7 @@ jobs:
       - name: Baixar artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
-          name: artefato_completo
+          name: artefato_books
           path: _books
 
       - name: Garante que a branch books existe e faz checkout
@@ -307,7 +307,7 @@ jobs:
 
       - name: Sincronizar arquivos do artefato com a branch books
         run: |
-          rsync -av --update _books/ estatistica/books/
+          rsync -av --update --delete _books/ estatistica/books/
 
       - name: Configura credenciais do Git
         working-directory: estatistica
