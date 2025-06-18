@@ -246,7 +246,7 @@ jobs:
       - name: Salvar artefato completo para deploy
         uses: actions/upload-artifact@v4
         with:
-          name: artefato_books
+          name: github-pages
           path: "books"
 
   pages:
@@ -258,7 +258,7 @@ jobs:
       - name: Baixar artefato completo para deploy
         uses: actions/download-artifact@v4
         with:
-          name: artefato_books
+          name: github-pages
           path: "."
 
       - name: Deploy para GitHub Pages
@@ -290,7 +290,7 @@ jobs:
       - name: Baixar artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
-          name: artefato_books
+          name: github-pages
           path: _books
 
       - name: Garante que a branch books existe e faz checkout
