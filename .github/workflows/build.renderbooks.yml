@@ -238,10 +238,19 @@ jobs:
           path: _books
 
       - name: Sincronizar arquivos do artefato com a branch books
-        # A branch books:book tem só os arquivos renderizados anteriormente
-        # e não deve ser deletada, mas sim atualizada com os novos livros 
         run: |
           rsync -av --update _books/ books/
+
+      - name: Remover symlinks do artefato
+        run: |
+          find books -type l -exec rm -f {} \;
+
+      - name: Checar tamanho do artefato
+        run: du -sh books
+
+      - name: Lista toda a estrutura do workspace
+        run: 
+          ls -R books
 
       - name: Salvar artefato completo para deploy
         uses: actions/upload-artifact@v4
