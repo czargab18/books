@@ -246,8 +246,13 @@ jobs:
         run: |
           find books -type l -exec rm -f {} \;
 
-      - name: Checar tamanho do artefato
-        run: du -sh books
+      - name: Verificar se há symlinks restantes
+        run: |
+          find books -type l
+
+      - name: Verificar hard links
+        run: |
+          find books -type f -links +1
 
       - name: Lista toda a estrutura do workspace
         run: 
@@ -265,12 +270,6 @@ jobs:
     environment:
       name: ENVIRONMENT
     steps:
-      # - name: Baixar artefato completo para deploy
-      #   uses: actions/download-artifact@v4
-      #   with:
-      #     name: artefatos_books
-      #     path: "."
-
       - name: Deploy para GitHub Pages
         uses: actions/deploy-pages@v4
         with:
