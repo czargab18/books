@@ -242,27 +242,34 @@ jobs:
         run: |
           rsync -av --update _books/ books/
 
-      - name: Remover symlinks do artefato
-        run: |
-          find books -type l -exec rm -f {} \;
+      - name: Artefato para para GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: "books"
 
-      - name: Verificar se há symlinks restantes
-        run: |
-          find books -type l
-
-      - name: Verificar hard links
-        run: |
-          find books -type f -links +1
-
-      - name: Lista toda a estrutura do workspace
-        run: 
-          ls -R books
-
-      - name: Salvar artefato completo para deploy
+      - name: Artefato para push estatistica
         uses: actions/upload-artifact@v4
         with:
           name: artefatos_books
           path: "books"
+
+      # - name: Limpa artefato books_backend
+      #   uses: actions/delete-artifact@v4
+      #   with:
+      #     name: books_backend
+
+      # - name: Limpa artefato books_detectados
+      #   uses: actions/delete-artifact@v4
+      #   with:
+      #     name: books_detectados
+
+      # - name: Limpar artefato books_renderizados
+      #   uses: actions/delete-artifact@v4
+      #   with:
+      #     name: books_renderizados
+
+
 
   pages:
     needs: [sync_artefato]
@@ -333,11 +340,22 @@ jobs:
           git commit -m "books: atualiza books a partir do repo:books" || echo "Nada a commitar"
           git push --force origin book
 
-
   cleanup:
     runs-on: ubuntu-latest
-    needs: [pages, estatistica]
+    strategy:
+      matrix:
+        artifact:
+          - books_backend
+          - books_detectados
+          - books_renderizados
+          - artefatos_books
+          - github-pages
     steps:
+      - name: Limpar artefato ${{ matrix.artifact }}
+        uses: actions/delete-artifact@v4
+        with:
+          name: ${{ matrix.artifact }}
+    
       - name: Limpa artefato books_backend
         uses: actions/delete-artifact@v4
         with:
@@ -357,3 +375,8 @@ jobs:
         uses: actions/delete-artifact@v4
         with:
           name: artefatos_books
+
+      - name: Limpar artefato artefatos_books
+        uses: actions/delete-artifact@v4
+        with:
+          name: github-pages
