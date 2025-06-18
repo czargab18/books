@@ -1,4 +1,4 @@
-name: "[build] - Renderizar Books Quarto"
+name: "Renderizar Books Quarto"
 
 on:
   workflow_dispatch:
@@ -26,7 +26,7 @@ jobs:
     outputs:
       EVENTO: ${{ steps.evento.outputs.evento }}
     steps:
-      - name: Verificar tipo de evento
+      - name: Verifica tipo de evento
         id: evento
         run: |
           if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
@@ -64,42 +64,42 @@ jobs:
           ref: main
           fetch-depth: 30
 
-      - name: Identificar arquivos alterados (pull request)
+      - name: Identifica arquivos alterados (pull request)
         if: github.event_name == 'pull_request'
         id: arquivos-alterados-pull
         run: |
           cd books
           gh api "repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files" | jq -r '.[].filename' > arquivos.txt
 
-      - name: Identificar arquivos alterados (push)
+      - name: Identifica arquivos alterados (push)
         if: github.event_name == 'push'
         id: arquivos-alterados-push
         run: |
           cd books
           git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt
 
-      - name: Identificar arquivos alterados (outros eventos)
+      - name: Identifica arquivos alterados (outros eventos)
         if: (github.event_name != 'pull_request') && (github.event_name != 'push')
         id: arquivos-alterados-outros
         run: |
           cd books
           git ls-files | grep -E '^build/.*\.(qmd|yml)$' > arquivos.txt
 
-      - name: Extrair nomes de subdiretórios dos arquivos alterados
+      - name: Extrai nomes de subdiretórios dos arquivos alterados
         id: extrair_subdirs
         run: |
           cd books
           FILES_NAMES=$(cat arquivos.txt)
           echo "$FILES_NAMES" | grep -oE '^build/([A-Z]{3}[0-9]{4})/' | cut -d'/' -f2 > subdirs.txt
 
-      - name: Montar lista única de subdiretórios e exportar output
+      - name: Monta lista única de subdiretórios e exporta output
         id: lista
         run: |
           cd books
           FOLDERS_NAMES=$(cat subdirs.txt | sort | uniq | xargs)
           echo "folders_lista=$FOLDERS_NAMES" >> $GITHUB_OUTPUT
 
-      - name: Movendo livros detectados para _books
+      - name: Move livros detectados para _books
         if: steps.lista.outputs.folders_lista != ''
         env:
           FOLDERS_LISTA: ${{ steps.lista.outputs.folders_lista }}
@@ -135,10 +135,10 @@ jobs:
           name: books_detectados
           path: _books
 
-      - name: Setup Quarto
+      - name: Configura Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Renderizar livros Quarto
+      - name: Renderiza livros Quarto
         env:
           FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
         run: |
@@ -153,13 +153,13 @@ jobs:
             fi
           done
 
-      - name: Limpando diretórios '_docs/ac/site_libs' e '_docs/delete'
+      - name: Limpa diretórios '_docs/ac/site_libs' e '_docs/delete'
         run: |
           cd _docs
           rm -rf ac/site_libs
           rm -rf delete
 
-      - name: Exportar livros renderizados
+      - name: Exporta livros renderizados
         uses: actions/upload-artifact@v4
         with:
           name: books_renderizados
@@ -176,7 +176,7 @@ jobs:
       FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
       USERNAME: ${{ github.repository_owner }}
     steps:
-      - name: Setup Python
+      - name: Configura Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.13"
@@ -189,18 +189,18 @@ jobs:
           path: backend
           ref: main
 
-      - name: Instalar pacote backend
+      - name: Instala pacote backend
         run: |
           set -e
           pip install -e backend
 
-      - name: Baixar artefatos BOOKS RENDERIZADOS
+      - name: Baixa artefatos BOOKS RENDERIZADOS
         uses: actions/download-artifact@v4
         with:
           name: books_renderizados
           path: ./backend/_books/
 
-      - name: Automação de livros (backend)
+      - name: Automatiza livros (backend)
         id: backend_books
         run: |
           set -e
@@ -232,13 +232,13 @@ jobs:
           path: books
           fetch-depth: 0
 
-      - name: Baixar artefato dos livros renderizados
+      - name: Baixa artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
           name: books_backend
           path: _books
 
-      - name: Sincronizar arquivos do artefato com a branch books
+      - name: Sincroniza arquivos do artefato com a branch books
         run: |
           rsync -av --update _books/ books/
 
@@ -254,19 +254,19 @@ jobs:
     environment:
       name: ENVIRONMENT
     steps:
-      - name: Baixar Artefato para GitHub Pages
+      - name: Baixa Artefato para GitHub Pages
         uses: actions/download-artifact@v4
         with:
           name: artefatos_books
           path: "./"
 
-      - name: Salva Artefato para para GitHub Pages
+      - name: Salva Artefato para GitHub Pages
         uses: actions/upload-pages-artifact@v3
         with:
           name: github-pages
           path: "./"
 
-      - name: Deploy para GitHub Pages
+      - name: Faz deploy para GitHub Pages
         uses: actions/deploy-pages@v4
         with:
           artifact_name: github-pages
@@ -292,7 +292,7 @@ jobs:
           repository: ${{ env.USERNAME }}/estatistica
           token: ${{ secrets.REPO_SYNC }}
 
-      - name: Baixar artefato dos livros renderizados
+      - name: Baixa artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
           name: artefatos_books
@@ -310,7 +310,7 @@ jobs:
             git checkout book
           fi
 
-      - name: Sincronizar arquivos do artefato com a branch book
+      - name: Sincroniza arquivos do artefato com a branch book
         run: |
           rsync -av --update --delete _books/ estatistica/books/
 
@@ -321,7 +321,7 @@ jobs:
           git config user.email "${{ env.USEREMAIL }}"
           git remote set-url origin https://x-access-token:${{ env.REPO_SYNC }}@github.com/${{ env.USERNAME }}/estatistica.git
 
-      - name: Commit e Push dos livros renderizados
+      - name: Faz commit e push dos livros renderizados
         working-directory: estatistica
         run: |
           git add books/
@@ -332,7 +332,8 @@ jobs:
     needs: [pages, estatistica]
     runs-on: ubuntu-latest
     steps:
-      - uses: geekyeggo/delete-artifact@v5
+      - name: Deleta artefatos
+        uses: geekyeggo/delete-artifact@v5
         with:
           name: |
             github-pages
