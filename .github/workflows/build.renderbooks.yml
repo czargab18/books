@@ -246,7 +246,7 @@ jobs:
       - name: Salvar artefato completo para deploy
         uses: actions/upload-artifact@v4
         with:
-          name: github-pages
+          name: artefatos_books
           path: "books"
 
   pages:
@@ -258,13 +258,14 @@ jobs:
       - name: Baixar artefato completo para deploy
         uses: actions/download-artifact@v4
         with:
-          name: github-pages
+          name: artefatos_books
           path: "."
 
       - name: Deploy para GitHub Pages
         uses: actions/deploy-pages@v4
         with:
           folder: "."
+          artifact_name: artefatos_books
 
   estatistica:
     needs: [sync_artefato]
@@ -290,7 +291,7 @@ jobs:
       - name: Baixar artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
-          name: github-pages
+          name: artefatos_books
           path: _books
 
       - name: Garante que a branch book existe e faz checkout
@@ -322,3 +323,28 @@ jobs:
           git add books/
           git commit -m "books: atualiza books a partir do repo:books" || echo "Nada a commitar"
           git push --force origin book
+
+
+  cleanup:
+    runs-on: ubuntu-latest
+    needs: [pages, estatistica]
+    steps:
+      - name: Limpa artefato books_backend
+        uses: actions/delete-artifact@v4
+        with:
+          name: books_backend
+
+      - name: Limpa artefato books_detectados
+        uses: actions/delete-artifact@v4
+        with:
+          name: books_detectados
+
+      - name: Limpar artefato books_renderizados
+        uses: actions/delete-artifact@v4
+        with:
+          name: books_renderizados
+
+      - name: Limpar artefato artefatos_books
+        uses: actions/delete-artifact@v4
+        with:
+          name: artefatos_books
