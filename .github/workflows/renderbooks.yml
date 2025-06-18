@@ -3,11 +3,11 @@ name: "[build] - Renderizar Books Quarto"
 on:
   workflow_dispatch:
   push:
-    branches: [main, dev1]
-    paths: ["build/**/*.qmd", "build/**/*.yml"]
+    branches: [main]
+    paths: ["build/**/*.qmd", "build/**/*.yml", "build/index.html", "build/ac/*.html"]
   pull_request:
-    branches: [main, dev1]
-    paths: ["build/**/*.qmd", "build/**/*.yml"]
+    branches: [ma]
+    paths: ["build/**/*.qmd", "build/**/*.yml", "build/index.html", "build/ac/*.html", ]
 
 permissions:
   contents: write
