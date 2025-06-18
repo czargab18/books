@@ -281,7 +281,7 @@ jobs:
       - name: Clona o Repositório ESTATISTICA
         uses: actions/checkout@v4
         with:
-          ref: books
+          ref: book
           path: estatistica
           fetch-depth: 0
           repository: ${{ env.USERNAME }}/estatistica
@@ -293,19 +293,19 @@ jobs:
           name: github-pages
           path: _books
 
-      - name: Garante que a branch books existe e faz checkout
+      - name: Garante que a branch book existe e faz checkout
         working-directory: estatistica
         run: |
-          if ! git rev-parse --verify books >/dev/null 2>&1; then
-            git checkout --orphan books
+          if ! git rev-parse --verify book >/dev/null 2>&1; then
+            git checkout --orphan book
             git rm -rf .
-            git commit --allow-empty -m "Cria branch books inicial"
-            git push origin books
+            git commit --allow-empty -m "Cria branch book inicial"
+            git push origin book
           else
-            git checkout books
+            git checkout book
           fi
 
-      - name: Sincronizar arquivos do artefato com a branch books
+      - name: Sincronizar arquivos do artefato com a branch book
         run: |
           rsync -av --update --delete _books/ estatistica/books/
 
@@ -321,4 +321,4 @@ jobs:
         run: |
           git add books/
           git commit -m "books: atualiza books a partir do repo:books" || echo "Nada a commitar"
-          git push --force origin books
+          git push --force origin book
