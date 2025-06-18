@@ -147,7 +147,7 @@ jobs:
           echo "$FOLDERS_LISTA" | tr ' ' '\n' | while read folder; do
             if [ -d "${folder}" ]; then
               echo "Renderizando livro: $folder"
-              quarto render "${folder}" --to html --execute --output-dir "../../docs/${folder}"
+              quarto render "${folder}" --to html --execute --output-dir "../../_docs/${folder}"
             else
               echo "Pasta não encontrada: $folder"
             fi
@@ -158,17 +158,11 @@ jobs:
           echo "Listando toda a estrutura de diretórios e arquivos:"
           ls -R
 
-      - name: Exibindo livros renderizados
-        id: renderizar
-        run: |
-          books=$(find docs -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | xargs)
-          echo "books_renderizados=$books" >> $GITHUB_OUTPUT
-
       - name: Exportar livros renderizados
         uses: actions/upload-artifact@v4
         with:
-          name: books_detectados
-          path: docs
+          name: books_renderizados
+          path: "./_docs"
 
   backend:
     needs: [renderizar]
@@ -202,7 +196,7 @@ jobs:
       - name: Baixar artefatos BOOKS RENDERIZADOS
         uses: actions/download-artifact@v4
         with:
-          name: books_detectados
+          name: books_renderizados
           path: ./backend/_books/
 
       - name: Automação de livros (backend)
@@ -252,7 +246,7 @@ jobs:
       - name: Salvar artefato completo para deploy
         uses: actions/upload-artifact@v4
         with:
-          name: artefato_completo
+          name: artefato_books
           path: "books"
 
   pages:
@@ -264,13 +258,13 @@ jobs:
       - name: Baixar artefato completo para deploy
         uses: actions/download-artifact@v4
         with:
-          name: artefato_completo
+          name: artefato_books
           path: "."
 
       - name: Deploy para GitHub Pages
         uses: actions/deploy-pages@v4
         with:
-          folder: ""
+          folder: "."
 
   estatistica:
     needs: [sync_artefato]
@@ -296,7 +290,7 @@ jobs:
       - name: Baixar artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
-          name: artefato_completo
+          name: artefato_books
           path: _books
 
       - name: Garante que a branch books existe e faz checkout
@@ -313,7 +307,7 @@ jobs:
 
       - name: Sincronizar arquivos do artefato com a branch books
         run: |
-          rsync -av --update _books/ estatistica/books/
+          rsync -av --update --delete _books/ estatistica/books/
 
       - name: Configura credenciais do Git
         working-directory: estatistica
