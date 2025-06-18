@@ -242,13 +242,7 @@ jobs:
         run: |
           rsync -av --update _books/ books/
 
-      - name: Artefato para para GitHub Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: github-pages
-          path: "books"
-
-      - name: Artefato para push estatistica
+      - name: Salva Artefato Completo
         uses: actions/upload-artifact@v4
         with:
           name: artefatos_books
@@ -269,19 +263,28 @@ jobs:
       #   with:
       #     name: books_renderizados
 
-
-
   pages:
     needs: [sync_artefato]
     runs-on: ubuntu-latest
     environment:
       name: ENVIRONMENT
     steps:
+      - name: Baixar Artefato para GitHub Pages
+        uses: actions/download-artifact@v4
+        with:
+          name: artefatos_books
+          path: "./"
+
+      - name: Salva Artefato para para GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: "./"
+
       - name: Deploy para GitHub Pages
         uses: actions/deploy-pages@v4
         with:
-          # folder: "."
-          artifact_name: artefatos_books
+          artifact_name: github-pages
 
   estatistica:
     needs: [sync_artefato]
@@ -341,6 +344,7 @@ jobs:
           git push --force origin book
 
   cleanup:
+    needs: [sync_artefato, pages, estatistica]
     runs-on: ubuntu-latest
     strategy:
       matrix:
