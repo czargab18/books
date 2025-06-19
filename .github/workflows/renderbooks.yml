@@ -204,7 +204,7 @@ jobs:
         id: backend_books
         run: |
           set -e
-          python backend/tasks/books/renderbook.py 2>&1 | tee backend_output.log
+          python backend/tasks/actionbooks/renderbook.py 2>&1 | tee backend_output.log
           if grep -i "warning\|error" backend_output.log; then
             echo "Erros ou warnings detectados durante a execução do script!"
             exit 1
