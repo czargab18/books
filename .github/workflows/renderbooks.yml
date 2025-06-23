@@ -48,7 +48,7 @@ jobs:
     environment:
       name: ENVIRONMENT
     env:
-      REPO_SYNC: ${{ secrets.REPO_SYNC }}
+      TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
       EVENTO: ${{ needs.evento.outputs.EVENTO }}
@@ -59,7 +59,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ${{ env.USERNAME  }}/books
-          token: ${{ secrets.REPO_SYNC }}
+          token: ${{ secrets.TOKEN_REPO_SYNC }}
           path: books
           ref: main
           fetch-depth: 30
@@ -172,7 +172,7 @@ jobs:
     environment:
       name: ENVIRONMENT
     env:
-      REPO_SYNC: ${{ secrets.REPO_SYNC }}
+      TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
       FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
       USERNAME: ${{ github.repository_owner }}
     steps:
@@ -185,7 +185,7 @@ jobs:
         uses: actions/checkout@v4
         with:
           repository: ${{ env.USERNAME  }}/backend
-          token: ${{ secrets.REPO_SYNC }}
+          token: ${{ secrets.TOKEN_REPO_SYNC }}
           path: backend
           ref: main
 
@@ -281,7 +281,7 @@ jobs:
       FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
       USERNAME: ${{ github.repository_owner }}
       USEREMAIL: ${{ secrets.USEREMAIL }}
-      REPO_SYNC: ${{ secrets.REPO_SYNC }}
+      TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
     steps:
       - name: Clona o Repositório ESTATISTICA
         uses: actions/checkout@v4
@@ -290,7 +290,7 @@ jobs:
           path: estatistica
           fetch-depth: 0
           repository: ${{ env.USERNAME }}/estatistica
-          token: ${{ secrets.REPO_SYNC }}
+          token: ${{ secrets.TOKEN_REPO_SYNC }}
 
       - name: Baixa artefato dos livros renderizados
         uses: actions/download-artifact@v4
@@ -319,7 +319,7 @@ jobs:
         run: |
           git config user.name "${{ env.USERNAME }}"
           git config user.email "${{ env.USEREMAIL }}"
-          git remote set-url origin https://x-access-token:${{ env.REPO_SYNC }}@github.com/${{ env.USERNAME }}/estatistica.git
+          git remote set-url origin https://x-access-token:${{ env.TOKEN_REPO_SYNC }}@github.com/${{ env.USERNAME }}/estatistica.git
 
       - name: Faz commit e push dos livros renderizados
         working-directory: estatistica
