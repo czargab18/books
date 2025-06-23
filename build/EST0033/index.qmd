@@ -74,9 +74,3 @@
 ### Complementar  
 3. **TRIOLA, M. F.** *Introdução à Estatística*. 12ª ed. LTC, 2017.  
 *(Lista completa disponível no material complementar.)*  
-
-
-### **Destaques**  
-✔ **Navegação facilitada**: Títulos em negrito e hierarquia clara.  
-✔ **Links com o livro-texto**: Referência direta aos capítulos de Bussab & Morettin.  
-✔ **Foco em aplicações**: Exemplos práticos (ex: box-plot por categoria).  
