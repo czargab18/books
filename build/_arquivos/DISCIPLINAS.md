@@ -1,22 +1,22 @@
-# Fluxo Curricular - Disciplinas por Semestre
+# Ementas que eu vou estudar da forma que eu desejar estudar:
 
 ## 1º Semestre
-- [ ] **EST0033** - Estatística Básica (Estatística Exploratória)
-- [ ] **MAT0075** - Análise Combinatória e Introdução à Probabilidade  
-- [ ] **MAT0001** - Pré-Cálculo (Matemática Básica)
-- [ ] **CIC0007** - Introdução à Ciência da Computação (Python)
-- [ ] **TAS0000** - Práticas de Programação (Git, Ambientes, Padrões de Desenvolvimento)
+- [ ] **EST0033** - Estatística Exploratória
+- [ ] **MAT0075** - Análise Combinatória (Introdução à Probabilidade)  
+- [ ] **MAT0001** - Pré Cálculo
+- [ ] **CIC0007** - Introdução à Ciência da Computação (Akita)
+- [ ] **TAS0000** - Práticas de Programação (Git básico + environments + padrões de desenvolv., etc.)
 
 ## 2º Semestre  
-- [ ] **MAT0002** - Cálculo Diferencial e Integral I
+- [ ] **MAT0002** - Cálculo 1
 - [ ] **EST0046** - Estatística Descritiva e Análise de Dados
 - [ ] **CIC0008** - Algoritmos e Estruturas de Dados I
 - [ ] **MAT0003** - Álgebra Linear I
 - [ ] **EST0034** - Introdução à Inferência Estatística
 
 ## 3º Semestre
-- [ ] **MAT0076** - Cálculo de Probabilidade I (Probabilidade)
-- [ ] **MAT0004** - Cálculo Diferencial e Integral II  
+- [ ] **MAT0076** - Cálculo de Probabilidade 1
+- [ ] **MAT0004** - Cálculo 2  
 - [ ] **EST0047** - Inferência Estatística I
 - [ ] **CIC0009** - Algoritmos e Estruturas de Dados II
 - [ ] **EST0048** - Métodos Estatísticos I
