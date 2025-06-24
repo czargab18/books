@@ -7,7 +7,7 @@ on:
     paths: ["build/**/*.qmd", "build/**/*.yml", "build/index.html", "build/ac/*.html"]
   pull_request:
     branches: [ma]
-    paths: ["build/**/*.qmd", "build/**/*.yml", "build/index.html", "build/ac/*.html", ]
+    paths: ["build/**/*.qmd", "build/**/*.yml", "build/index.html", "build/ac/*.html"]
 
 permissions:
   contents: write
@@ -16,42 +16,17 @@ permissions:
   id-token: write
 
 jobs:
-  evento:
+  detectar:
     runs-on: ubuntu-latest
     if: github.event_name == 'push' ||
       github.event_name == 'workflow_dispatch' ||
       (github.event_name == 'pull_request' && github.event.pull_request.merged == true)
-    env:
-      GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-    outputs:
-      EVENTO: ${{ steps.evento.outputs.evento }}
-    steps:
-      - name: Verifica tipo de evento
-        id: evento
-        run: |
-          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
-            echo "evento=dispatch" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "evento=pull" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.event_name }}" == "push" ]]; then
-            echo "evento=push" >> $GITHUB_OUTPUT
-          elif [[ "${{ github.event_name }}" == "merge_group" ]]; then
-            echo "evento=mergegroups" >> $GITHUB_OUTPUT
-          else
-            echo "evento=outro" >> $GITHUB_OUTPUT
-          fi
-          cat $GITHUB_OUTPUT
-
-  detectar:
-    runs-on: ubuntu-latest
-    needs: [evento]
     environment:
       name: ENVIRONMENT
     env:
       TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
-      EVENTO: ${{ needs.evento.outputs.EVENTO }}
     outputs:
       FOLDERS_LISTA: ${{ steps.lista.outputs.folders_lista }}
     steps:
