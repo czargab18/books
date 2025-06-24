@@ -1,32 +1,59 @@
 {
   "recommendations": [
-    // Essenciais para o projeto
-    "quarto.quarto",
-    "ms-python.python",
-    "ms-python.vscode-pylance",
-    "ms-toolsai.jupyter",
-    "REditorSupport.r",
-    "James-Yu.latex-workshop",
-    // GitHub e Git
-    "GitHub.copilot",
-    "GitHub.copilot-chat",
-    "GitHub.vscode-pull-request-github",
-    "eamodio.gitlens",
-    // Formatação e produtividade
-    "esbenp.prettier-vscode",
-    "ms-vscode.vscode-json",
-    "redhat.vscode-yaml",
-    "ms-vscode.vscode-typescript-next",
-    // Temas e ícones (baseado nas suas preferências)
-    "miguelsolorio.symbols",
-    "ritwickdey.LiveServer",
-    // Utilitários
-    "ms-vscode.remote-explorer",
-    "ms-vscode-remote.remote-ssh"
+    // 🤖 Lista atualizada baseada no perfil pessoal - GitHub Copilot
+    // ESSENCIAIS PARA O PROJETO
+    "quarto.quarto", // Quarto documents
+    "ms-python.python", // Python
+    "ms-python.vscode-pylance", // Python IntelliSense
+    "ms-python.autopep8", // Python formatter (do seu config)
+    "ms-toolsai.jupyter", // Jupyter Notebooks
+    "REditorSupport.r", // R language support
+    "James-Yu.latex-workshop", // LaTeX
+    // GITHUB E GIT
+    "GitHub.copilot", // GitHub Copilot
+    "GitHub.copilot-chat", // Copilot Chat
+    "GitHub.vscode-pull-request-github", // Pull Requests
+    "eamodio.gitlens", // GitLens
+    // FORMATAÇÃO E PRODUTIVIDADE
+    "esbenp.prettier-vscode", // Prettier formatter
+    "ms-vscode.vscode-json", // JSON support
+    "redhat.vscode-yaml", // YAML support
+    "redhat.vscode-xml", // XML support (do seu config)
+    "ms-vscode.vscode-typescript-next", // TypeScript
+    // TEMAS E ÍCONES (do seu perfil)
+    "miguelsolorio.symbols", // Symbols theme
+    "pmndrs.pmndrs", // Poimandres theme (do seu config)
+    // SERVIDORES DE DESENVOLVIMENTO
+    "ritwickdey.LiveServer", // Live Server
+    "yandeu.five-server", // Five Server (do seu config)
+    // UTILITÁRIOS E PRODUTIVIDADE
+    "ms-vscode.remote-explorer", // Remote Explorer
+    "ms-vscode-remote.remote-ssh", // Remote SSH
+    "ms-vscode-remote.remote-containers", // Dev Containers
+    "streetsidesoftware.code-spell-checker", // Spell Checker (cSpell do seu config)
+    // LINGUAGENS ADICIONAIS (baseadas no seu perfil)
+    "bradlc.vscode-tailwindcss", // Tailwind CSS
+    "GraphQL.vscode-graphql", // GraphQL (do seu config)
+    "svelte.svelte-vscode", // Svelte (do seu config)
+    "Vue.volar", // Vue (do seu config)
+    // FORMATADORES ESPECÍFICOS
+    "lenagain.latexindent", // LaTeX Indent (do seu config)
+    "ms-python.isort", // Python import sorting
+    "ms-python.black-formatter", // Black formatter
+    // TERMINAL E SHELL
+    "ms-vscode.powershell", // PowerShell (do seu config)
+    // OUTRAS FERRAMENTAS ÚTEIS PARA ACADÊMICOS
+    "humao.rest-client", // REST Client
+    "ms-toolsai.vscode-ai", // AI Tools
+    "ms-vscode.wordcount" // Word Count para documentos
   ],
   "unwantedRecommendations": [
-    // Extensões que podem conflitar
+    // Extensões que podem conflitar ou são desnecessárias
     "ms-python.flake8",
-    "ms-python.mypy-type-checker"
+    "ms-python.mypy-type-checker",
+    "ms-vscode.cmake-tools", // CMake não é usado
+    "ms-vscode.cpptools", // C++ não é usado
+    "rust-lang.rust-analyzer", // Rust não é usado
+    "golang.Go" // Go não é usado
   ]
 }
