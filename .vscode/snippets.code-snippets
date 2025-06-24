@@ -1,0 +1,140 @@
+{
+  "AI Generated Python Function": {
+    "prefix": "ai-py-func",
+    "body": [
+      "# 🤖 Código gerado por IA - GitHub Copilot",
+      "def ${1:function_name}(${2:parameters}) -> ${3:return_type}:",
+      "    \"\"\"",
+      "    ${4:Description}",
+      "    ",
+      "    🤖 Função gerada por IA - GitHub Copilot",
+      "    ",
+      "    Args:",
+      "        ${2:parameters}: ${5:Parameter description}",
+      "        ",
+      "    Returns:",
+      "        ${3:return_type}: ${6:Return description}",
+      "    \"\"\"",
+      "    ${7:# Implementação}",
+      "    return ${8:None}"
+    ],
+    "description": "Template para função Python gerada por IA"
+  },
+  "AI Generated R Function": {
+    "prefix": "ai-r-func",
+    "body": [
+      "# 🤖 Código gerado por IA - GitHub Copilot",
+      "#' ${1:Function Title}",
+      "#'",
+      "#' ${2:Description}",
+      "#' ",
+      "#' 🤖 Função gerada por IA - GitHub Copilot",
+      "#'",
+      "#' @param ${3:parameter} ${4:Parameter description}",
+      "#' @return ${5:Return description}",
+      "#' @examples",
+      "#' ${6:example_usage}",
+      "#' @export",
+      "${7:function_name} <- function(${3:parameter}) {",
+      "  ${8:# Implementação}",
+      "  return(${9:result})",
+      "}"
+    ],
+    "description": "Template para função R gerada por IA"
+  },
+  "AI Commit Message": {
+    "prefix": "ai-commit",
+    "body": [
+      "${1|feat,fix,docs,style,refactor,test,chore,ai|}(${2:scope}): ${3:description}",
+      "",
+      "🤖 Código ${4:percentage}% gerado por GitHub Copilot",
+      "- ${5:detail_1}",
+      "- ${6:detail_2}"
+    ],
+    "description": "Template para mensagem de commit com IA"
+  },
+  "Quarto Document Header": {
+    "prefix": "ai-quarto-header",
+    "body": [
+      "---",
+      "title: \"${1:Document Title}\"",
+      "author: \"César Gabriel Castro de Oliveira\"",
+      "date: \"`r Sys.Date()`\"",
+      "format: ",
+      "  html:",
+      "    toc: true",
+      "    toc-depth: 3",
+      "    code-fold: true",
+      "    theme: flatly",
+      "  pdf:",
+      "    toc: true",
+      "    number-sections: true",
+      "lang: pt-BR",
+      "---",
+      "",
+      "<!-- 🤖 Documento gerado por IA - GitHub Copilot -->",
+      "",
+      "# ${2:Main Title}",
+      "",
+      "${3:Introduction content}"
+    ],
+    "description": "Header padrão para documentos Quarto com IA"
+  },
+  "R Data Analysis Template": {
+    "prefix": "ai-r-analysis",
+    "body": [
+      "# 🤖 Análise de dados gerada por IA - GitHub Copilot",
+      "library(tidyverse)",
+      "library(ggplot2)",
+      "",
+      "# Importação dos dados",
+      "dados <- read_csv(\"${1:file_path}\")",
+      "",
+      "# Análise exploratória",
+      "glimpse(dados)",
+      "summary(dados)",
+      "",
+      "# Visualização",
+      "dados %>%",
+      "  ggplot(aes(x = ${2:x_var}, y = ${3:y_var})) +",
+      "  geom_point(color = \"#343496\") +",
+      "  theme_minimal() +",
+      "  labs(",
+      "    title = \"${4:Plot Title}\",",
+      "    x = \"${5:X Label}\",",
+      "    y = \"${6:Y Label}\"",
+      "  )"
+    ],
+    "description": "Template para análise de dados em R com IA"
+  },
+  "Python Data Analysis Template": {
+    "prefix": "ai-py-analysis",
+    "body": [
+      "# 🤖 Análise de dados gerada por IA - GitHub Copilot",
+      "import pandas as pd",
+      "import numpy as np",
+      "import matplotlib.pyplot as plt",
+      "import seaborn as sns",
+      "",
+      "# Configuração dos gráficos",
+      "plt.style.use('default')",
+      "sns.set_palette(['#343496', '#f95d06'])",
+      "",
+      "# Importação dos dados",
+      "dados = pd.read_csv('${1:file_path}')",
+      "",
+      "# Análise exploratória",
+      "print(dados.info())",
+      "print(dados.describe())",
+      "",
+      "# Visualização",
+      "plt.figure(figsize=(10, 6))",
+      "plt.scatter(dados['${2:x_var}'], dados['${3:y_var}'], color='#343496')",
+      "plt.title('${4:Plot Title}')",
+      "plt.xlabel('${5:X Label}')",
+      "plt.ylabel('${6:Y Label}')",
+      "plt.show()"
+    ],
+    "description": "Template para análise de dados em Python com IA"
+  }
+}
