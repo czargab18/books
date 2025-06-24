@@ -2,12 +2,6 @@
 
 <!-- 🤖 README melhorado por IA - GitHub Copilot -->
 
-[![Quarto](https://img.shields.io/badge/Made%20with-Quarto-blue.svg)](https://quarto.org/)
-[![R](https://img.shields.io/badge/R-276DC3.svg?logo=r&logoColor=white)](https://www.r-project.org/)
-[![Python](https://img.shields.io/badge/Python-3776AB.svg?logo=python&logoColor=white)](https://python.org/)
-[![LaTeX](https://img.shields.io/badge/LaTeX-008080.svg?logo=latex&logoColor=white)](https://www.latex-project.org/)
-[![AI Assisted](https://img.shields.io/badge/75%25%20AI%20Assisted-GitHub%20Copilot-purple)](https://github.com/features/copilot)
-
 > **Projeto acadêmico para criação de livros e materiais educacionais** utilizando Quarto, R, Python e LaTeX, com foco em disciplinas de Estatística, Matemática e Ciência da Computação.
 
 ## 🎯 Descrição
