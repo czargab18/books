@@ -1,0 +1,32 @@
+{
+  "recommendations": [
+    // Essenciais para o projeto
+    "quarto.quarto",
+    "ms-python.python",
+    "ms-python.vscode-pylance",
+    "ms-toolsai.jupyter",
+    "REditorSupport.r",
+    "James-Yu.latex-workshop",
+    // GitHub e Git
+    "GitHub.copilot",
+    "GitHub.copilot-chat",
+    "GitHub.vscode-pull-request-github",
+    "eamodio.gitlens",
+    // Formatação e produtividade
+    "esbenp.prettier-vscode",
+    "ms-vscode.vscode-json",
+    "redhat.vscode-yaml",
+    "ms-vscode.vscode-typescript-next",
+    // Temas e ícones (baseado nas suas preferências)
+    "miguelsolorio.symbols",
+    "ritwickdey.LiveServer",
+    // Utilitários
+    "ms-vscode.remote-explorer",
+    "ms-vscode-remote.remote-ssh"
+  ],
+  "unwantedRecommendations": [
+    // Extensões que podem conflitar
+    "ms-python.flake8",
+    "ms-python.mypy-type-checker"
+  ]
+}

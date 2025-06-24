@@ -1,21 +1,217 @@
 {
+  // ================================
+  // CONFIGURAÇÕES PERSONALIZADAS INTEGRADAS
+  // Baseadas no perfil pessoal do usuário
+  // ================================
+  // CONFIGURAÇÕES QUARTO
   "quarto.render.preview": true,
   "quarto.render.previewType": "external",
+  "quarto.render.renderOnSave": true,
+  "quarto.render.renderOnSaveShiny": true,
+  "quarto.render.previewReveal": true,
+  "quarto.cells.background.delay": 250,
+  // ASSOCIAÇÕES DE ARQUIVOS
   "files.associations": {
     "*.qmd": "quarto",
-    "*.Rmd": "rmd"
+    "*.Rmd": "rmd",
+    "*.r": "r",
+    "*.py": "python",
+    ".prettierrc": "json",
+    ".env.*": "dotenv",
+    "*.css": "css"
   },
+  // CONFIGURAÇÕES R
   "r.alwaysUseActiveTerminal": true,
   "r.bracketedPaste": true,
+  "r.plot.useHttpgd": true,
+  "r.plot.defaults.plotPreviewLayout": "multirow",
+  "r.plot.timing.refreshInterval": 10,
+  "r.lsp.debug": true,
+  "r.lsp.enabled": true,
+  "r.rmarkdown.enableCodeLens": true,
   "r.rterm.option": [
     "--no-save",
     "--no-restore"
   ],
+  // CONFIGURAÇÕES PYTHON
   "python.terminal.activateEnvironment": true,
+  "python.analysis.autoImportCompletions": true,
+  "python.languageServer": "Pylance",
+  "python.analysis.typeCheckingMode": "basic",
+  "python.createEnvironment.trigger": "off",
+  // JUPYTER NOTEBOOKS
   "jupyter.askForKernelRestart": false,
+  // LATEX WORKSHOP
   "latex-workshop.latex.autoBuild.run": "never",
   "latex-workshop.latex.recipe.default": "latexmk (xelatex)",
+  "latex-workshop.view.pdf.viewer": "tab",
+  "latex-workshop.latex.autoClean.run": "onBuilt",
+  "latex-workshop.message.error.show": false,
+  "latex-workshop.hover.preview.enabled": true,
+  "latex-workshop.hover.preview.scale": 1.5,
+  // CONFIGURAÇÕES GIT
   "git.autofetch": true,
+  "git.enableSmartCommit": true,
+  "git.defaultBranchName": "main",
+  "git.autorefresh": true,
+  "git.confirmSync": false,
+  "git.ignoreRebaseWarning": true,
+  "git.openRepositoryInParentFolders": "always",
+  // GITHUB COPILOT
+  "github.copilot.chat.localeOverride": "pt-br",
+  "github.copilot.chat.commitMessageGeneration.instructions": [
+    {
+      "file": ".copilot-instructions.md"
+    },
+    {
+      "text": "Use conventional commit message format em português."
+    }
+  ],
+  "github.copilot.advanced": {
+    "enableChat": true,
+    "enableChatInEditor": true,
+    "enableChatInEditorInline": true,
+    "enableChatInEditorInlineAutoTrigger": true,
+    "enableChatInEditorInlineAutoTriggerDelay": 1000,
+    "enableChatInEditorInlineAutoTriggerMaxLines": 20
+  },
+  // CONFIGURAÇÕES DO EDITOR
+  "editor.fontFamily": "JetBrains Mono",
+  "editor.fontSize": 14,
+  "editor.lineHeight": 1.6,
+  "editor.tabSize": 2,
+  "editor.wordWrap": "on",
+  "editor.minimap.enabled": false,
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": true,
+  "editor.detectIndentation": false,
+  "editor.fontLigatures": true,
+  "editor.rulers": [
+    80,
+    120
+  ],
+  "editor.cursorBlinking": "smooth",
+  "editor.cursorStyle": "line-thin",
+  "editor.parameterHints.enabled": false,
+  "editor.renderLineHighlight": "gutter",
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "editor.guides.bracketPairs": true,
+  "editor.folding": true,
+  "editor.foldingStrategy": "auto",
+  "editor.showFoldingControls": "always",
+  "editor.linkedEditing": true,
+  "editor.suggestOnTriggerCharacters": true,
+  "editor.autoClosingBrackets": "languageDefined",
+  "editor.autoClosingQuotes": "languageDefined",
+  "editor.autoSurround": "languageDefined",
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": true,
+    "strings": true
+  },
+  // CONFIGURAÇÕES DO WORKSPACE
+  "workbench.colorTheme": "GitHub Dark",
+  "workbench.iconTheme": "vs-seti",
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.labelFormat": "short",
+  "workbench.startupEditor": "readme",
+  "workbench.tree.enableStickyScroll": false,
+  "workbench.statusBar.visible": true,
+  "workbench.activityBar.location": "default",
+  // EXPLORER
   "explorer.confirmDelete": false,
-  "workbench.startupEditor": "readme"
+  "explorer.confirmDragAndDrop": false,
+  "explorer.compactFolders": false,
+  "explorer.sortOrder": "foldersNestsFiles",
+  "explorer.fileNesting.enabled": true,
+  "explorer.fileNesting.patterns": {
+    "package.json": ".eslint*, prettier*, tsconfig*, vite*, pnpm-*, bun.lockb, nest*, package-lock*",
+    "*.qmd": "*.html, *.pdf",
+    "*.Rmd": "*.html, *.pdf, *_files",
+    ".env": ".env*"
+  },
+  // TERMINAL
+  "terminal.integrated.fontSize": 14,
+  "terminal.integrated.fontFamily": "JetBrains Mono",
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "terminal.integrated.showExitAlert": false,
+  "terminal.integrated.enableMultiLinePasteWarning": "never",
+  "terminal.integrated.tabs.title": "${cwdFolder}",
+  // FORMATADORES - usando apenas os disponíveis no devcontainer
+  "[json]": {
+    "editor.formatOnSave": true
+  },
+  "[jsonc]": {
+    "editor.formatOnSave": true
+  },
+  "[html]": {
+    "editor.formatOnSave": true
+  },
+  "[css]": {
+    "editor.formatOnSave": true
+  },
+  "[yaml]": {
+    "editor.formatOnSave": true
+  },
+  "[xml]": {
+    "editor.formatOnSave": true
+  },
+  "[quarto]": {
+    "editor.wordWrap": "on",
+    "editor.quickSuggestions": {
+      "comments": "on",
+      "other": "on",
+      "strings": "on"
+    },
+    "editor.quickSuggestionsDelay": 250,
+    "editor.wordBasedSuggestions": "off",
+    "editor.suggestOnTriggerCharacters": true,
+    "editor.unicodeHighlight.ambiguousCharacters": false,
+    "editor.unicodeHighlight.invisibleCharacters": false
+  },
+  // ARQUIVOS OCULTOS
+  "files.exclude": {
+    "**/.vscode": false,
+    "**/*_cache": true,
+    "**/*.synctex*": true,
+    "**/*.fdb_latexmk": true,
+    "**/*.run.xml": true,
+    "**/*.log": true,
+    "**/*.fls": true,
+    "**/*.aux": true,
+    "**/*.toc": true,
+    "**/*.lot": true,
+    "**/*.lof": true,
+    "**/*.bcf": true,
+    "**/*.bbl": true,
+    "**/*.blg": true,
+    "**/*.out": true,
+    "**/*.dvi": true,
+    "**/__pycache__": true,
+    "node_modules": true,
+    "build": false
+  },
+  // AUTO SAVE
+  "files.autoSave": "afterDelay",
+  // SPELL CHECK
+  "cSpell.language": "en,pt",
+  "cSpell.enabledFileTypes": {
+    "quarto": true,
+    "markdown": true,
+    "latex": false,
+    "python": false,
+    "r": false
+  },
+  // PRETTIER
+  "prettier.singleAttributePerLine": true,
+  "prettier.printWidth": 120,
+  // ASSOCIAÇÕES DE EDITOR
+  "workbench.editorAssociations": {
+    "*.pdf": "default"
+  },
+  // EMMET
+  "emmet.includeLanguages": {
+    "javascript": "javascriptreact",
+    "quarto": "html"
+  }
 }
