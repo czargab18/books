@@ -207,7 +207,4 @@ Este projeto está sob a licença **MIT** - veja o arquivo [LICENSE](LICENSE) pa
 
 *Este repositório é atualizado continuamente com novos conteúdos e melhorias.*
 
-[![Stargazers](https://img.shields.io/github/stars/cesargabrielphd/books?style=social)](https://github.com/cesargabrielphd/books/stargazers)
-[![Forks](https://img.shields.io/github/forks/cesargabrielphd/books?style=social)](https://github.com/cesargabrielphd/books/network/members)
-
 </div>
