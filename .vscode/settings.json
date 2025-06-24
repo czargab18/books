@@ -77,7 +77,7 @@
   },
   // CONFIGURAÇÕES DO EDITOR
   "editor.fontFamily": "JetBrains Mono",
-  "editor.fontSize": 14,
+  "editor.fontSize": 16,
   "editor.lineHeight": 1.6,
   "editor.tabSize": 2,
   "editor.wordWrap": "on",
@@ -116,8 +116,8 @@
   "workbench.editor.labelFormat": "short",
   "workbench.startupEditor": "readme",
   "workbench.tree.enableStickyScroll": false,
-  "workbench.statusBar.visible": true,
-  "workbench.activityBar.location": "default",
+  "workbench.statusBar.visible": false,
+  "workbench.activityBar.location": "hidden",
   // EXPLORER
   "explorer.confirmDelete": false,
   "explorer.confirmDragAndDrop": false,
