@@ -1,0 +1,21 @@
+{
+  "quarto.render.preview": true,
+  "quarto.render.previewType": "external",
+  "files.associations": {
+    "*.qmd": "quarto",
+    "*.Rmd": "rmd"
+  },
+  "r.alwaysUseActiveTerminal": true,
+  "r.bracketedPaste": true,
+  "r.rterm.option": [
+    "--no-save",
+    "--no-restore"
+  ],
+  "python.terminal.activateEnvironment": true,
+  "jupyter.askForKernelRestart": false,
+  "latex-workshop.latex.autoBuild.run": "never",
+  "latex-workshop.latex.recipe.default": "latexmk (xelatex)",
+  "git.autofetch": true,
+  "explorer.confirmDelete": false,
+  "workbench.startupEditor": "readme"
+}

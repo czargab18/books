@@ -1,10 +1,82 @@
 {
-  "name": "R + Python",
+  "name": "R + Python + Quarto Academic Books",
   "image": "mcr.microsoft.com/devcontainers/r:latest",
+  
   "features": {
     "ghcr.io/devcontainers/features/python:1": {
+      "version": "latest",
+      "installTools": true
+    },
+    "ghcr.io/devcontainers/features/node:1": {
+      "version": "lts"
+    },
+    "ghcr.io/devcontainers/features/git:1": {
       "version": "latest"
     }
   },
-  "postCreateCommand": "R --version && python --version"
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "REditorSupport.r",
+        "reditorsupport.r-lsp",
+        "quarto.quarto",
+        "ms-vscode.latex-workshop",
+        "James-Yu.latex-workshop",
+        "ms-vscode.vscode-json",
+        "bradlc.vscode-tailwindcss",
+        "esbenp.prettier-vscode",
+        "ms-vscode.vscode-typescript-next"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "terminal.integrated.profiles.linux": {
+          "bash": {
+            "path": "/bin/bash"
+          }
+        },
+        "python.defaultInterpreterPath": "/usr/local/bin/python",
+        "r.rpath.linux": "/usr/local/bin/R",
+        "r.rterm.linux": "/usr/local/bin/R",
+        "quarto.path": "/usr/local/bin/quarto",
+        "files.associations": {
+          "*.qmd": "quarto"
+        },
+        "workbench.colorTheme": "Default Dark+",
+        "editor.wordWrap": "on",
+        "editor.minimap.enabled": false,
+        "workbench.editor.enablePreview": false
+      }
+    }
+  },
+
+  "forwardPorts": [8787, 8080, 3000, 4200, 5000, 8000, 8888, 9000],
+  "portsAttributes": {
+    "8787": {
+      "label": "RStudio Server",
+      "onAutoForward": "notify"
+    },
+    "8080": {
+      "label": "Quarto Preview",
+      "onAutoForward": "openBrowser"
+    },
+    "8888": {
+      "label": "Jupyter Lab",
+      "onAutoForward": "notify"
+    }
+  },
+
+  "postCreateCommand": "bash .devcontainer/setup.sh",
+  
+  "remoteUser": "vscode",
+  "containerEnv": {
+    "TZ": "America/Sao_Paulo"
+  },
+
+  "mounts": [
+    "source=${localWorkspaceFolder}/.devcontainer/library-scripts,target=/tmp/library-scripts,type=bind,consistency=cached"
+  ]
 }

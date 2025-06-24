@@ -1,0 +1,94 @@
+{
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "Quarto: Render Current File",
+            "type": "shell",
+            "command": "quarto",
+            "args": ["render", "${file}"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Quarto: Preview Current File",
+            "type": "shell",
+            "command": "quarto",
+            "args": ["preview", "${file}", "--port", "8080", "--host", "0.0.0.0"],
+            "group": "build",
+            "isBackground": true,
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Quarto: Render Book",
+            "type": "shell",
+            "command": "quarto",
+            "args": ["render"],
+            "group": "build",
+            "options": {
+                "cwd": "${workspaceFolder}"
+            },
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Python: Run Current File",
+            "type": "shell",
+            "command": "python",
+            "args": ["${file}"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "R: Run Current File",
+            "type": "shell",
+            "command": "Rscript",
+            "args": ["${file}"],
+            "group": "build",
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        },
+        {
+            "label": "Jupyter: Start Lab",
+            "type": "shell",
+            "command": "jupyter",
+            "args": ["lab", "--ip=0.0.0.0", "--port=8888", "--no-browser", "--allow-root"],
+            "group": "build",
+            "isBackground": true,
+            "presentation": {
+                "echo": true,
+                "reveal": "always",
+                "focus": false,
+                "panel": "shared"
+            },
+            "problemMatcher": []
+        }
+    ]
+}
