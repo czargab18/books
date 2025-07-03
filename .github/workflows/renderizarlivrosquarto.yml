@@ -44,7 +44,7 @@ jobs:
         run: |
           cd books
           echo "Detectando arquivos para evento: ${{ github.event_name }}"
-          
+
           # Pull Request - usa dados do evento diretamente
           if [[ "${{ github.event_name }}" == "pull_request" ]]; then
             echo "Processando pull request..."
@@ -55,7 +55,7 @@ jobs:
               # Fallback usando merge-base
               git diff --name-only $(git merge-base HEAD origin/main 2>/dev/null || echo HEAD~1) HEAD > arquivos.txt 2>/dev/null || touch arquivos.txt
             fi
-          
+
           # Push - usa dados do evento diretamente  
           elif [[ "${{ github.event_name }}" == "push" ]]; then
             echo "Processando push..."
@@ -66,13 +66,13 @@ jobs:
               # Fallback para último commit
               git diff --name-only HEAD~1 HEAD > arquivos.txt 2>/dev/null || touch arquivos.txt
             fi
-          
+
           # Outros eventos - busca todos os arquivos relevantes
           else
             echo "Processando outros eventos..."
             find build -name "*.qmd" -o -name "*.yml" 2>/dev/null | grep -E '^build/.*\.(qmd|yml)$' > arquivos.txt || touch arquivos.txt
           fi
-          
+
           # Remove linhas vazias e duplicatas
           if [[ -f arquivos.txt ]]; then
             grep -v '^$' arquivos.txt 2>/dev/null | sort -u > temp_arquivos.txt || touch temp_arquivos.txt
@@ -80,7 +80,7 @@ jobs:
           else
             touch arquivos.txt
           fi
-          
+
           echo "Arquivos detectados:"
           cat arquivos.txt || echo "Nenhum arquivo encontrado"
           echo "Total: $(wc -l < arquivos.txt 2>/dev/null || echo 0) arquivos"
