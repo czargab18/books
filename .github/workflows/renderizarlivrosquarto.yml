@@ -1,4 +1,4 @@
-name: "Renderizar Books Quarto"
+name: "Renderizar Livros - Quarto"
 
 on:
   workflow_dispatch:
