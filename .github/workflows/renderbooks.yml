@@ -283,7 +283,7 @@ jobs:
       USEREMAIL: ${{ secrets.USEREMAIL }}
       TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
     steps:
-      - name: Clona o Repositório ESTATISTICA
+      - name: Clona o Repositório ESTATISTICA com submódulos
         uses: actions/checkout@v4
         with:
           ref: book
@@ -291,28 +291,21 @@ jobs:
           fetch-depth: 0
           repository: ${{ env.USERNAME }}/estatistica
           token: ${{ secrets.TOKEN_REPO_SYNC }}
+          submodules: recursive
 
-      - name: Baixa artefato dos livros renderizados
-        uses: actions/download-artifact@v4
-        with:
-          name: artefatos_books
-          path: _books
-
-      - name: Garante que a branch book existe e faz checkout
+      - name: Atualiza submódulo books para o último commit da branch main
         working-directory: estatistica
         run: |
-          if ! git rev-parse --verify book >/dev/null 2>&1; then
-            git checkout --orphan book
-            git rm -rf .
-            git commit --allow-empty -m "Cria branch book inicial"
-            git push origin book
-          else
-            git checkout book
-          fi
+          git submodule update --remote books
 
-      - name: Sincroniza arquivos do artefato com a branch book
-        run: |
-          rsync -av --update --delete _books/ estatistica/books/
+      # - name: Sincroniza ponteiro do submódulo books
+      #   working-directory: estatistica
+      #   run: |
+      #     cd books
+      #     git checkout main
+      #     git pull origin main
+      #     cd ../
+      #     git add books
 
       - name: Configura credenciais do Git
         working-directory: estatistica
@@ -321,12 +314,11 @@ jobs:
           git config user.email "${{ env.USEREMAIL }}"
           git remote set-url origin https://x-access-token:${{ env.TOKEN_REPO_SYNC }}@github.com/${{ env.USERNAME }}/estatistica.git
 
-      - name: Faz commit e push dos livros renderizados
+      - name: Faz commit e push do ponteiro do submódulo books
         working-directory: estatistica
         run: |
-          git add books/
-          git commit -m "books: atualiza books a partir do repo:books" || echo "Nada a commitar"
-          git push --force origin book
+          git commit -m "books: atualiza submodulo books" || echo "Nada a commitar"
+          git push origin book
 
   cleanup:
     needs: [pages, estatistica]
