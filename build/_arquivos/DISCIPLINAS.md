@@ -1,77 +1,100 @@
-# Ementas que eu vou estudar da forma que eu desejar estudar:
+# Fluxo do Curso de Estatística - UnB (Currículo Novo)
 
-## 1º Semestre
-- [ ] **EST0033** - Estatística Exploratória
-- [ ] **MAT0075** - Análise Combinatória (Introdução à Probabilidade)  
-- [ ] **MAT0001** - Pré Cálculo
-- [ ] **CIC0007** - Introdução à Ciência da Computação (Akita)
-- [ ] **TAS0000** - Práticas de Programação (Git básico + environments + padrões de desenvolv., etc.)
+## 📘 1º Semestre
 
-## 2º Semestre  
-- [ ] **MAT0002** - Cálculo 1
-- [ ] **EST0046** - Estatística Descritiva e Análise de Dados
-- [ ] **CIC0008** - Algoritmos e Estruturas de Dados I
-- [ ] **MAT0003** - Álgebra Linear I
-- [ ] **EST0034** - Introdução à Inferência Estatística
+- **Cálculo 1 (6)**
+  - requisitos: nenhum
+- **Introdução à Administração (4)**
+  - requisitos: nenhum
+- **Estatística Exploratória (4)**
+  - requisitos: nenhum
+- **Introdução à Probabilidade (4)**
+  - requisitos: nenhum
+- **Computação em Estatística 1 (2)**
+  - requisitos: nenhum
+- **Introdução à Ciência da Computação (4)**
+  - requisitos: nenhum
 
-## 3º Semestre
-- [ ] **MAT0076** - Cálculo de Probabilidade 1
-- [ ] **MAT0004** - Cálculo 2  
-- [ ] **EST0047** - Inferência Estatística I
-- [ ] **CIC0009** - Algoritmos e Estruturas de Dados II
-- [ ] **EST0048** - Métodos Estatísticos I
+## 📘 2º Semestre
 
-## 4º Semestre
-- [ ] **EST0091** - Análise de Regressão Linear
-- [ ] **EST0092** - Análise Multivariada
-- [ ] **MAT0077** - Cálculo de Probabilidade II (Processos Estocásticos)
-- [ ] **EST0049** - Métodos Estatísticos II
-- [ ] **CIC0010** - Banco de Dados
+- **Cálculo 2 (6)**
+  - requisitos: Cálculo 1
+- **Introdução à Economia (4)**
+  - requisitos: nenhum
+- **Métodos Estatísticos 1 (4)**
+  - requisitos: Estatística Exploratória
+- **Leitura e Produção de Textos (4)**
+  - requisitos: nenhum
+- **Computação em Estatística 2 (4)**
+  - requisitos: Computação em Estatística 1
 
-## 5º Semestre  
-- [ ] **EST0050** - Análise de Séries Temporais
-- [ ] **EST0051** - Controle de Qualidade Estatístico
-- [ ] **EST0052** - Amostragem
-- [ ] **EST0053** - Estatística Não-Paramétrica
-- [ ] **EST0054** - Métodos Computacionais em Estatística
+## 📘 3º Semestre
 
-## 6º Semestre
-- [ ] **EST0055** - Análise de Sobrevivência  
-- [ ] **EST0056** - Planejamento e Análise de Experimentos
-- [ ] **EST0057** - Estatística Bayesiana
-- [ ] **EST0058** - Mineração de Dados (Data Mining)
-- [ ] **EST0059** - Aprendizado de Máquina (Machine Learning)
+- **Cálculo 3 (6)**
+  - requisitos: Cálculo 2
+- **Cálculo de Probabilidade 1 (6)**
+  - requisitos: Introdução à Probabilidade e Cálculo 2
+- **Cálculo Numérico (4)**
+  - requisitos: Cálculo 2
+- **Métodos Estatísticos 2 (4)**
+  - requisitos: Métodos Estatísticos 1
+- **Demografia (4)**
+  - requisitos: nenhum
 
-## 7º Semestre
-- [ ] **EST0060** - Métodos de Simulação
-- [ ] **EST0061** - Análise de Dados Categóricos  
-- [ ] **EST0062** - Estatística Computacional
-- [ ] **EST0063** - Optativa I
-- [ ] **EST0081** - Trabalho de Conclusão de Curso I (TCC I)
+## 📘 4º Semestre
 
-## 8º Semestre
-- [ ] **EST0082** - Trabalho de Conclusão de Curso II (TCC II)
-- [ ] **EST0064** - Estágio Supervisionado
-- [ ] **EST0065** - Optativa II
-- [ ] **EST0066** - Optativa III
-- [ ] **EST0067** - Tópicos Especiais em Estatística
+- **Inferência Estatística (6)**
+  - requisitos: Cálculo de Probabilidade 1 e Métodos Estatísticos 2
+- **Técnicas de Amostragem (6)**
+  - requisitos: Inferência Estatística
+- **Introdução à Contabilidade (4)**
+  - requisitos: nenhum
+- **Inglês Instrumental (4)**
+  - requisitos: nenhum
+- **Controle de Qualidade (4)**
+  - requisitos: Inferência Estatística
 
----
+## 📘 5º Semestre
 
-## Disciplinas Optativas Disponíveis
-- [ ] **EST0068** - Análise de Dados Longitudinais
-- [ ] **EST0069** - Estatística Espacial
-- [ ] **EST0070** - Bioestatística Avançada
-- [ ] **EST0071** - Econometria
-- [ ] **EST0072** - Análise de Risco
-- [ ] **EST0073** - Big Data e Analytics
-- [ ] **EST0074** - Visualização de Dados
-- [ ] **EST0075** - Estatística para Ciências Sociais
+- **Delineamento e Análise de Experimentos (6)**
+  - requisitos: Técnicas de Amostragem
+- **Análise de Regressão Linear (6)**
+  - requisitos: Técnicas de Amostragem
+- **Cálculo de Probabilidade 2 (6)**
+  - requisitos: Cálculo de Probabilidade 1
+- **Estatística Computacional (4)**
+  - requisitos: Computação em Estatística 2
 
----
+## 📘 6º Semestre
 
-## Observações
-- **Pré-requisitos**: Verificar dependências entre disciplinas
-- **Carga Horária**: Cada disciplina possui 60h (4 créditos) salvo indicação contrária
-- **TCC**: Desenvolvimento de projeto aplicado em área de interesse
-- **Estágio**: 300h mínimas em empresa/instituição conveniada
+- **Análise Multivariada 1 (4)**
+  - requisitos: Análise de Regressão Linear
+- **Aplicações 1 (4)**
+  - requisitos: Delineamento e Análise de Experimentos
+- **Processos Estocásticos (4)**
+  - requisitos: Cálculo de Probabilidade 2
+- **Inferência Bayesiana (4)**
+  - requisitos: Inferência Estatística
+
+## 📘 7º Semestre
+
+- **Trabalho de Conclusão de Curso 1 (4)**
+  - requisitos: Análise de Regressão, Delineamento e Técnicas de Amostragem
+- **Aplicações 1 (4)**
+  - requisitos: Delineamento e Análise de Experimentos
+- **Dados Categorizados (4)**
+  - requisitos: Inferência Estatística
+- **Análise de Séries Temporais (4)**
+  - requisitos: Inferência Bayesiana
+
+## 📘 8º Semestre
+
+- **Trabalho de Conclusão de Curso 2 (6)**
+  - requisitos: TCC 1
+- **Aplicações 1 (4)**
+  - requisitos: Delineamento e Análise de Experimentos
+- **Monitoria (2)**
+  - requisitos: nenhum
+- **Disciplinas Optativas / Módulo Livre / Optativas da Cadeia de Seletividade (mínimo 16 créditos)**
+  - requisitos: variáveis conforme disciplina
+"""
