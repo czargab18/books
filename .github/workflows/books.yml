@@ -15,8 +15,7 @@ permissions:
 jobs:
   detectar:
     runs-on: ubuntu-latest
-    if: github.event_name == 'push' ||
-      github.event_name == 'workflow_dispatch'
+    if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
     environment:
       name: ENVIRONMENT
     env:
@@ -41,31 +40,18 @@ jobs:
           cd books
           echo "Detectando arquivos para evento: ${{ github.event_name }}"
 
-          # Pull Request - usa dados do evento diretamente
-          if [[ "${{ github.event_name }}" == "pull_request" ]]; then
-            echo "Processando pull request..."
-            # Usa git diff com SHA do evento (ignora se não disponível)
-            if [[ -n "${{ github.event.pull_request.head.sha || '' }}" ]] && [[ -n "${{ github.event.pull_request.base.sha || '' }}" ]]; then
-              git diff --name-only ${{ github.event.pull_request.base.sha }} ${{ github.event.pull_request.head.sha }} > arquivos.txt 2>/dev/null || touch arquivos.txt
-            else
-              # Fallback usando merge-base
-              git diff --name-only $(git merge-base HEAD origin/main 2>/dev/null || echo HEAD~1) HEAD > arquivos.txt 2>/dev/null || touch arquivos.txt
-            fi
-
           # Push - usa dados do evento diretamente  
-          elif [[ "${{ github.event_name }}" == "push" ]]; then
+          if [[ "${{ github.event_name }}" == "push" ]]; then
             echo "Processando push..."
-            # Usa before/after do evento (ignora se não disponível)
             if [[ -n "${{ github.event.before || '' }}" ]] && [[ "${{ github.event.before }}" != "0000000000000000000000000000000000000000" ]]; then
               git diff --name-only ${{ github.event.before }} ${{ github.sha }} > arquivos.txt 2>/dev/null || touch arquivos.txt
             else
-              # Fallback para último commit
               git diff --name-only HEAD~1 HEAD > arquivos.txt 2>/dev/null || touch arquivos.txt
             fi
 
-          # Outros eventos - busca todos os arquivos relevantes
-          else
-            echo "Processando outros eventos..."
+          # workflow_dispatch - busca todos os arquivos relevantes
+          elif [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            echo "Processando workflow_dispatch..."
             find build -name "*.qmd" -o -name "*.yml" 2>/dev/null | grep -E '^build/.*\.(qmd|yml)$' > arquivos.txt || touch arquivos.txt
           fi
 
@@ -161,7 +147,7 @@ jobs:
           name: books_renderizados
           path: "./_docs"
 
-  backend:
+  automatizar:
     needs: [renderizar]
     runs-on: ubuntu-latest
     if: needs.detectar.outputs.FOLDERS_LISTA != ''
@@ -172,45 +158,36 @@ jobs:
       FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
       USERNAME: ${{ github.repository_owner }}
     steps:
+
+      - name: Clona o Repositório 'BOOKS'
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.USERNAME  }}/books
+          token: ${{ secrets.TOKEN_REPO_SYNC }}
+          path: books
+          ref: main
+
       - name: Configura Python
         uses: actions/setup-python@v4
         with:
           python-version: "3.13"
 
-      - name: Clona o Repositório BACKEND
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ env.USERNAME  }}/backend
-          token: ${{ secrets.TOKEN_REPO_SYNC }}
-          path: backend
-          ref: main
-
-      - name: Instala pacote backend
+      - name: Instalar dependencias  do python
         run: |
-          set -e
-          pip install -e backend
+          cd books
+          python -m pip install --upgrade pip
+          pip install -r run/requirements.txt
 
-      - name: Baixa artefatos BOOKS RENDERIZADOS
+      - name: Baixa artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
           name: books_renderizados
-          path: ./backend/_books/
+          path: books/books
 
-      - name: Automatiza livros (backend)
-        id: backend_books
+      - name: Executa script de automatização
         run: |
-          set -e
-          python backend/tasks/actionbooks/renderbook.py 2>&1 | tee backend_output.log
-          if grep -i "warning\|error" backend_output.log; then
-            echo "Erros ou warnings detectados durante a execução do script!"
-            exit 1
-          fi
-
-      - name: Exporta atualizações dos livros renderizados
-        uses: actions/upload-artifact@v4
-        with:
-          name: books_backend
-          path: ./backend/_books/
+          cd books
+          python run/cleanBooks.py --base-dir book/
 
   sync_artefato:
     needs: [backend]
