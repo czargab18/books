@@ -183,11 +183,6 @@ jobs:
           name: books_renderizados
           path: books/book
 
-      - name: Debug Rtefato
-        run: |
-          echo "Conteúdo do diretório book:"
-          ls -la books/book || echo "Diretório vazio ou não encontrado"
-
       - name: Executa script de automatização
         run: |
           cd books
@@ -199,45 +194,55 @@ jobs:
           name: books_automatizar
           path: "books/book"
 
-  # pages:
-  #   needs: [automatizar]
-  #   runs-on: ubuntu-latest
-  #   environment:
-  #     name: ENVIRONMENT
-  #   steps:
-  #     - name: Clona o Repositório BOOKS
-  #       uses: actions/checkout@v4
-  #       with:
-  #         repository: ${{ github.repository }}
-  #         token: ${{ secrets.GITHUB_TOKEN }}
-  #         ref: main
-  #         path: "."
+  books:
+    needs: [automatizar]
+    runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    steps:
+      - name: Clona o Repositório BOOKS
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository }}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          ref: main
+          path: "."
 
-  #     - name: Baixa Artefato para GitHub Pages
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: books_automatizar
-  #         path: "./book"
+      - name: Baixa Artefato para GitHub Pages
+        uses: actions/download-artifact@v4
+        with:
+          name: books_automatizar
+          path: "./book"
 
-  #     - name: Corrigir links dos <head>
-  #       run: |
-  #         cd book
-  #         python run\cleanBooks.py --base-dir book/ --base-ac book/ac
-          
+      - name: Configura Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
 
-  #     - name: Salva Artefato para GitHub Pages
-  #       uses: actions/upload-pages-artifact@v3
-  #       with:
-  #         name: github-pages
-  #         path: "./"
+      - name: Instalar dependencias  do python
+        working-directory: books
+        run: |
+            python -m pip install --upgrade pip
+            pip install -r run/requirements.txt          
 
-  #     - name: Faz deploy para GitHub Pages
-  #       uses: actions/deploy-pages@v4
-  #       with:
-  #         artifact_name: github-pages
+      - name: Corrigir links dos <head>
+        run: |
+          cd book
+          python run/cleanBooks.py --base-dir book/ --base-ac build/ac/books
+
+      - name: Salva Artefato para GitHub Pages
+        uses: actions/upload-pages-artifact@v3
+        with:
+          name: github-pages
+          path: "./book"
+
+      - name: Faz deploy para GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          artifact_name: github-pages
 
   estatistica:
-    needs: [automatizar]
+    needs: [automatizar, books]
     runs-on: ubuntu-latest
     if: needs.detectar.outputs.FOLDERS_LISTA != ''
     environment:
@@ -256,6 +261,8 @@ jobs:
           fetch-depth: 0
           repository: ${{ env.USERNAME }}/estatistica
           token: ${{ env.TOKEN_REPO_SYNC }}
+
+      - name: Bixar submodulo
 
       - name: Garante que a branch book existe e faz checkout
         working-directory: estatistica
@@ -279,6 +286,24 @@ jobs:
         run: |
           rsync -av --update --delete _books/ estatistica/book/
 
+      - name: Configura Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
+
+      - name: Instalar dependencias  do python
+        working-directory: estatistica
+        run: |
+          cd book
+          python -m pip install --upgrade pip
+          pip install -r run/requirements.txt          
+
+      - name: Corrigir links dos <head>
+        working-directory: estatistica
+        run: |
+          cd book
+          python run/cleanBooks.py --base-dir book/ --base-ac build/ac/
+
       - name: Configura credenciais do Git
         working-directory: estatistica
         run: |
@@ -294,7 +319,7 @@ jobs:
           git push --force origin book
 
   cleanup:
-    needs: [automatizar, estatistica]
+    needs: [automatizar, estatistica, books]
     runs-on: ubuntu-latest
     steps:
       - name: Deleta artefatos
@@ -304,3 +329,4 @@ jobs:
             books_renderizados
             books_detectados
             books_automatizar
+            github-pages
