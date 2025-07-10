@@ -277,7 +277,7 @@ jobs:
 
       - name: Sincroniza arquivos do artefato com a branch book
         run: |
-          rsync -av --update --delete _books/ estatistica/books/
+          rsync -av --update --delete _books/ estatistica/book/
 
       - name: Configura credenciais do Git
         working-directory: estatistica
