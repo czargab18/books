@@ -187,7 +187,7 @@ jobs:
         run: |
           echo "Conteúdo do diretório book:"
           ls -la books/book || echo "Diretório vazio ou não encontrado"
-          
+
       - name: Executa script de automatização
         run: |
           cd books
@@ -198,29 +198,6 @@ jobs:
         with:
           name: books_automatizar
           path: "books/book"
-
-  pages:
-    needs: [automatizar]
-    runs-on: ubuntu-latest
-    environment:
-      name: ENVIRONMENT
-    steps:
-      - name: Baixa Artefato para GitHub Pages
-        uses: actions/download-artifact@v4
-        with:
-          name: books_automatizar
-          path: "./"
-
-      - name: Salva Artefato para GitHub Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: github-pages
-          path: "./"
-
-      - name: Faz deploy para GitHub Pages
-        uses: actions/deploy-pages@v4
-        with:
-          artifact_name: github-pages
 
   estatistica:
     needs: [automatizar]
@@ -280,14 +257,13 @@ jobs:
           git push --force origin book
 
   cleanup:
-    needs: [automatizar, pages, estatistica]
+    needs: [automatizar, estatistica]
     runs-on: ubuntu-latest
     steps:
       - name: Deleta artefatos
         uses: geekyeggo/delete-artifact@v5
         with:
           name: |
-            github-pages
             books_renderizados
             books_detectados
             books_automatizar
