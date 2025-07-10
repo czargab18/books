@@ -22,10 +22,8 @@ class LimparHTML:
         novo_head_soup = BeautifulSoup(novo_head_html, "html.parser")
         head_tag = soup.find("head")
         if head_tag:
-            # Remove todos os filhos do <head>
             for child in list(head_tag.contents):
                 child.extract()
-            # Adiciona apenas as tags/elementos do novo head (não a tag <head> em si)
             for elem in novo_head_soup.find_all(recursive=False):
                 head_tag.append(elem)
         return str(soup)
@@ -47,6 +45,13 @@ class LimparHTML:
 def limpar_arquivo_html(caminho, limpador):
     with open(caminho, encoding="utf-8") as f:
         html = f.read()
+    # Substitui o head se o arquivo build/head.html existir
+    build_head_path = os.path.join(os.path.dirname(
+        os.path.dirname(__file__)), "build", "head.html")
+    if os.path.exists(build_head_path):
+        with open(build_head_path, encoding="utf-8") as f:
+            novo_head = f.read()
+        html = LimparHTML.substituir_head(html, novo_head)
     html_limpo = limpador.limpar(html)
     with open(caminho, "w", encoding="utf-8") as f:
         f.write(html_limpo)
