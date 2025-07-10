@@ -28,8 +28,8 @@ jobs:
       - name: Clona o Repositório BOOKS
         uses: actions/checkout@v4
         with:
-          repository: ${{ env.USERNAME  }}/books
-          token: ${{ secrets.TOKEN_REPO_SYNC }}
+          repository: ${{ env.USERNAME }}/books
+          token: ${{ secrets.GITHUB_TOKEN }}
           path: books
           ref: main
           fetch-depth: 30
@@ -158,7 +158,6 @@ jobs:
       FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
       USERNAME: ${{ github.repository_owner }}
     steps:
-
       - name: Clona o Repositório 'BOOKS'
         uses: actions/checkout@v4
         with:
