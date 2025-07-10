@@ -8,7 +8,7 @@ site_libs/
 **/.gitignore
 
 # local da renderização remota
-books/
+book/
 
 ##### NÃO IGNORAR
 # !fluxograma.pdf
