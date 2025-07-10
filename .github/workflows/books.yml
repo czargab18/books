@@ -251,7 +251,7 @@ jobs:
       - name: Clona o Repositório ESTATISTICA
         uses: actions/checkout@v4
         with:
-          ref: book
+          ref: main
           path: estatistica
           fetch-depth: 0
           repository: ${{ env.USERNAME }}/estatistica
