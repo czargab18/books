@@ -181,8 +181,13 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: books_renderizados
-          path: books/books
+          path: books/book
 
+      - name: Debug Rtefato
+        run: |
+          echo "Conteúdo do diretório book:"
+          ls -la books/book || echo "Diretório vazio ou não encontrado"
+          
       - name: Executa script de automatização
         run: |
           cd books
@@ -285,5 +290,4 @@ jobs:
             github-pages
             books_renderizados
             books_detectados
-            books_automatizar
             books_automatizar
