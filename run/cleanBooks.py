@@ -57,6 +57,14 @@ class LimparHTML:
     def limpar_arquivo_html(self, caminho):
         with open(caminho, encoding="utf-8") as f:
             html = f.read()
+        # Salva links SEO antes de qualquer alteração
+        soup_original = BeautifulSoup(html, "html.parser")
+        head_tag = soup_original.find("head")
+        links_seo = []
+        from bs4 import Tag
+        if isinstance(head_tag, Tag):
+            for rel in ["next", "prev"]:
+                links_seo.extend(head_tag.find_all("link", rel=rel))
         # Substitui o head se o arquivo build/head.html existir
         build_head_path = os.path.join(os.path.dirname(
             os.path.dirname(__file__)), "build", "head.html")
@@ -65,8 +73,16 @@ class LimparHTML:
                 novo_head = f.read()
             html = LimparHTML.substituir_head(html, novo_head)
         html_limpo = self.limpar(html)
+        # Adiciona os links SEO novamente ao head
+        soup_limpo = BeautifulSoup(html_limpo, "html.parser")
+        head_limpo = soup_limpo.find("head")
+        if isinstance(head_limpo, Tag):
+            for link in links_seo:
+                # Evita duplicidade
+                if not head_limpo.find("link", rel=link.get("rel")):
+                    head_limpo.append(link)
         with open(caminho, "w", encoding="utf-8") as f:
-            f.write(html_limpo)
+            f.write(str(soup_limpo))
         print(f"Arquivo limpo: {caminho}")
 
     def rel_seo(self, html):
