@@ -189,8 +189,14 @@ jobs:
           cd books
           python run/cleanBooks.py --base-dir book/
 
+      - name: Salva Artefato dos Livros Renderizados
+        uses: actions/upload-artifact@v4
+        with:
+          name: books_automatizar
+          path: "books/book"
+
   sync_artefato:
-    needs: [backend]
+    needs: [automatizar]
     runs-on: ubuntu-latest
     environment:
       name: ENVIRONMENT
@@ -208,7 +214,7 @@ jobs:
       - name: Baixa artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
-          name: books_backend
+          name: books_automatizar
           path: _books
 
       - name: Sincroniza arquivos do artefato com a branch books
@@ -312,5 +318,5 @@ jobs:
             github-pages
             books_renderizados
             books_detectados
-            books_backend
+            books_automatizar
             artefatos_books
