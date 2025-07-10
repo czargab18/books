@@ -280,7 +280,7 @@ jobs:
           git push --force origin book
 
   cleanup:
-    needs: [pages, automatizar]
+    needs: [automatizar, pages, estatistica]
     runs-on: ubuntu-latest
     steps:
       - name: Deleta artefatos
