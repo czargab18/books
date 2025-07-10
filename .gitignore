@@ -3,9 +3,10 @@
 ###########################################
 ##### IGNORAR
 *.pdf
-/delete
-/ac
+delete/
+site_libs/
 **/.gitignore
+
 ##### NÃO IGNORAR
 # !fluxograma.pdf
 !/.gitignore
