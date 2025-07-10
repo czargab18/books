@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: "../../books/TAS0000"
+  output-dir: "../../book/TAS0000"
   lib-dir:  "delete/site_libs"
   preview:
     port: 4200

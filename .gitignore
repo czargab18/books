@@ -7,6 +7,9 @@ delete/
 site_libs/
 **/.gitignore
 
+# local da renderização remota
+# books/
+
 ##### NÃO IGNORAR
 # !fluxograma.pdf
 !/.gitignore
