@@ -257,12 +257,6 @@ jobs:
           repository: ${{ env.USERNAME }}/estatistica
           token: ${{ env.TOKEN_REPO_SYNC }}
 
-      - name: Baixa artefato dos livros renderizados
-        uses: actions/download-artifact@v4
-        with:
-          name: books_automatizar
-          path: _books
-
       - name: Garante que a branch book existe e faz checkout
         working-directory: estatistica
         run: |
@@ -274,6 +268,12 @@ jobs:
           else
             git checkout book
           fi
+
+      - name: Baixa artefato dos livros renderizados
+        uses: actions/download-artifact@v4
+        with:
+          name: books_automatizar
+          path: _books
 
       - name: Sincroniza arquivos do artefato com a branch book
         run: |
@@ -289,7 +289,7 @@ jobs:
       - name: Faz commit e push dos livros renderizados
         working-directory: estatistica
         run: |
-          git add books/
+          git add book/
           git commit -m "books: atualiza books a partir do repo:books" || echo "Nada a commitar"
           git push --force origin book
 
