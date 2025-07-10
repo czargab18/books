@@ -78,9 +78,19 @@ class LimparHTML:
         head_limpo = soup_limpo.find("head")
         if isinstance(head_limpo, Tag):
             for link in links_seo:
-                # Evita duplicidade
                 if not head_limpo.find("link", rel=link.get("rel")):
                     head_limpo.append(link)
+        # Insere o conteúdo do globalheader.html após a abertura do <body>
+        globalheader_path = os.path.join(os.path.dirname(
+            os.path.dirname(__file__)), "build", "globalheader.html")
+        if os.path.exists(globalheader_path):
+            with open(globalheader_path, encoding="utf-8") as f:
+                globalheader_html = f.read()
+            body_tag = soup_limpo.find("body")
+            if isinstance(body_tag, Tag):
+                # Insere logo após a abertura do body
+                body_tag.insert(0, BeautifulSoup(
+                    globalheader_html, "html.parser"))
         with open(caminho, "w", encoding="utf-8") as f:
             f.write(str(soup_limpo))
         print(f"Arquivo limpo: {caminho}")
