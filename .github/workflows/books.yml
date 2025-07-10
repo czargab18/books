@@ -194,41 +194,8 @@ jobs:
           name: books_automatizar
           path: "books/book"
 
-  sync_artefato:
-    needs: [automatizar]
-    runs-on: ubuntu-latest
-    environment:
-      name: ENVIRONMENT
-    env:
-      USEREMAIL: ${{ secrets.USEREMAIL }}
-      USERNAME: ${{ github.repository_owner }}
-    steps:
-      - name: Checkout da branch 'books'
-        uses: actions/checkout@v4
-        with:
-          ref: books
-          path: books
-          fetch-depth: 0
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Baixa artefato dos livros renderizados
-        uses: actions/download-artifact@v4
-        with:
-          name: books_automatizar
-          path: _books
-
-      - name: Sincroniza arquivos do artefato com a branch books
-        run: |
-          rsync -av --update _books/ books/
-
-      - name: Salva Artefato Completo
-        uses: actions/upload-artifact@v4
-        with:
-          name: artefatos_books
-          path: "books"
-
   pages:
-    needs: [sync_artefato]
+    needs: [automatizar]
     runs-on: ubuntu-latest
     environment:
       name: ENVIRONMENT
@@ -236,7 +203,7 @@ jobs:
       - name: Baixa Artefato para GitHub Pages
         uses: actions/download-artifact@v4
         with:
-          name: artefatos_books
+          name: books_automatizar
           path: "./"
 
       - name: Salva Artefato para GitHub Pages
@@ -251,7 +218,7 @@ jobs:
           artifact_name: github-pages
 
   estatistica:
-    needs: [sync_artefato]
+    needs: [automatizar]
     runs-on: ubuntu-latest
     if: needs.detectar.outputs.FOLDERS_LISTA != ''
     environment:
@@ -274,7 +241,7 @@ jobs:
       - name: Baixa artefato dos livros renderizados
         uses: actions/download-artifact@v4
         with:
-          name: artefatos_books
+          name: books_automatizar
           path: _books
 
       - name: Garante que a branch book existe e faz checkout
@@ -308,7 +275,7 @@ jobs:
           git push --force origin book
 
   cleanup:
-    needs: [pages, estatistica]
+    needs: [pages, automatizar]
     runs-on: ubuntu-latest
     steps:
       - name: Deleta artefatos
@@ -319,4 +286,4 @@ jobs:
             books_renderizados
             books_detectados
             books_automatizar
-            artefatos_books
+            books_automatizar
