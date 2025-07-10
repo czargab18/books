@@ -5,14 +5,14 @@ from bs4 import BeautifulSoup
 
 
 class LimparHTML:
-    def __init__(self, remove_quarto_header=True, remove_selectors=None):
-        """
-        Classe para remover conteúdos de HTML.
-        :param remove_quarto_header: Remove o <header id="quarto-header"> se True
-        :param remove_selectors: Lista de seletores (tuplas: (tag, dict_atributos)) para remoção
-        """
+    def __init__(self, remove_quarto_header=True, remove_selectors=None, base_ac_path=None):
         self.remove_quarto_header = remove_quarto_header
         self.remove_selectors = remove_selectors or []
+        if base_ac_path:
+            self.base_ac_path = base_ac_path
+        else:
+            self.base_ac_path = os.path.join(
+                os.path.dirname(os.path.dirname(__file__)), "build")
 
     @staticmethod
     def preservar_links_seo(head_soup, novo_head_soup):
@@ -66,8 +66,7 @@ class LimparHTML:
             for rel in ["next", "prev"]:
                 links_seo.extend(head_tag.find_all("link", rel=rel))
         # Substitui o head se o arquivo build/head.html existir
-        build_head_path = os.path.join(os.path.dirname(
-            os.path.dirname(__file__)), "build", "head.html")
+        build_head_path = os.path.join(self.base_ac_path, "head.html")
         if os.path.exists(build_head_path):
             with open(build_head_path, encoding="utf-8") as f:
                 novo_head = f.read()
@@ -81,14 +80,13 @@ class LimparHTML:
                 if not head_limpo.find("link", rel=link.get("rel")):
                     head_limpo.append(link)
         # Insere o conteúdo do globalheader.html após a abertura do <body>
-        globalheader_path = os.path.join(os.path.dirname(
-            os.path.dirname(__file__)), "build", "globalheader.html")
+        globalheader_path = os.path.join(
+            self.base_ac_path, "globalheader.html")
         if os.path.exists(globalheader_path):
             with open(globalheader_path, encoding="utf-8") as f:
                 globalheader_html = f.read()
             body_tag = soup_limpo.find("body")
             if isinstance(body_tag, Tag):
-                # Insere logo após a abertura do body
                 body_tag.insert(0, BeautifulSoup(
                     globalheader_html, "html.parser"))
         with open(caminho, "w", encoding="utf-8") as f:
@@ -123,9 +121,11 @@ if __name__ == "__main__":
                         help="Diretório base para limpeza recursiva de arquivos HTML.")
     parser.add_argument("--file", type=str,
                         help="Arquivo HTML único para limpar.")
+    parser.add_argument("--base-ac", type=str,
+                        help="Diretório dos componentes (ex: globalheader.html e head.html).")
     args = parser.parse_args()
 
-    limpador = LimparHTML()
+    limpador = LimparHTML(base_ac_path=args.base_ac)
 
     if args.base_dir:
         limpador.limpar_recursivo(args.base_dir)
