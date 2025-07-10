@@ -218,7 +218,7 @@ jobs:
           path: estatistica
           fetch-depth: 0
           repository: ${{ env.USERNAME }}/estatistica
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.TOKEN_REPO_SYNC }}
 
       - name: Baixa artefato dos livros renderizados
         uses: actions/download-artifact@v4
