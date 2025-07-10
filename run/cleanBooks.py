@@ -15,6 +15,16 @@ class LimparHTML:
         self.remove_selectors = remove_selectors or []
 
     @staticmethod
+    def preservar_links_seo(head_soup, novo_head_soup):
+        # Preserva <link rel="next"> e <link rel="prev"> do head original
+        for rel in ["next", "prev"]:
+            for link in head_soup.find_all("link", rel=rel):
+                # Evita duplicidade: só adiciona se não existe no novo head
+                if not novo_head_soup.find("link", rel=rel):
+                    novo_head_soup.append(link)
+        return novo_head_soup
+
+    @staticmethod
     def substituir_head(html, novo_head_html):
         """
         Substitui apenas o conteúdo interno da tag <head> do HTML pelo conteúdo de novo_head_html.
@@ -23,6 +33,8 @@ class LimparHTML:
         novo_head_soup = BeautifulSoup(novo_head_html, "html.parser")
         head_tag = soup.find("head")
         if head_tag:
+            # Preserva links SEO antes de substituir
+            LimparHTML.preservar_links_seo(head_tag, novo_head_soup)
             for child in list(head_tag.contents):  # type: ignore
                 child.extract()
             for elem in novo_head_soup.find_all(recursive=False):
@@ -56,6 +68,19 @@ class LimparHTML:
         with open(caminho, "w", encoding="utf-8") as f:
             f.write(html_limpo)
         print(f"Arquivo limpo: {caminho}")
+
+    def rel_seo(self, html):
+        """
+        Retorna todos os links <link rel="next"> e <link rel="prev"> presentes no <head> do HTML.
+        """
+        soup = BeautifulSoup(html, "html.parser")
+        head_tag = soup.find("head")
+        links_seo = []
+        from bs4 import Tag
+        if isinstance(head_tag, Tag):
+            for rel in ["next", "prev"]:
+                links_seo.extend(head_tag.find_all("link", rel=rel))
+        return links_seo
 
     def limpar_recursivo(self, base_dir):
         for root, dirs, files in os.walk(base_dir):
