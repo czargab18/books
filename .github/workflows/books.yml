@@ -138,8 +138,10 @@ jobs:
       - name: Limpa diretórios '_docs/ac/site_libs' e '_docs/delete'
         run: |
           cd _docs
-          rm -rf ac/site_libs
-          rm -rf delete
+          remover="site_libs delete outra_pasta"
+          for nome in $remover; do
+            find . -type d -name "$nome" -exec rm -rf {} +
+          done
 
       - name: Exporta livros renderizados
         uses: actions/upload-artifact@v4
