@@ -1,4 +1,5 @@
 project:
+  title: "Estatística"
   type: book
   output-dir: "../../book/TAS0000"
   lib-dir:  "delete/site_libs"

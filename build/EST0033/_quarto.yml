@@ -1,7 +1,6 @@
 project:
   type: book
-  title: "Estatística"
-  output-dir: "../../books/EST0033"
+  output-dir: "../../book/TAS0000"
   lib-dir:  "delete/site_libs"
   preview:
     navigate: true
