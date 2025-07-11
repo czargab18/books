@@ -29,10 +29,7 @@
   "r.lsp.debug": true,
   "r.lsp.enabled": true,
   "r.rmarkdown.enableCodeLens": true,
-  "r.rterm.option": [
-    "--no-save",
-    "--no-restore"
-  ],
+  "r.rterm.option": ["--no-save", "--no-restore"],
   // CONFIGURAÇÕES PYTHON
   "python.terminal.activateEnvironment": true,
   "python.analysis.autoImportCompletions": true,
@@ -81,15 +78,12 @@
   "editor.lineHeight": 1.6,
   "editor.tabSize": 2,
   "editor.wordWrap": "on",
-  "editor.minimap.enabled": false,
+  "editor.minimap.enabled": true,
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.detectIndentation": false,
   "editor.fontLigatures": true,
-  "editor.rulers": [
-    80,
-    120
-  ],
+  "editor.rulers": [80, 120],
   "editor.cursorBlinking": "smooth",
   "editor.cursorStyle": "line-thin",
   "editor.parameterHints.enabled": false,

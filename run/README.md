@@ -17,13 +17,16 @@ Este script (`cleanBooks.py`) foi criado para automatizar a limpeza e padroniza√
 ```powershell
 cd .\build\TAS0000\
 quarto render .
-
-# ou mais compacto:
-# cd .\build\TAS0000\ ; quarto render .
-
 # voltar para a pasta raiz do projeto
 cd ../..
 ```
+
+ou mais compacto:
+```
+cd .\build\TAS0000\ ; quarto render . ; cd ../..
+python run/cleanBooks.py --base-dir book/ --base-ac .\build\ac\books\
+```
+
 
 ### Limpe todos os HTMLs gerados
 

@@ -87,8 +87,17 @@ class LimparHTML:
                 globalheader_html = f.read()
             body_tag = soup_limpo.find("body")
             if isinstance(body_tag, Tag):
-                body_tag.insert(0, BeautifulSoup(
-                    globalheader_html, "html.parser"))
+                # Verifica se já existe o conteúdo do globalheader pelo id ou classe principal
+                globalheader_soup = BeautifulSoup(
+                    globalheader_html, "html.parser")
+                # Exemplo: verifica se existe um elemento com id="globalheader"
+                existe_globalheader = False
+                gh_tag = globalheader_soup.find(True, id=True)
+                if gh_tag and body_tag.find(True, id=gh_tag.get("id")): # type: ignore
+                    existe_globalheader = True
+                # Se não existir, insere
+                if not existe_globalheader:
+                    body_tag.insert(0, globalheader_soup)
         with open(caminho, "w", encoding="utf-8") as f:
             f.write(str(soup_limpo))
         print(f"Arquivo limpo: {caminho}")
