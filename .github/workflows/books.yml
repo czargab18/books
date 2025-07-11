@@ -181,8 +181,6 @@ jobs:
       - name: Corrigir links para GitHub Pages - Books
         run: |
           cd books
-          # indo para para pasta books/book/
-          cd book
           python run/cleanBooks.py --base-dir book/ --base-ac build/ac/books
 
       - name: Salva Artefato para GitHub Pages
