@@ -9,6 +9,7 @@
 Este repositório contém **anotações, códigos e projetos acadêmicos** desenvolvidos com o [Quarto](https://quarto.org/), organizados por disciplinas universitárias. O projeto combina diferentes linguagens e formatos para criar materiais educacionais interativos e de alta qualidade.
 
 ### 🚀 **Tecnologias Utilizadas:**
+
 - **[Quarto](https://quarto.org/)**: Sistema de publicação científica e técnica
 - **R**: Análise estatística e visualização de dados
 - **Python**: Ciência de dados e automação
@@ -17,6 +18,7 @@ Este repositório contém **anotações, códigos e projetos acadêmicos** desen
 - **HTML/CSS**: Apresentações web
 
 ### 🤖 **Desenvolvimento Assistido por IA**
+
 - **Mínimo 75% do código é gerado ou assistido por IA** (GitHub Copilot)
 - Todas as contribuições de IA são devidamente marcadas e documentadas
 - Uso responsável e transparente de ferramentas de IA
@@ -43,30 +45,35 @@ books/
 ```
 
 ### 📚 **Disciplinas Incluídas:**
+
 - **CIC0007**: Introdução à Ciência da Computação
-- **EST0033**: Estatística Exploratória  
+- **EST0033**: Estatística Exploratória
 - **EST0046**: Métodos Estatísticos
 - **EST0081**: Trabalho de Conclusão de Curso
 - **EST0091/092**: Computação Estatística I e II
 - **MAT0075**: Matemática Básica
 - **TAS0000**: Tópicos Avançados em Estatística
-- **_arquivos**: Ementas e materiais de planejamento
+- **\_arquivos**: Ementas e materiais de planejamento
 
 ## 🚀 Como Usar
 
 ### 🌥️ **Opção 1: GitHub Codespace (Recomendado)**
+
 1. **Abra no Codespace**: Clique em "Code" → "Codespaces" → "Create codespace on main"
 2. **Ambiente pré-configurado**: R, Python, Quarto e LaTeX já instalados
 3. **VS Code otimizado**: Extensões e configurações personalizadas
 
 ### 💻 **Opção 2: Local**
+
 1. **Clone o repositório**:
+
    ```bash
    git clone https://github.com/cesargabrielphd/books.git
    cd books
    ```
 
 2. **Instale as dependências**:
+
    ```bash
    # Quarto
    https://quarto.org/docs/get-started/
@@ -74,7 +81,7 @@ books/
    # R packages
    install.packages(c("tidyverse", "ggplot2", "rmarkdown", "knitr"))
 
-   # Python packages  
+   # Python packages
    pip install pandas numpy matplotlib jupyter quarto
    ```
 
@@ -86,22 +93,26 @@ books/
 ### 📝 **Trabalhando com os Documentos**
 
 #### **Renderizar um documento Quarto:**
+
 ```bash
 quarto render documento.qmd
 ```
 
 #### **Visualizar em tempo real:**
+
 ```bash
 quarto preview
 ```
 
 #### **Executar análises R:**
+
 ```r
 # Abrir arquivo .qmd ou .Rmd no VS Code
 # Usar Ctrl+Shift+Enter para executar chunks
 ```
 
 #### **Executar notebooks Python:**
+
 ```bash
 jupyter lab
 # ou usar diretamente no VS Code
@@ -110,7 +121,7 @@ jupyter lab
 ## 🎨 Estrutura das Branches
 
 - **🌟 `main`**: Código principal e documentação finalizada
-- **🔧 `dev1`**: Desenvolvimento de novas funcionalidades  
+- **🔧 `dev1`**: Desenvolvimento de novas funcionalidades
 - **🧪 `stag`**: Ambiente de teste e validação
 - **📖 `books`**: Deploy automático para GitHub Pages
 
@@ -119,12 +130,14 @@ jupyter lab
 Este projeto utiliza **GitHub Copilot** e outras ferramentas de IA de forma transparente:
 
 ### ✅ **Diretrizes de IA:**
+
 - **Mínimo 75% do código** é marcado como gerado por IA
 - Uso de comentários específicos: `# 🤖 Código gerado por IA - GitHub Copilot`
 - Commits incluem percentual de código gerado por IA
 - Documentação completa em [`.copilot-instructions.md`](.copilot-instructions.md)
 
 ### 📝 **Exemplo de Commit:**
+
 ```
 feat(quarto): adicionar análise estatística para EST0033
 
@@ -137,12 +150,14 @@ feat(quarto): adicionar análise estatística para EST0033
 ## 🛠️ Desenvolvimento
 
 ### **Configurações Incluídas:**
+
 - **DevContainer**: Ambiente completo para Codespace
 - **VS Code Settings**: Configurações otimizadas para R, Python, Quarto
 - **GitHub Copilot**: Templates e snippets personalizados
 - **Extensões**: Lista curada de extensões essenciais
 
 ### **Comandos Úteis:**
+
 ```bash
 # Renderizar todos os documentos
 quarto render
@@ -160,7 +175,7 @@ pip install -r requirements.txt
 ## 📊 Estatísticas do Projeto
 
 - **📚 Disciplinas**: 8+ disciplinas universitárias
-- **📄 Documentos**: 50+ arquivos Quarto/RMarkdown  
+- **📄 Documentos**: 50+ arquivos Quarto/RMarkdown
 - **🔬 Análises**: 100+ scripts R e Python
 - **🤖 IA**: 75%+ código assistido por GitHub Copilot
 - **📖 Páginas**: Disponível em [GitHub Pages](https://cesargabrielphd.github.io/books/)
@@ -168,6 +183,7 @@ pip install -r requirements.txt
 ## 🎓 Sobre o Autor
 
 **César Gabriel Castro de Oliveira**
+
 - 🎓 Estatística - Universidade de Brasília (UnB)
 - 💼 Especialização em Ciência de Dados
 - 🤖 Entusiasta de IA aplicada à educação
@@ -181,6 +197,7 @@ pip install -r requirements.txt
 5. **Abra** um Pull Request
 
 ### 📋 **Checklist para Contribuições:**
+
 - [ ] Código comentado em português
 - [ ] Indicação de código gerado por IA (mín. 75%)
 - [ ] Documentação atualizada
@@ -205,6 +222,87 @@ Este projeto está sob a licença **MIT** - veja o arquivo [LICENSE](LICENSE) pa
 
 **📚 Construído com ❤️ e 🤖 IA**
 
-*Este repositório é atualizado continuamente com novos conteúdos e melhorias.*
+_Este repositório é atualizado continuamente com novos conteúdos e melhorias._
 
 </div>
+
+---
+
+# Limpeza de HTMLs para Livros Quarto
+
+Este script (`cleanBooks.py`) foi criado para automatizar a limpeza e padronização dos arquivos HTML gerados por projetos Quarto, especialmente para livros acadêmicos ou técnicos.
+
+## O que o script faz?
+
+- Remove headers específicos do Quarto (ex: `<header id="quarto-header">`).
+- Substitui o conteúdo do `<head>` dos HTMLs por um modelo padrão (`head.html`).
+- Preserva links SEO importantes (`<link rel="next">` e `<link rel="prev">`).
+- Insere componentes globais (ex: `globalheader.html`) logo após a abertura da tag `<body>`.
+- Permite customizar o local dos componentes com o argumento `--base-ac`.
+
+## Como usar
+
+### Renderize o livro normalmente com o Quarto
+
+```powershell
+cd .\build\TAS0000\
+quarto render .
+# voltar para a pasta raiz do projeto
+cd ../..
+```
+
+ou mais compacto:
+
+```
+cd .\build\EST0033\ ; quarto render . ; cd ../.. ;
+python run/cleanBooks.py --base-dir book/ --base-ac .\build\ac\books\
+```
+
+### Limpe todos os HTMLs gerados
+
+```powershell
+python run/cleanBooks.py --base-dir book/
+```
+
+### Usando componentes personalizados
+
+Se você tem um diretório específico para os componentes (ex: `build/ac/`):
+
+```powershell
+python run/cleanBooks.py --base-dir book/ --base-ac build/ac/
+```
+
+### Limpar um arquivo HTML específico
+
+```powershell
+python run/cleanBooks.py --file caminho/para/arquivo.html
+```
+
+## Argumentos
+
+- `--base-dir`: Diretório base para limpeza recursiva dos arquivos HTML.
+- `--file`: Caminho para um arquivo HTML único a ser limpo.
+- `--base-ac`: Diretório dos componentes (ex: `globalheader.html`, `head.html`). Opcional, padrão é `build/`.
+
+## Requisitos
+
+- Python 3
+- BeautifulSoup (`pip install beautifulsoup4`)
+
+## Observações
+
+- O script não altera arquivos PDF, apenas HTML.
+- Links de navegação SEO são preservados automaticamente.
+- O componente global (`globalheader.html`) é inserido em todos os HTMLs processados.
+
+---
+
+**Exemplo de uso completo:**
+
+```powershell
+python run/cleanBooks.py --base-dir book/ --base-ac build/ac/
+```
+
+---
+
+Dúvidas ou sugestões? Abra uma issue ou envie um e-mail para o mantenedor do projeto.
