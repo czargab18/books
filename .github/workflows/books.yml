@@ -248,7 +248,7 @@ jobs:
 
       - name: Sincroniza arquivos do artefato com a branch book
         run: |
-          rsync -av --update --delete books/book/ estatistica/book/
+          rsync -av --update books/book/ estatistica/book/
 
       - name: Garante que a branch book existe e faz checkout
         working-directory: estatistica
