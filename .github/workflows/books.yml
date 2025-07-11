@@ -159,7 +159,6 @@ jobs:
           repository: ${{ github.repository }}
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: main
-          path: "."
           path: books
 
       - name: Baixa Artefato para 'GitHub Pages'
