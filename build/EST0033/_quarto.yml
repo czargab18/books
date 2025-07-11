@@ -15,9 +15,12 @@ book:
   
     - part: "Unidade I"
       chapters:
-        # O que é estatística?
         - textuais/unid1/introd.qmd 
+        - textuais/unid1/brasil.qmd 
 
+    - part: "Unidade II"
+      chapters:
+        - textuais/unid1/introd.qmd 
 
     - part: "Anexos"
       chapters:
@@ -34,10 +37,10 @@ format:
     toc-title: "Sumário"
     toc-expand: 2
     sidebar:
-      title: false
-      sidebar-title: false
+      title: true
+      sidebar-title: true
       header: true
-      search: false
+      search: true
       code-link: true
 
 
