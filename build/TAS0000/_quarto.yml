@@ -6,7 +6,7 @@ project:
     port: 4200
     browser: false
 
-number-sections: false
+
 
 book:
   chapters:
@@ -14,6 +14,7 @@ book:
     - postextuais/references.qmd
 
 bibliography: postextuais/references.bib
+number-sections: false
 
 format:
   html:

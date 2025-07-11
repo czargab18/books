@@ -35,15 +35,18 @@ book:
     - postextuais/bibliografia/references.qmd
 
 bibliography: postextuais/bibliografia/references.bib
+number-sections: false
 
 format:
   html:
-    toc: false
-    sidebar: true
-    theme:
-      - cosmo
-      - brand
-    code-link: true
-    search: true
+    toc: true
+    toc-title: "Sumário"
+    toc-expand: 2
+    sidebar:
+      title: false
+      sidebar-title: false
+      header: false
+      search: false
+      code-link: true
 
-number-sections: false
+
