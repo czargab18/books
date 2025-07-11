@@ -49,6 +49,21 @@ class LimparHTML:
                 header = soup.find("header", id=header_id)
                 if header:
                     header.decompose()
+        # Remove divs com classes específicas
+        classes_remover = [
+            "pt-lg-2 mt-2 text-left sidebar-header",
+            "mt-2 flex-shrink-0 align-items-center"
+        ]
+        for class_name in classes_remover:
+            for div in soup.find_all("div", class_=class_name):
+                div.decompose()
+        # Remove o pai da div com class="sidebar-search"
+        for div_search in soup.find_all("div", class_="sidebar-search"):
+            parent = div_search.find_parent("div")
+            if parent:
+                parent.decompose()
+            else:
+                div_search.decompose()
         for tag, attrs in self.remove_selectors:
             for elem in soup.find_all(tag, attrs=attrs):
                 elem.decompose()
