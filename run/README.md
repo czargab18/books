@@ -18,6 +18,9 @@ Este script (`cleanBooks.py`) foi criado para automatizar a limpeza e padroniza√
 cd .\build\TAS0000\
 quarto render .
 
+# ou mais compacto:
+# cd .\build\TAS0000\ ; quarto render .
+
 # voltar para a pasta raiz do projeto
 cd ../..
 ```
