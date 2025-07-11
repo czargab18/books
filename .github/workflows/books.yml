@@ -160,6 +160,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           ref: main
           path: "."
+          path: books
 
       - name: Baixa Artefato para 'GitHub Pages'
         uses: actions/download-artifact@v4
