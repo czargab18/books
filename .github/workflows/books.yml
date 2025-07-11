@@ -173,14 +173,14 @@ jobs:
           python-version: "3.13"
 
       - name: Instalar dependencias do Python
-        working-directory: books
         run: |
+          cd books
           python -m pip install --upgrade pip
           pip install -r run/requirements.txt
 
       - name: Corrigir links para GitHub Pages - Books
-        working-directory: books
         run: |
+          cd books
           # indo para para pasta books/book/
           cd book
           python run/cleanBooks.py --base-dir book/ --base-ac build/ac/books
