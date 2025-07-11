@@ -1,6 +1,5 @@
-## Sumário {.headline-page .headline2-page #sumario .visuallyhidden }
+# Sumário {.headline-page .headline2-page #sumario}
 
-[Sumário]{.headline-page .headline2-page #sumario .visuallyhidden }
 
 - **UNIDADE I: INTRODUÇÃO**
     1. **O que é Estatística?**
