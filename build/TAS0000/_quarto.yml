@@ -2,7 +2,6 @@ project:
   title: "Estatística"
   type: book
   output-dir: "../../book/TAS0000"
-  lib-dir:  "delete/site_libs"
   preview:
     port: 4200
     browser: false
@@ -18,10 +17,12 @@ bibliography: postextuais/references.bib
 
 format:
   html:
-    toc: false
+    toc: true
+    toc-title: "Sumário"
+    toc-expand: 2
     sidebar:
-    theme:
-      - cosmo
-      - brand
-    code-link: true
-    search: true
+      title: false
+      sidebar-title: false
+      header: false
+      search: false
+      code-link: true
