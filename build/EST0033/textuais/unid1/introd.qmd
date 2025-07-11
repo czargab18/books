@@ -1,0 +1,7 @@
+## O que é estatística? {.headline-page .headline2-page #sumario .visuallyhidden }
+
+[O que é estatística?]{.headline-page .headline2-page #sumario .visuallyhidden }
+
+alguma coisa de conteudo
+
+[aalgo]{.headline}

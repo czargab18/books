@@ -1,2 +1,24 @@
-# Sumário {#sumario .headline2}
+## Sumário {.headline-page .headline2-page #sumario .visuallyhidden }
+
+[Sumário]{.headline-page .headline2-page #sumario .visuallyhidden }
+
+- **UNIDADE I: INTRODUÇÃO**
+    1. **O que é Estatística?**
+    2. **Estatística no BRASIL:** desde a profissão no Brasil, passando pelo Sistema Estatístico Brasileiro, até as principais fontes de dados estatísticos.
+
+- **UNIDADE II: FASES DO TRABALHO ESTATÍSTICO**
+    1. Planijamento:  Elaboração de um projeto de pesquisa
+    1. Coleta de dados: Tipos de coleta de dados: censos, amostras, registros contínuos e o questionário
+    2. Apuração de dados: Escala de mensuração e tipos de variáveis
+    3. Apresentação de dados: Séries estatísticas (temporal, especificativa, geográfica, mistas e distribuições de frequências), tabelas de contingência e representação gráfica de variáveis qualitativas.
+
+- **UNIDADE III: RESUMO E REPRESENTAÇÃO DE VARIÁVEIS QUANTITATIVAS UNIDIMENSIONAIS**
+    1. Representação gráfica de variáveis quantitativas: diagrama de pontos, ramo e folhas, histograma, polígono de frequências
+    2. Medidas de posição, variabilidade, assimetria e achatamento
+    3. Medidas resistentes: quantis
+    4. Desenho Esquemático (“Box-plot”)
+
+- **UNIDADE IV: ANÁLISE DE VARIÁVEIS BIDIMENSIONAIS**
+    1. Medidas de associação em Tabelas de Contingência (Medidas baseadas no Qui-Quadrado, Cramer)
+    2. Associação entre variáveis quantitativas: Diagrama de dispersão, Coeficiente de correlação de Pearson e Coeficiente de correlação de Spearman
 

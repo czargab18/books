@@ -1,76 +1,15 @@
-# Programa de Estatística Básica  
+# Estatística Exploratória
 
-## **UNIDADE I: INTRODUÇÃO À ESTATÍSTICA**  
-### 1. Conceitos Fundamentais  
-- **O que é Estatística?**  
-  - Definição, aplicações e divisões (descritiva × inferencial).  
-- **Estatística no Brasil**  
-  - Histórico e papel no setor público e privado.  
+**OBJETIVOS**
 
-### 2. Profissão e Sistema Estatístico  
-- **Atuação do Estatístico**  
-  - Áreas de trabalho e regulamentação profissional.  
-- **Sistema Estatístico Brasileiro**  
-  - IBGE, CONCLA, e outras instituições.  
+- Introduzir noções básicas de Análise Exploratória de Dados, familiarizando o estudante com sua terminologia e principais técnicas.
 
-### 3. Fontes de Dados  
-- **Bases nacionais**  
-  - Censos, PNAD, registros administrativos (ex: DATASUS).  
+- Familiarizar o estudante com as fases do trabalho estatístico e capacitá-lo, através da solução e discussão de exercícios, a sedimentar e utilizar os conceitos aprendidos na análise de dados.
 
+- Apresentar ao estudante uma visão geral da Estatística no Brasil: campo de aplicação, a profissão e sua regulamentação.
 
-## **UNIDADE II: ETAPAS DO MÉTODO ESTATÍSTICO**  
-### 1. Planejamento  
-- **Projeto de Pesquisa**  
-  - Definição de objetivos, população e amostra.  
+- Apresentar ao estudante as principais fontes de dados estatísticos no Brasil.
 
-### 2. Coleta de Dados  
-- **Métodos**  
-  - Censos, amostragem (probabilística e não-probabilística).  
-- **Instrumentos**  
-  - Elaboração de questionários (tipos de perguntas, validação).  
+- Introduzir o estudante ao uso de aplicativos estatísticos para microcomputadores.
 
-### 3. Organização e Apuração  
-- **Variáveis e Escalas**  
-  - Qualitativas (nominal/ordinal) × Quantitativas (discreta/contínua).  
-
-### 4. Apresentação de Dados  
-- **Séries Estatísticas**  
-  - Temporal, geográfica, categórica.  
-- **Gráficos para Variáveis Qualitativas**  
-  - Barras, setores, pictogramas.  
-
-
-## **UNIDADE III: ANÁLISE UNIVARIADA** *(Cap. 2 e 3 – Bussab & Morettin, 10ª ed.)*  
-### 1. Representação Gráfica  
-- **Diagrama de pontos**, **ramo-e-folhas**, **histogramas**.  
-
-### 2. Medidas-Resumo  
-- **Posição**: Média, mediana, moda.  
-- **Variabilidade**: Amplitude, desvio padrão.  
-- **Forma**: Coeficientes de assimetria e curtose.  
-
-### 3. Análise Robustez  
-- **Box-plot**: Interpretação e identificação de outliers.  
-
-
-## **UNIDADE IV: ANÁLISE BIVARIADA** *(Cap. 4 – Bussab & Morettin, 10ª ed.)*  
-### 1. Variáveis Qualitativas  
-- **Tabelas de contingência**  
-- **Medidas de associação**: Qui-Quadrado, V de Cramer.  
-
-### 2. Variáveis Quantitativas  
-- **Diagrama de dispersão**  
-- **Correlação**: Pearson (linear) e Spearman (monotônica).  
-
-### 3. Relações Qualitativa × Quantitativa  
-- **Comparação de grupos**: Box-plot por categoria.  
-
-
-## **REFERÊNCIAS**  
-### Básica  
-1. **BUSSAB, W. O.; MORETTIN, P. A.** *Estatística Básica*. 10ª ed. Saraiva, 2022.  
-2. **BARBETTA, P. A.** *Estatística Aplicada às Ciências Sociais*. 9ª ed. UFSC, 2020.  
-
-### Complementar  
-3. **TRIOLA, M. F.** *Introdução à Estatística*. 12ª ed. LTC, 2017.  
-*(Lista completa disponível no material complementar.)*  
+- Desenvolver a capacidade crítica e analítica do estudante através da discussão de exercícios e problemas, bem como a capacidade de se expressar oralmente e por escrito.

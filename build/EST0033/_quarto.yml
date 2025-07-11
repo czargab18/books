@@ -1,6 +1,6 @@
 project:
   type: book
-  output-dir: "../../book/TAS0000"
+  output-dir: "../../book/EST0033"
   lib-dir:  "delete/site_libs"
   preview:
     navigate: true
@@ -12,21 +12,12 @@ book:
   chapters:
     - index.qmd
     - pretextuais/sumario.qmd
-    - pretextuais/introducao.qmd
   
-    - part: "Titulo do Capitulo 1"
+    - part: "Unidade I"
       chapters:
-        - textuais/cap1/introd.qmd
-        - textuais/cap1/secao1.qmd
-        - textuais/cap1/secao1exercicios.qmd
-        - textuais/cap1/cap1exercicios.qmd
+        # O que é estatística?
+        - textuais/unid1/introd.qmd 
 
-    - part: "Titulo do Capitulo 2"
-      chapters:
-        - textuais/cap2/introd.qmd
-        - textuais/cap2/secao1.qmd
-        - textuais/cap2/secao2exercicios.qmd
-        - textuais/cap2/cap2exercicios.qmd
 
     - part: "Anexos"
       chapters:
@@ -45,7 +36,7 @@ format:
     sidebar:
       title: false
       sidebar-title: false
-      header: false
+      header: true
       search: false
       code-link: true
 

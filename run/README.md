@@ -23,7 +23,7 @@ cd ../..
 
 ou mais compacto:
 ```
-cd .\build\TAS0000\ ; quarto render . ; cd ../..
+cd .\build\EST0033\ ; quarto render . ; cd ../.. ;
 python run/cleanBooks.py --base-dir book/ --base-ac .\build\ac\books\
 ```
 

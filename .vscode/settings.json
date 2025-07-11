@@ -183,7 +183,9 @@
     "**/*.dvi": true,
     "**/__pycache__": true,
     "node_modules": true,
-    "build": false
+    "build": false,
+    "**/.quarto": true,
+    "**/delete": true
   },
   // AUTO SAVE
   "files.autoSave": "afterDelay",
