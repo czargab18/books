@@ -194,97 +194,96 @@ jobs:
         with:
           artifact_name: github-pages
 
-  # estatistica:
-  #   needs: [renderizar, books]
-  #   runs-on: ubuntu-latest
-  #   if: needs.detectar.outputs.FOLDERS_LISTA != ''
-  #   environment:
-  #     name: ENVIRONMENT
-  #   env:
-  #     FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
-  #     USERNAME: ${{ github.repository_owner }}
-  #     USEREMAIL: ${{ secrets.USEREMAIL }}
-  #     TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
-  #   steps:
-  #     - name: Clona o Repositório ESTATISTICA
-  #       uses: actions/checkout@v4
-  #       with:
-  #         ref: book
-  #         path: estatistica
-  #         fetch-depth: 0
-  #         repository: ${{ env.USERNAME }}/estatistica
-  #         token: ${{ env.TOKEN_REPO_SYNC }}
+  estatistica:
+    needs: [renderizar, books]
+    runs-on: ubuntu-latest
+    if: needs.detectar.outputs.FOLDERS_LISTA != ''
+    environment:
+      name: ENVIRONMENT
+    env:
+      FOLDERS_LISTA: ${{ needs.detectar.outputs.FOLDERS_LISTA }}
+      USERNAME: ${{ github.repository_owner }}
+      USEREMAIL: ${{ secrets.USEREMAIL }}
+      TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
+    steps:
+      - name: Clona o Repositório ESTATISTICA
+        uses: actions/checkout@v4
+        with:
+          ref: book
+          path: estatistica
+          fetch-depth: 1
+          repository: ${{ env.USERNAME }}/estatistica
+          token: ${{ env.TOKEN_REPO_SYNC }}
 
-  #     - name: Bixar submodulo book
-  #       uses: actions/checkout@v4
-  #       with:
-  #         repository: ${{ env.USERNAME }}/books
-  #         ref: main
-  #         path: book
+      - name: Baixar submodulo 'books'
+        uses: actions/checkout@v4
+        with:
+          token: ${{ env.TOKEN_REPO_SYNC }}
+          repository: ${{ env.USERNAME }}/books
+          ref: main
+          path: books
+          fetch-depth: 1
 
-  #     - name: Garante que a branch book existe e faz checkout
-  #       working-directory: estatistica
-  #       run: |
-  #         if ! git rev-parse --verify book >/dev/null 2>&1; then
-  #           git checkout --orphan book
-  #           git rm -rf .
-  #           git commit --allow-empty -m "Cria branch book inicial"
-  #           git push origin book
-  #         else
-  #           git checkout book
-  #         fi
+      - name: Configura Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.13"
 
-  #     - name: Baixa artefato dos livros renderizados
-  #       uses: actions/download-artifact@v4
-  #       with:
-  #         name: books_automatizar
-  #         path: _books
+      - name: Instalar dependencias  do python
+        run: |
+          cd books
+          python -m pip install --upgrade pip
+          pip install -r run/requirements.txt
 
-  #     - name: Sincroniza arquivos do artefato com a branch book
-  #       run: |
-  #         rsync -av --update --delete _books/ estatistica/book/
+      - name: Baixa artefato dos livros renderizados
+        uses: actions/download-artifact@v4
+        with:
+          name: books_renderizados
+          path: 'books/book'
 
-  #     - name: Configura Python
-  #       uses: actions/setup-python@v4
-  #       with:
-  #         python-version: "3.13"
+      - name: Corrigir links dos <head>
+        run: |
+          cd books
+          python run/cleanBooks.py --base-dir book/ --base-ac build/ac/
 
-  #     - name: Instalar dependencias  do python
-  #       working-directory: estatistica
-  #       run: |
-  #         cd book
-  #         python -m pip install --upgrade pip
-  #         pip install -r run/requirements.txt
+      - name: Sincroniza arquivos do artefato com a branch book
+        run: |
+          rsync -av --update --delete books/book/ estatistica/book/
 
-  #     - name: Corrigir links dos <head>
-  #       working-directory: estatistica
-  #       run: |
-  #         cd book
-  #         python run/cleanBooks.py --base-dir book/ --base-ac build/ac/
+      - name: Garante que a branch book existe e faz checkout
+        working-directory: estatistica
+        run: |
+          if ! git rev-parse --verify book >/dev/null 2>&1; then
+            git checkout --orphan book
+            git rm -rf .
+            git commit --allow-empty -m "Cria branch book inicial"
+            git push origin book
+          else
+            git checkout book
+          fi
 
-  #     - name: Configura credenciais do Git
-  #       working-directory: estatistica
-  #       run: |
-  #         git config user.name "${{ env.USERNAME }}"
-  #         git config user.email "${{ env.USEREMAIL }}"
-  #         git remote set-url origin https://x-access-token:${{ env.TOKEN_REPO_SYNC }}@github.com/${{ env.USERNAME }}/estatistica.git
+      - name: Configura credenciais do Git
+        working-directory: estatistica
+        run: |
+          git config user.name "${{ env.USERNAME }}"
+          git config user.email "${{ env.USEREMAIL }}"
+          git remote set-url origin https://x-access-token:${{ env.TOKEN_REPO_SYNC }}@github.com/${{ env.USERNAME }}/estatistica.git
 
-  #     - name: Faz commit e push dos livros renderizados
-  #       working-directory: estatistica
-  #       run: |
-  #         git add book/
-  #         git commit -m "books: atualiza books a partir do repo:books" || echo "Nada a commitar"
-  #         git push --force origin book
+      - name: Faz commit e push dos livros renderizados
+        working-directory: estatistica
+        run: |
+          git add book/
+          git commit -m "books: atualiza books a partir do repo:books" || echo "Nada a commitar"
+          git push --force origin book
 
-  # cleanup:
-  #   needs: [automatizar, estatistica, books]
-  #   runs-on: ubuntu-latest
-  #   steps:
-  #     - name: Deleta artefatos
-  #       uses: geekyeggo/delete-artifact@v5
-  #       with:
-  #         name: |
-  #           books_renderizados
-  #           books_detectados
-  #           books_automatizar
-  #           github-pages
+  cleanup:
+    needs: [estatistica, books]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deleta artefatos
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: |
+            books_detectados
+            books_renderizados
+            github-pages
