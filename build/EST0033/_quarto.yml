@@ -20,7 +20,15 @@ book:
 
     - part: "Unidade II"
       chapters:
-        - textuais/unid1/introd.qmd 
+        - textuais/unid2/introd.qmd 
+
+    - part: "Unidade III"
+      chapters:
+        - textuais/unid3/introd.qmd 
+
+    - part: "Unidade IV"
+      chapters:
+        - textuais/unid4/introd.qmd 
 
     - part: "Anexos"
       chapters:
