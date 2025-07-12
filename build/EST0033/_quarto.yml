@@ -14,8 +14,8 @@ book:
     limit: 10
     type: "textbox"
   sidebar: 
-    title: ""
-    header: ""
+    collapse: true      # ativa o modo recolhível
+    collapse-level: 1   # recolhe tudo abaixo do nível 1
     style: "floating"
     code-link: false
     pinned: true
