@@ -1,6 +1,9 @@
-# 📚 Books - Livros Acadêmicos com Quarto
+# A Arte da Estatística
+O nome desta série é inspirado na famosa coleção de Donald Knuth chamada “The Art of Computer Programming”, veja (tarara, xxx). Esta série ou coleção será construída com base em minhas notas de aulas e exercícios resolvidos.
 
 <!-- 🤖 README melhorado por IA - GitHub Copilot -->
+
+## Livros construidos com Quarto
 
 > **Projeto acadêmico para criação de livros e materiais educacionais** utilizando Quarto, R, Python e LaTeX, com foco em disciplinas de Estatística, Matemática e Ciência da Computação.
 
