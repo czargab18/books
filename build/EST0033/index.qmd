@@ -1,6 +1,6 @@
 # Estatística Exploratória
 
-**OBJETIVOS**
+## Objetivos
 
 - Introduzir noções básicas de Análise Exploratória de Dados, familiarizando o estudante com sua terminologia e principais técnicas.
 

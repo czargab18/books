@@ -1,7 +1,7 @@
 project:
   type: book
   output-dir: "../../book/EST0033"
-  lib-dir:  "delete/site_libs"
+  lib-dir:  "_libs"
   preview:
     navigate: true
     browser: false
@@ -9,6 +9,17 @@ project:
     port: 4200
   
 book:
+  search: 
+    location: sidebar
+    limit: 10
+    type: "textbox"
+  sidebar: 
+    title: ""
+    header: ""
+    style: "floating"
+    code-link: false
+    pinned: true
+
   chapters:
     - index.qmd
     - pretextuais/sumario.qmd
@@ -40,15 +51,10 @@ bibliography: postextuais/bibliografia/references.bib
 number-sections: false
 
 format:
-  html:
-    toc: true
-    toc-title: "Sumário"
-    toc-expand: 2
-    sidebar:
-      title: true
-      sidebar-title: true
-      header: true
-      search: true
-      code-link: true
+  html
+    # toc: true
+    # toc-title: "Sumário"
+    # toc-depth: 2
+    # bread-crumbs: false
 
 
