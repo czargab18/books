@@ -45,7 +45,7 @@ class LimparHTML:
         soup = BeautifulSoup(html, "html.parser")
         if self.remove_quarto_header:
             # ids = ["quarto-header", "title-block-header"]
-            ids = ["quarto-header", "title-block-header"]
+            ids = ["quarto-header"]
             for header_id in ids:
                 header = soup.find("header", id=header_id)
                 if header:
