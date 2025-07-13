@@ -43,6 +43,7 @@ book:
 
     - part: "Anexos"
       chapters:
+        - postextuais/apendice/ementa.qmd
         - postextuais/apendice/formulas/cap1.qmd
 
     - postextuais/bibliografia/references.qmd
