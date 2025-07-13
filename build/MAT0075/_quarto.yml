@@ -36,12 +36,9 @@ bibliography: postextuais/references.bib
 
 format:
   html:
-    toc: true
-    toc-title: "Sumário"
-    toc-expand: 2
-    sidebar:
-      title: false
-      sidebar-title: false
-      header: false
-      search: false
-      code-link: true
+     toc: true
+     toc-location: left
+     toc-title: "Conteúdo"
+     toc-depth: 2
+     bread-crumbs: false
+

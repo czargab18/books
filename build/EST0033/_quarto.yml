@@ -55,9 +55,8 @@ number-sections: false
 
 format:
   html:
-    toc: true
-    toc-title: "Sumário"
-    toc-depth: 2
-    bread-crumbs: false
-
-
+     toc: true
+     toc-location: left
+     toc-title: "Conteúdo"
+     toc-depth: 2
+     bread-crumbs: false

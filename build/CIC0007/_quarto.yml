@@ -42,5 +42,9 @@ bibliography: conteudo/03/references.bib
 number-sections: false
 
 format:
-  html
-    
+  html:
+     toc: true
+     toc-location: left
+     toc-title: "Conteúdo"
+     toc-depth: 2
+     bread-crumbs: false
