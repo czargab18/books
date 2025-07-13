@@ -1,6 +1,5 @@
 # Sumário {.headline-page .headline2-page #sumario}
 
-
 - **UNIDADE I: INTRODUÇÃO**
     1. **O que é Estatística?**
     2. **Estatística no BRASIL:** desde a profissão no Brasil, passando pelo Sistema Estatístico Brasileiro, até as principais fontes de dados estatísticos.
