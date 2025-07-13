@@ -1,6 +1,6 @@
 project:
   type: book
-#  output-dir: "../../book/EST0033"
+  output-dir: "../../book/EST0033"
 #  lib-dir:  "_libs"
   preview:
     navigate: true

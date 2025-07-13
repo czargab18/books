@@ -6,6 +6,7 @@
 **/.gitignore
 delete/
 *libs*/
+_book/
 
 # local da renderização remota
 book/
