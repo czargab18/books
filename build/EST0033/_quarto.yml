@@ -1,7 +1,7 @@
 project:
   type: book
-  output-dir: "../../book/EST0033"
-  lib-dir:  "_libs"
+#  output-dir: "../../book/EST0033"
+#  lib-dir:  "_libs"
   preview:
     navigate: true
     browser: false
@@ -9,16 +9,18 @@ project:
     port: 4200
   
 book:
-  search: 
-    location: sidebar
-    limit: 10
-    type: "textbox"
   sidebar: 
-    collapse: true      # ativa o modo recolhível
-    collapse-level: 1   # recolhe tudo abaixo do nível 1
+    collapse: true
+    collapse-level: 1
     style: "floating"
     code-link: false
     pinned: true
+    search: true
+  search: 
+    location: sidebar
+    type: "textbox"
+    limit: 20
+      
 
   chapters:
     - index.qmd
@@ -52,10 +54,10 @@ bibliography: postextuais/bibliografia/references.bib
 number-sections: false
 
 format:
-  html
-    # toc: true
-    # toc-title: "Sumário"
-    # toc-depth: 2
-    # bread-crumbs: false
+  html:
+    toc: true
+    toc-title: "Sumário"
+    toc-depth: 2
+    bread-crumbs: false
 
 
