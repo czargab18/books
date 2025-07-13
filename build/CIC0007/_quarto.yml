@@ -1,26 +1,26 @@
 project:
-  title: "Introdução a Ciência da Computação"
   type: book
-#  output-dir: "../../docs/EST0033"
-  lib-dir: "../ac/site_libs"
+#  output-dir: "../../book/CIC0007"
+#  lib-dir:  "_libs"
   preview:
-    port: 4200
+    navigate: true
     browser: false
-
+    host: "localhost"
+    port: 4200
+  
 book:
-  title: "Introdução a Ciência da Computação"
-  page-navigation: true
-  reader-mode: true
-  search: 
-    location: sidebar
-    limit: 10
-    type: "textbox"
   sidebar: 
-    collapse: true      
-    collapse-level: 1   
+    collapse: true
+    collapse-level: 1
     style: "floating"
     code-link: false
     pinned: true
+    search: true
+  search: 
+    location: sidebar
+    type: "textbox"
+    limit: 20
+
   chapters:
     - index.qmd
     - conteudo/01/introducao.qmd
