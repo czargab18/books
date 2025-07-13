@@ -1,6 +1,3 @@
-## O que é estatística? {.headline-page .headline2-page #sumario .visuallyhidden }
-
-[O que é estatística?]{.headline-page .headline2-page #sumario .visuallyhidden }
-
+# O que é estatística? {.title-page}
 
 Em desenvolvimento
