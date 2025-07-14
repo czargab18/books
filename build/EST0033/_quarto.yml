@@ -59,4 +59,5 @@ format:
      toc-location: left
      toc-title: "Conteúdo"
      toc-depth: 2
+     toc-expand: false
      bread-crumbs: false
