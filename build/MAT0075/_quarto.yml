@@ -1,16 +1,26 @@
 project:
-  title: "CALCULO DE PROBABILIDADE"
   type: book
-#  output-dir: "../../docs/MAT0075"
-  # lib-dir: "./../delete/site_libs"
+#  output-dir: "../../book/MAT0075"
+#  lib-dir:  "_libs"
   preview:
-    port: 4200
+    navigate: true
     browser: false
-
-number-sections: false
-bibliography: postextuais/references.bib
-
+    host: "localhost"
+    port: 4200
+  
 book:
+  sidebar: 
+    collapse: true
+    collapse-level: 1
+    style: "floating"
+    code-link: false
+    pinned: true
+    search: true
+  search: 
+    location: sidebar
+    type: "textbox"
+    limit: 20
+
   chapters:
     - index.qmd
 
@@ -21,14 +31,14 @@ book:
 
     - postextuais/references.qmd
 
+number-sections: false
+bibliography: postextuais/references.bib
+
 format:
   html:
-    toc: true
-    toc-title: "Sumário"
-    toc-expand: 2
-    sidebar:
-      title: false
-      sidebar-title: false
-      header: false
-      search: false
-      code-link: true
+     toc: true
+     toc-location: left
+     toc-title: "Conteúdo"
+     toc-depth: 2
+     bread-crumbs: false
+

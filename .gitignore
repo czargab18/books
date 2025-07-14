@@ -1,17 +1,18 @@
 ###########################################
-################## pastas:#################
+################### RAIZ ##################
 ###########################################
 ##### IGNORAR
 *.pdf
-delete/
-site_libs/
 **/.gitignore
+delete/
+*libs*/
+_book/
 
 # local da renderização remota
 book/
 
 ##### NÃO IGNORAR
-# !fluxograma.pdf
+!fluxograma.pdf
 !/.gitignore
 
 ###########################################

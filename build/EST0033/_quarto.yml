@@ -1,7 +1,7 @@
 project:
   type: book
   output-dir: "../../book/EST0033"
-  lib-dir:  "delete/site_libs"
+#  lib-dir:  "_libs"
   preview:
     navigate: true
     browser: false
@@ -9,6 +9,19 @@ project:
     port: 4200
   
 book:
+  sidebar: 
+    collapse: true
+    collapse-level: 1
+    style: "floating"
+    code-link: false
+    pinned: true
+    search: true
+  search: 
+    location: sidebar
+    type: "textbox"
+    limit: 20
+      
+
   chapters:
     - index.qmd
     - pretextuais/sumario.qmd
@@ -20,10 +33,19 @@ book:
 
     - part: "Unidade II"
       chapters:
-        - textuais/unid1/introd.qmd 
+        - textuais/unid2/introd.qmd 
+
+    - part: "Unidade III"
+      chapters:
+        - textuais/unid3/introd.qmd 
+
+    - part: "Unidade IV"
+      chapters:
+        - textuais/unid4/introd.qmd 
 
     - part: "Anexos"
       chapters:
+        - postextuais/apendice/ementa.qmd
         - postextuais/apendice/formulas/cap1.qmd
 
     - postextuais/bibliografia/references.qmd
@@ -33,14 +55,8 @@ number-sections: false
 
 format:
   html:
-    toc: true
-    toc-title: "Sumário"
-    toc-expand: 2
-    sidebar:
-      title: true
-      sidebar-title: true
-      header: true
-      search: true
-      code-link: true
-
-
+     toc: true
+     toc-location: left
+     toc-title: "Conteúdo"
+     toc-depth: 2
+     bread-crumbs: false

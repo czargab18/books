@@ -44,7 +44,8 @@ class LimparHTML:
     def limpar(self, html):
         soup = BeautifulSoup(html, "html.parser")
         if self.remove_quarto_header:
-            ids = ["quarto-header", "title-block-header"]
+            # ids = ["quarto-header", "title-block-header"]
+            ids = ["quarto-header"]
             for header_id in ids:
                 header = soup.find("header", id=header_id)
                 if header:
@@ -52,7 +53,11 @@ class LimparHTML:
         # Remove divs com classes específicas
         classes_remover = [
             "pt-lg-2 mt-2 text-left sidebar-header",
-            "mt-2 flex-shrink-0 align-items-center"
+            "mt-2 flex-shrink-0 align-items-center",
+            "quarto-sidebar-collapse-item",
+            "quarto-margin-sidebar",
+            "quarto-search-results",
+            "sidebar margin-sidebar zindex-bottom"
         ]
         for class_name in classes_remover:
             for div in soup.find_all("div", class_=class_name):

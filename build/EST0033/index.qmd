@@ -1,15 +1,3 @@
-# Estatística Exploratória
+# Estatística Exploratória {.title-page}
 
-**OBJETIVOS**
-
-- Introduzir noções básicas de Análise Exploratória de Dados, familiarizando o estudante com sua terminologia e principais técnicas.
-
-- Familiarizar o estudante com as fases do trabalho estatístico e capacitá-lo, através da solução e discussão de exercícios, a sedimentar e utilizar os conceitos aprendidos na análise de dados.
-
-- Apresentar ao estudante uma visão geral da Estatística no Brasil: campo de aplicação, a profissão e sua regulamentação.
-
-- Apresentar ao estudante as principais fontes de dados estatísticos no Brasil.
-
-- Introduzir o estudante ao uso de aplicativos estatísticos para microcomputadores.
-
-- Desenvolver a capacidade crítica e analítica do estudante através da discussão de exercícios e problemas, bem como a capacidade de se expressar oralmente e por escrito.
+Em desenvolvimento

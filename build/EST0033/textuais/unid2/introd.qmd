@@ -1,6 +1,3 @@
-## Fase do Trabalho Estatístico? {.headline-page .headline2-page #sumario .visuallyhidden }
-
-[Fase do Trabalho Estatístico?]{.headline-page .headline2-page #sumario .visuallyhidden }
-
+# Fase do Trabalho Estatístico? {.title-page}
 
 Em desenvolvimento
