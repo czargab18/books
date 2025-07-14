@@ -258,7 +258,7 @@ ou mais compacto:
 
 ```
 cd .\build\EST0033\ ; quarto render . ; cd ../.. ;
-python run/cleanBooks.py --base-dir book/ --base-ac .\build\ac\books\
+python run/cleanBooks.py --base-dir book/EST0033 --base-ac .\build\ac\books\
 ```
 
 ### Limpe todos os HTMLs gerados

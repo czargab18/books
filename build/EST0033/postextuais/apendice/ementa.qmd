@@ -140,14 +140,27 @@ Esta ementa está sendo adaptada da disciplina ofertada pelo Departamentod de Es
 - **Comparação de grupos**: Box-plot por categoria.  
 
 
-## **REFERÊNCIAS**  
-### Básica  
-1. **BUSSAB, W. O.; MORETTIN, P. A.** *Estatística Básica*. 10ª ed. Saraiva, 2022.  
-2. **BARBETTA, P. A.** *Estatística Aplicada às Ciências Sociais*. 9ª ed. UFSC, 2020.  
 
-### Complementar  
-3. **TRIOLA, M. F.** *Introdução à Estatística*. 12ª ed. LTC, 2017.  
-*(Lista completa disponível no material complementar.)*  
+## REFERÊNCIAS
 
+### Básica
+1. BARATELA MARTINS NETO, Daniele da Silva. Cálculo de Probabilidade 1. Notas de aula. Universidade de Brasília (UnB), Departamento de Matemática, 2025. Disponível mediante solicitação por e-mail: danielebaratela@unb.br.
+2. BARBETTA, Pedro A. Estatística Aplicada às Ciências Sociais. 7. ed. Florianópolis: Ed. da UFSC, 2007.
+3. BUSSAB, W.; MORETTIN, P. Estatística Básica. 5. ed. São Paulo: Saraiva, 2003.
+4. FONSECA, J. S.; MARTINS, G. A. Curso de Estatística. São Paulo: Atlas, 1994.
+5. MAGALHÃES, Marcos N.; LIMA, Antonio Carlos P. Noções de Probabilidade e Estatística. São Paulo: EdUSP, 2002.
+6. TOLEDO, G. L.; OVALLE, I. J. Estatística Básica. 2. ed. São Paulo: Atlas, 2010.
 
-
+### Complementar
+7. BERQUÓ, E. S.; GOTLIEB, Sabina L. D.; SOUSA, J. M. P. de. Bioestatística. 2. ed. rev. São Paulo: Editora Pedagógica e Universitária Ltda., 2001.
+8. HAKKERT, R. Fontes de dados demográficos. Belo Horizonte: ABEP, 1996. (Textos Didáticos)
+9. LEOROLLA, F. Estatística para Engenheiros. Brasília: UnB, 2025.
+10. LEVIN, J.; FOX, J. A. Estatística Aplicada às Ciências Humanas. 9. ed. São Paulo: Pearson, 2004.
+11. LEVINE, D. M. Estatística: Teoria e Aplicações usando o Microsoft Excel © em Português. 6. ed. Rio de Janeiro: Livros Técnicos e Científicos Editora S.A., 2012.
+12. MANUALDELATEX. Manual do LaTeX. Disponível em: https://latex.example.com. Acesso em: 14 jul. 2025.
+13. SHELDON, R. Estatística para Negócios. São Paulo: Atlas, 2009.
+14. STEVENSON, W.J. Estatística Aplicada à Administração. São Paulo: Harbra, 2000.
+15. TRIOLA, M.F. Introdução à Estatística - Atualização da Tecnologia. 11. ed. Rio de Janeiro: Livros Técnicos e Científicos Editora S.A., 2013.
+16. TRIOLA, M.F. E-Book - Introdução à Estatística - Atualização da Tecnologia. 11. ed. Rio de Janeiro: Livros Técnicos e Científicos Editora S.A., 2013.
+17. VELLEMAN, P.; HOAGLIN, D.C. Applications, Basics and Computing Exploratory Data Analysis. 1. ed. Boston: Duxbury Press, 1981.
+18. WILD, C. J.; SEBER, G. A. F. Encontros com o acaso: um primeiro curso de análise de dados e inferência. Rio de Janeiro: Livros Técnicos e Científicos, 2004.
