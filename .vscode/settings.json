@@ -29,7 +29,10 @@
   "r.lsp.debug": true,
   "r.lsp.enabled": true,
   "r.rmarkdown.enableCodeLens": true,
-  "r.rterm.option": ["--no-save", "--no-restore"],
+  "r.rterm.option": [
+    "--no-save",
+    "--no-restore"
+  ],
   // CONFIGURAÇÕES PYTHON
   "python.terminal.activateEnvironment": true,
   "python.analysis.autoImportCompletions": true,
@@ -83,7 +86,10 @@
   "editor.formatOnPaste": true,
   "editor.detectIndentation": false,
   "editor.fontLigatures": true,
-  "editor.rulers": [80, 120],
+  "editor.rulers": [
+    80,
+    120
+  ],
   "editor.cursorBlinking": "smooth",
   "editor.cursorStyle": "line-thin",
   "editor.parameterHints.enabled": false,
@@ -166,7 +172,6 @@
   // ARQUIVOS OCULTOS
   "files.exclude": {
     "**/.vscode": false,
-    "**/*_cache": true,
     "**/*.synctex*": true,
     "**/*.fdb_latexmk": true,
     "**/*.run.xml": true,
@@ -181,11 +186,14 @@
     "**/*.blg": true,
     "**/*.out": true,
     "**/*.dvi": true,
-    "**/__pycache__": true,
-    "node_modules": true,
-    "build": false,
+    "**/*cache*": true,
+    "**/node_modules": true,
+    "**/build": false,
     "**/.quarto": true,
-    "**/delete": true
+    "**/delete": true,
+    "**/_book": true,
+    "**/*libs*": true,
+    "**/.gitignore": true
   },
   // AUTO SAVE
   "files.autoSave": "afterDelay",
