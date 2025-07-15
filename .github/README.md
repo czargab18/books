@@ -257,9 +257,13 @@ cd ../..
 ou mais compacto:
 
 ```
+echo "Navegando para o diretório do livro e renderizando..."
 cd ./build/TAS0000/ ;
+echo "Renderizando o livro..."
 quarto render . --output-dir ../../book/TAS0000;
+echo "Voltando para a raiz do projeto..."
 cd ../.. ;
+echo "Automatizando a limpeza dos HTMLs..."
 python run/cleanBooks.py --base-dir ./book/TAS0000/ --base-ac ./build/ac/books/
 ```
 
