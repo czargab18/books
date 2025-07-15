@@ -72,6 +72,9 @@ class LimparHTML:
         for tag, attrs in self.remove_selectors:
             for elem in soup.find_all(tag, attrs=attrs):
                 elem.decompose()
+        # Remove todas as tags <br>, <br/>, </br>
+        for br in soup.find_all("br"):
+            br.decompose()
         return str(soup)
 
     def limpar_arquivo_html(self, caminho):
@@ -113,7 +116,7 @@ class LimparHTML:
                 # Exemplo: verifica se existe um elemento com id="globalheader"
                 existe_globalheader = False
                 gh_tag = globalheader_soup.find(True, id=True)
-                if gh_tag and body_tag.find(True, id=gh_tag.get("id")): # type: ignore
+                if gh_tag and body_tag.find(True, id=gh_tag.get("id")):  # type: ignore
                     existe_globalheader = True
                 # Se não existir, insere
                 if not existe_globalheader:
