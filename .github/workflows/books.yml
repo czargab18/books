@@ -293,6 +293,8 @@ jobs:
   pull_request_book_to_stag:
     needs: [estatistica]
     runs-on: ubuntu-latest
+    environment: 
+      name: ENVIRONMENT
     env:
       TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
       USERNAME: ${{ github.repository_owner }}
