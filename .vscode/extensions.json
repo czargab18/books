@@ -45,7 +45,11 @@
     // OUTRAS FERRAMENTAS ÚTEIS PARA ACADÊMICOS
     "humao.rest-client", // REST Client
     "ms-toolsai.vscode-ai", // AI Tools
-    "ms-vscode.wordcount" // Word Count para documentos
+    "ms-vscode.wordcount",
+    "dbaeumer.vscode-eslint",
+    "formulahendry.auto-rename-tag",
+    "formulahendry.auto-close-tag",
+    "pranaygp.vscode-css-peek" // Word Count para documentos
   ],
   "unwantedRecommendations": [
     // Extensões que podem conflitar ou são desnecessárias
