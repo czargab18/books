@@ -1,5 +1,4 @@
 project:
-  title: "Estatística"
   type: book
   output-dir: "../../book/TAS0000"
   preview:
@@ -7,23 +6,31 @@ project:
     browser: false
 
 
-
 book:
+  sidebar: 
+    collapse: true
+    collapse-level: 1
+    style: "floating"
+    code-link: false
+    pinned: true
+    search: true
+  search: 
+    location: sidebar
+    type: "textbox"
+    limit: 20
+
   chapters:
     - index.qmd
     - postextuais/references.qmd
 
-bibliography: postextuais/references.bib
+bibliography: postextuais/bibliografia/references.bib
 number-sections: false
 
 format:
   html:
-    toc: true
-    toc-title: "Sumário"
-    toc-expand: 2
-    sidebar:
-      title: false
-      sidebar-title: false
-      header: false
-      search: false
-      code-link: true
+     toc: true
+     toc-location: left
+     toc-title: "Conteúdo"
+     toc-depth: 2
+     toc-expand: false
+     bread-crumbs: false
