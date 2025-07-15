@@ -278,12 +278,40 @@ jobs:
           git commit -m "books: atualiza books a partir do repo:books" || echo "Nada a commitar"
           git push --force origin book
 
+  cleanup:
+    needs: [estatistica, books]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deleta artefatos
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: |
+            books_detectados
+            books_renderizados
+            github-pages
+
+  pull_request_book_to_stag:
+    needs: [estatistica]
+    runs-on: ubuntu-latest
+    env:
+      TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
+      USERNAME: ${{ github.repository_owner }}
+      USEREMAIL: ${{ secrets.USEREMAIL }}
+    steps:
+      - name: Checkout branch book
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ env.USERNAME }}/estatistica
+          ref: book
+          token: ${{ env.TOKEN_REPO_SYNC }}
+          fetch-depth: 0
+
       - name: Cria Pull Request da branch book para stag
         uses: peter-evans/create-pull-request@v7
         with:
           token: ${{ env.TOKEN_REPO_SYNC }}
           commit-message: "books: atualiza books a partir do repo:books"
-          committer: ${{ env.USERNAME }} ${{ env.USEREMAIL }}
+          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
           author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
           signoff: false
           branch: book
@@ -297,15 +325,3 @@ jobs:
             quarto
             front-end
           draft: false
-
-  cleanup:
-    needs: [estatistica, books]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Deleta artefatos
-        uses: geekyeggo/delete-artifact@v5
-        with:
-          name: |
-            books_detectados
-            books_renderizados
-            github-pages
