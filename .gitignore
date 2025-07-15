@@ -7,6 +7,7 @@
 delete/
 *libs*/
 _book/
+.quarto
 
 # local da renderização remota
 book/
