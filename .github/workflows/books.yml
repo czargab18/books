@@ -292,6 +292,10 @@ jobs:
           title: "books: atualiza books: book → stag"
           body: |
             Sincronização automática dos livros renderizados da branch book para stag.
+          labels: |
+            livros
+            quarto
+            front-end
           draft: false
 
   cleanup:
