@@ -4,7 +4,7 @@
 A Unidade I é destinada a falar sobre a area de Estatística, eoutras coisas. talvez, seja mais interresante apenas jogar o conteúdo para TAS0000 deixando aqui apenas o conteúdo sobre métodos estatistica para análise de dados
  -->
 
-O nome desta série é inspirado na famosa coleção de Donald Knuth chamada "The Art of Computer Programming", veja [@knuthTAOCP]. Esta coleção será construída com base em minhas notas e exercícios de aulas.
+O nome desta série é inspirado na famosa coleção de Donald Knuth chamada "The Art of Computer Programming", veja (@knuthTAOCP). Esta coleção será construída com base em minhas notas e exercícios de aulas.
 
 ## Algumas perguntas que acredito serem úteis.
 
