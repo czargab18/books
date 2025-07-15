@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
   push:
     branches: [main]
-    paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.html","build/*.bib" ,".github/workflows/*books*.yml"]
+    paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.html", "build/*.bib", ".github/workflows/*books*.yml"]
 
 permissions:
   contents: write
@@ -241,7 +241,7 @@ jobs:
         uses: actions/download-artifact@v4
         with:
           name: books_renderizados
-          path: 'books/book'
+          path: "books/book"
 
       - name: Corrigir links dos <head>
         run: |
@@ -277,6 +277,22 @@ jobs:
           git add book/
           git commit -m "books: atualiza books a partir do repo:books" || echo "Nada a commitar"
           git push --force origin book
+
+      - name: Cria Pull Request da branch book para stag
+        uses: peter-evans/create-pull-request@v7
+        with:
+          token: ${{ env.TOKEN_REPO_SYNC }}
+          commit-message: "books: atualiza books a partir do repo:books"
+          committer: ${{ env.USERNAME }} ${{ env.USEREMAIL }}
+          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+          signoff: false
+          branch: book
+          base: stag
+          delete-branch: false
+          title: "books: atualiza books: book → stag"
+          body: |
+            Sincronização automática dos livros renderizados da branch book para stag.
+          draft: false
 
   cleanup:
     needs: [estatistica, books]
