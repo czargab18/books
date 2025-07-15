@@ -311,17 +311,16 @@ jobs:
         with:
           token: ${{ env.TOKEN_REPO_SYNC }}
           commit-message: "books: atualiza books a partir do repo:books"
-          committer: github-actions[bot] <41898282+github-actions[bot]@users.noreply.github.com>
-          author: ${{ github.actor }} <${{ github.actor_id }}+${{ github.actor }}@users.noreply.github.com>
+          committer: "${{ env.USERNAME }} <${{ env.USEREMAIL }}>"
+          author: "${{ env.USERNAME }} <${{ env.USEREMAIL }}>"
           signoff: false
           branch: book
           base: stag
           delete-branch: false
           title: "books: atualiza books: book → stag"
           body: |
-            Sincronização automática dos livros renderizados da branch book para stag.
+            Sincronização automática dos livros renderizados da branch
           labels: |
             livros
             quarto
             front-end
-          draft: false
