@@ -29,10 +29,7 @@
   "r.lsp.debug": true,
   "r.lsp.enabled": true,
   "r.rmarkdown.enableCodeLens": true,
-  "r.rterm.option": [
-    "--no-save",
-    "--no-restore"
-  ],
+  "r.rterm.option": ["--no-save", "--no-restore"],
   // CONFIGURAÇÕES PYTHON
   "python.terminal.activateEnvironment": true,
   "python.analysis.autoImportCompletions": true,
@@ -86,10 +83,7 @@
   "editor.formatOnPaste": true,
   "editor.detectIndentation": false,
   "editor.fontLigatures": true,
-  "editor.rulers": [
-    80,
-    120
-  ],
+  "editor.rulers": [80, 120],
   "editor.cursorBlinking": "smooth",
   "editor.cursorStyle": "line-thin",
   "editor.parameterHints.enabled": false,
@@ -112,7 +106,7 @@
   // CONFIGURAÇÕES DO WORKSPACE
   "workbench.colorTheme": "GitHub Dark",
   "workbench.iconTheme": "vs-seti",
-  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreview": true,
   "workbench.editor.labelFormat": "short",
   "workbench.startupEditor": "readme",
   "workbench.tree.enableStickyScroll": false,
