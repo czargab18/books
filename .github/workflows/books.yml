@@ -219,7 +219,7 @@ jobs:
 
       - name: Set up authentication for git
         run: |
-          git config --global url."https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/".insteadOf "https://github.com/"
+          git config --global url."https://x-access-token:${{ secrets.TOKEN_REPO_SYNC }}@github.com/".insteadOf "https://github.com/"
 
       - name: Baixar submodulo 'books'
         uses: actions/checkout@v4
