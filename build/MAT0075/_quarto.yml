@@ -31,7 +31,6 @@ book:
 
     - postextuais/references.qmd
 
-number-sections: false
 bibliography: postextuais/references.bib
 
 format:
@@ -40,5 +39,9 @@ format:
      toc-location: left
      toc-title: "Conteúdo"
      toc-depth: 2
+     toc-expand: false
      bread-crumbs: false
+     number-sections: false
+     anchor-sections: false
+     code-link: false
 

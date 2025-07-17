@@ -29,7 +29,6 @@ book:
     - postextuais/references.qmd
 
 bibliography: postextuais/bibliografia/references.bib
-number-sections: false
 
 format:
   html:
@@ -39,3 +38,6 @@ format:
      toc-depth: 2
      toc-expand: false
      bread-crumbs: false
+     number-sections: false
+     anchor-sections: false
+     code-link: false

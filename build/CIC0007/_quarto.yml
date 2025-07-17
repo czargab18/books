@@ -39,7 +39,6 @@ book:
       Este book foi construido com <a href="https://quarto.org/">Quarto</a>.
 
 bibliography: conteudo/03/references.bib
-number-sections: false
 
 format:
   html:
@@ -47,4 +46,8 @@ format:
      toc-location: left
      toc-title: "Conteúdo"
      toc-depth: 2
+     toc-expand: false
      bread-crumbs: false
+     number-sections: false
+     anchor-sections: false
+     code-link: false
