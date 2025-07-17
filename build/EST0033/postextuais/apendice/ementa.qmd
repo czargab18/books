@@ -100,3 +100,125 @@ Esta ementa está sendo adaptada da disciplina ofertada pelo Departamentod de Es
 15. TRIOLA, M.F. E-Book - Introdução à Estatística - Atualização da Tecnologia. 11. ed. Rio de Janeiro: Livros Técnicos e Científicos Editora S.A., 2013.
 16. VELLEMAN, P.; HOAGLIN, D.C. Applications, Basics and Computing Exploratory Data Analysis. 1. ed. Boston: Duxbury Press, 1981.
 17. WILD, C. J.; SEBER, G. A. F. Encontros com o acaso: um primeiro curso de análise de dados e inferência. Rio de Janeiro: Livros Técnicos e Científicos, 2004.
+
+---
+## Estrutura do Curso de Estatística Básica
+
+### 1. Visão Geral do Curso
+- Slide
+- Visão Geral do Curso (vídeo, 6m)
+
+### 2. Conceitos Iniciais
+- Slides - Conceitos Iniciais
+- Conceitos Iniciais (vídeo, 20m)
+
+### 3. Séries Estatísticas
+- Slides - Séries Estatísticas
+- Séries Estatísticas (vídeo, 5m)
+
+### 4. Gráficos
+- Slides - Gráficos
+- Gráficos (vídeo, 15m)
+- Diagrama de Pareto (vídeo, 6m)
+
+### 5. Distribuição de Frequências
+- Slides - Distribuição de Frequências
+- Distribuição de Frequências (vídeo, 18m)
+- Exercícios - Distribuição de Frequências
+- Resoluções Exercícios - Distribuição de Frequências
+
+### 6. Histograma e Polígono de Frequências
+- Slides - Histograma e Polígono de Frequências
+- Histograma e Polígono de Frequências (vídeo, 5m)
+
+### 7. Medidas de Posição
+- Slides - Medidas de Posição
+- Média Aritmética (vídeo, 9m)
+- Média Ponderada (vídeo, 6m)
+- Exercícios - Média Aritmética e Média Ponderada
+- Resoluções Exercícios - Média Aritmética e Média Ponderada
+- Mediana (vídeo, 20m)
+- Exercícios - Mediana
+- Resoluções Exercícios - Mediana
+- Moda (vídeo, 8m)
+- Exercícios - Moda
+- Resoluções Exercícios - Moda
+
+### 8. Medidas Separatrizes
+- Slides - Medidas Separatrizes
+- Medidas Separatrizes (vídeo, 14m)
+- Medidas Separatrizes no Excel (vídeo, 5m)
+- Exercícios - Medidas Separatrizes
+- Resoluções Exercícios - Medidas Separatrizes
+
+### 9. Probabilidade
+- Slides - Probabilidade
+- Probabilidade - Conceitos Iniciais (vídeo, 7m)
+- Probabilidade Frequentista (vídeo, 13m)
+- Probabilidade - Teoremas da Soma (vídeo, 20m)
+- Probabilidade - Teoremas do Produto (vídeo, 18m)
+- Exercícios - Probabilidade
+- Resoluções Exercícios - Probabilidade
+
+### 10. Medidas de Dispersão
+- Slides - Medidas de Dispersão
+- Variância (vídeo, 10m)
+- Desvio Padrão (vídeo, 18m)
+- Coeficiente de Variação (vídeo, 5m)
+- Exercícios Propostos - Medidas de Dispersão
+- Resolução Exercícios Propostos - Medidas de Dispersão
+
+### 11. Distribuição Binomial
+- Slides - Distribuição Binomial
+- Distribuição Binomial (vídeo, 24m)
+- Exercícios - Distribuição Binomial
+- Resoluções Exercícios - Distribuição Binomial
+
+### 12. Medidas de Associação
+- Slides - Medidas de Associação
+- Medidas de Associação (vídeo, 30m)
+- Exercícios - Medidas de Associação
+- Resoluções Exercícios - Medidas de Associação
+
+### 13. Análise de Regressão Linear Simples
+- Slides - Análise de Regressão Linear Simples
+- Análise de Regressão Linear Simples (vídeo, 36m)
+- Exercícios - Análise de Regressão Linear Simples
+- Resoluções Exercícios - Análise de Regressão Linear Simples
+
+### 14. Distribuição Normal
+- Slides - Distribuição Normal
+- Tabela Distribuição Normal Padrão
+- Distribuição Normal (vídeo, 33m)
+- Aproximação da Distribuição Binomial pela Distribuição Normal (vídeo, 3m)
+- Função Distribuição Normal no Excel (vídeo, 3m)
+- Exercícios - Distribuição Normal
+- Resoluções Exercícios - Distribuição Normal
+
+### 15. Teorema do Limite Central - TLC
+- Slides - Teorema do Limite Central - TLC
+- Teorema do Limite Central - TLC (vídeo, 22m)
+- Exercícios - Teorema do Limite Central
+- Resoluções Exercícios - Teorema do Limite Central
+
+### 16. Estimação
+- Slides - Estimação
+- Tabela Distribuição t
+- População Normal e Desvio Padrão Conhecido (vídeo, 19m)
+- Distribuição t (vídeo, 13m)
+- Como Escolher a Distribuição Adequada (vídeo, 4m)
+- Estimativa Intervalar Para Proporções Populacionais (vídeo, 11m)
+- Exercícios Propostos - Estimação
+- Resoluções Exercícios Propostos - Estimação
+
+### 17. Teste de Hipóteses Com Uma Amostra
+- Slides - Teste de Hipóteses
+- Teste de Hipóteses - Introdução e Distribuição Normal (vídeo, 29m)
+- Teste de Hipóteses - Distribuição t (vídeo, 7m)
+- Teste de Hipóteses para Proporções (vídeo, 11m)
+- Exercícios - Teste de Hipóteses
+- Resoluções Exercícios - Teste de Hipóteses
+- Errata Correção Questão 6
+
+### 18. Referências Bibliográficas
+- Referências Bibliográficas
