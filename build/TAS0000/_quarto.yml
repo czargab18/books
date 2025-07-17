@@ -5,7 +5,6 @@ project:
     port: 4200
     browser: false
 
-
 book:
   sidebar: 
     collapse: true
@@ -19,8 +18,14 @@ book:
     type: "textbox"
     limit: 20
 
+# A Unidade I é destinada a falar sobre a area de Estatística, eoutras coisas. talvez, seja mais interresante apenas jogar
+# o conteúdo para TAS0000 deixando aqui apenas o conteúdo sobre métodos estatistica para análise de dados
+
   chapters:
     - index.qmd
+    - pretextuais/whatsstatistc.qmd
+    - pretextuais/statinBrazil.qmd
+    - pretextuais/fontsdados.qmd
     - postextuais/references.qmd
 
 bibliography: postextuais/bibliografia/references.bib
