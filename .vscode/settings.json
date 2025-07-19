@@ -33,7 +33,7 @@
   // CONFIGURAÇÕES PYTHON
   "python.terminal.activateEnvironment": true,
   "python.analysis.autoImportCompletions": true,
-  "python.languageServer": "Pylance",
+  "python.languageServer": "None",
   "python.analysis.typeCheckingMode": "basic",
   "python.createEnvironment.trigger": "off",
   // JUPYTER NOTEBOOKS
@@ -210,5 +210,7 @@
   "emmet.includeLanguages": {
     "javascript": "javascriptreact",
     "quarto": "html"
-  }
+  },
+  "cursorpyright.analysis.autoImportCompletions": true,
+  "cursorpyright.analysis.typeCheckingMode": "basic"
 }

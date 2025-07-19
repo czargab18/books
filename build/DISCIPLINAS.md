@@ -71,7 +71,7 @@ Defenderei a definição com seguinte exemplo: Um Estatístico é contratado par
 
 - [ ] **Análise Multivariada 1**
   - requisitos: Análise de Regressão Linear
-- [ ] **Aplicações 1**
+- [ ] **Aplicações em Estatística 1**
   - requisitos: Delineamento e Análise de Experimentos
 - [ ] **Processos Estocásticos**
   - requisitos: Cálculo de Probabilidade 2
@@ -81,20 +81,39 @@ Defenderei a definição com seguinte exemplo: Um Estatístico é contratado par
 ### 📘 7º Semestre
 
 - [ ] **Trabalho de Conclusão de Curso 1**
-  - requisitos: Análise de Regressão, Delineamento e Técnicas de Amostragem
-- [ ] **Aplicações 1**
-  - requisitos: Delineamento e Análise de Experimentos
+  - requisitos: Análise de Regressão Linear, Delineamento e Análise de Experimentos, Técnicas de Amostragem
+- [ ] **Aplicações em Estatística 2**
+  - requisitos: Aplicações em Estatística 1
 - [ ] **Dados Categorizados**
   - requisitos: Inferência Estatística
 - [ ] **Análise de Séries Temporais**
-  - requisitos: Inferência Bayesiana
+  - requisitos: Processos Estocásticos
 
 ### 📘 8º Semestre
 
 - [ ] **Trabalho de Conclusão de Curso 2**
   - requisitos: TCC 1
-- [ ] **Aplicações 1**
-  - requisitos: Delineamento e Análise de Experimentos
+- [ ] **Aplicações em Estatística 3**
+  - requisitos: Aplicações em Estatística 2
 - [ ] **Monitoria**
 - [ ] **Disciplinas Optativas / Módulo Livre / Optativas da Cadeia de Seletividade (mínimo 16 créditos)**
   - requisitos: variáveis conforme disciplina
+
+### 📚 Disciplinas Optativas Sugeridas
+
+- [ ] **Análise Multivariada 2**
+  - requisitos: Análise Multivariada 1
+- [ ] **Estatística Não-Paramétrica**
+  - requisitos: Inferência Estatística
+- [ ] **Métodos de Bootstrap e Reamostragem**
+  - requisitos: Estatística Computacional
+- [ ] **Machine Learning para Estatísticos**
+  - requisitos: Análise de Regressão Linear
+- [ ] **Estatística Espacial**
+  - requisitos: Análise Multivariada 1
+- [ ] **Bioestatística**
+  - requisitos: Inferência Estatística
+- [ ] **Estatística em Pesquisa de Mercado**
+  - requisitos: Técnicas de Amostragem
+- [ ] **Análise de Dados Longitudinais**
+  - requisitos: Análise de Regressão Linear
