@@ -1,15 +1,40 @@
 # Formulas de Medidas Resumo
 
 ## Medidas de posição
-- média artimetica (dados não agrupados)
-- média artimetica (dados agrupados)
-- media geral
-- media harmonica
-- mediana
-- quartis
-- decis
-- percentis
-- moda
+### Média aritmética (dados não agrupados)
+$$\bar{x} = \frac{\sum_{i=1}^n x_i}{n}$$
+
+### Média aritmética (dados agrupados)
+$$\bar{x} = \frac{\sum_{i=1}^k f_i x_i}{\sum_{i=1}^k f_i}$$
+
+### Média geral
+$$\bar{x}_g = \frac{\sum_{j=1}^m n_j \bar{x}_j}{\sum_{j=1}^m n_j}$$
+
+### Média harmônica
+$$H = \frac{n}{\sum_{i=1}^n \frac{1}{x_i}}$$
+
+### Mediana
+Para dados ordenados: se $n$ ímpar, $Md = x_{(\frac{n+1}{2})}$; se $n$ par, $Md = \frac{x_{(\frac{n}{2})} + x_{(\frac{n}{2}+1)}}{2}$
+
+### Quartis
+$$Q_k = x_{\left(\frac{k(n+1)}{4}\right)}$$, onde $k=1,2,3$
+
+### Decis
+$$D_k = x_{\left(\frac{k(n+1)}{10}\right)}$$, onde $k=1,2,...,9$
+
+### Percentis
+$$P_k = x_{\left(\frac{k(n+1)}{100}\right)}$$, onde $k=1,2,...,99$
+
+### Moda
+Para dados não agrupados: valor mais frequente.
+Para dados agrupados:
+$$Mo = L + \frac{(f_1 - f_0)}{(2f_1 - f_0 - f_2)} \cdot h$$
+onde:
+$L$ = limite inferior da classe modal,
+$f_1$ = frequência da classe modal,
+$f_0$ = frequência da classe anterior,
+$f_2$ = frequência da classe posterior,
+$h$ = amplitude da classe.
 
 ## Medidas de dispersão
 
