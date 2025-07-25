@@ -4,7 +4,7 @@ name: Notifica books para atualizar submodule
 on:
   push:
     branches: [main]
-    paths: ["books/**/*.md", "books/**/*.yml", "books/*.html", "books/*.bib"]
+    paths: ["books/**/*.qmd", "books/**/*.yml", "books/*.html", "books/*.bib"]
 
 jobs:
   notifica-books:
