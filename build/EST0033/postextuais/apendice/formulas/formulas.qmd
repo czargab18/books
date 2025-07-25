@@ -36,13 +36,14 @@
 
 8. Decis
    - **Dados não agrupados:**
-     $$D_k = x_{\left(\frac{k(n+1)}{10}\right)}$$, onde $k=1,2,...,9$
+     $$D_k = x_{\left(\frac{k(n+1)}{10}\right)}$$, onde $k=1,2,...,9$$
    - **Dados agrupados:**
      $$D_k = L + \frac{\left(\frac{kN}{10} - F_{ant}\right)}{f_{D_k}} \cdot h$$
 
 9. Percentis
    - **Dados não agrupados:**
-     $$P_k = x_{\left(\frac{k(n+1)}{100}\right)}$$, onde $k=1,2,...,99$
+     $$P_k = x_{\left(\frac{k(n+1)}{100}\right)}$$, onde $k=1,2,...,99$$
+
    - **Dados agrupados:**
      $$P_k = L + \frac{\left(\frac{kN}{100} - F_{ant}\right)}{f_{P_k}} \cdot h$$
 
@@ -50,6 +51,7 @@
     - **Dados não agrupados:** valor mais frequente.
     - **Dados agrupados:**
       $$Mo = L + \frac{(f_1 - f_0)}{(2f_1 - f_0 - f_2)} \cdot h$$
+
       onde: $L$ = limite inferior da classe modal, $f_1$ = frequência da classe modal, $f_0$ = frequência da classe anterior, $f_2$ = frequência da classe posterior, $h$ = amplitude da classe.
 
 Medidas de dispersão
