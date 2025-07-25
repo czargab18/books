@@ -1,88 +1,77 @@
 # Formulas de Medidas Resumo
 
-## Medidas de posição
-### Média aritmética
-**Dados não agrupados:**
-$$\bar{x} = \frac{\sum_{i=1}^n x_i}{n}$$
+## Medidas de posição 
 
-**Dados agrupados:**
-$$\bar{x} = \frac{\sum_{i=1}^k f_i x_i}{\sum_{i=1}^k f_i}$$
+1.  Média aritmética (dados não-agrupados
 
-### Média geral
-$$\bar{x}_g = \frac{\sum_{j=1}^m n_j \bar{x}_j}{\sum_{j=1}^m n_j}$$
+    $$\bar{x} = \frac{\sum_{i=1}^n x_i}{n}$$
 
-### Média harmônica
-**Dados não agrupados:**
-$$H = \frac{n}{\sum_{i=1}^n \frac{1}{x_i}}$$
+2.  Média aritmética (dados agrupados: 
+    $$\bar{x} = \frac{\sum_{i=1}^k f_i x_i}{\sum_{i=1}^k f_i}$$
 
-**Dados agrupados:**
-$$H = \frac{\sum_{i=1}^k f_i}{\sum_{i=1}^k \frac{f_i}{x_i}}$$
+3.  Média geral 
+    $$\bar{x}_g = \frac{\sum_{j=1}^m n_j \bar{x}_j}{\sum_{j=1}^m n_j}$$
 
-### Mediana
-**Dados não agrupados:**
-Para dados ordenados: se $n$ ímpar, $Md = x_{(\frac{n+1}{2})}$; se $n$ par, $Md = \frac{x_{(\frac{n}{2})} + x_{(\frac{n}{2}+1)}}{2}$
+4. Média harmônica (Dados não agrupados):
+    $$H = \frac{n}{\sum_{i=1}^n \frac{1}{x_i}}$$
 
-**Dados agrupados:**
-$$Md = L + \frac{\left(\frac{N}{2} - F_{ant}\right)}{f_{Md}} \cdot h$$
-onde:
-$L$ = limite inferior da classe mediana,
-$N$ = total de observações,
-$F_{ant}$ = frequência acumulada antes da classe mediana,
-$f_{Md}$ = frequência da classe mediana,
-$h$ = amplitude da classe.
+5. Média harmônica (dados agrupados)
+    $$H = \frac{\sum_{i=1}^k f_i}{\sum_{i=1}^k \frac{f_i}{x_i}}$$
 
-### Quartis
-**Dados não agrupados:**
-$$Q_k = x_{\left(\frac{k(n+1)}{4}\right)}$$, onde $k=1,2,3$
+Mediana
 
-**Dados agrupados:**
-$$Q_k = L + \frac{\left(\frac{kN}{4} - F_{ant}\right)}{f_{Q_k}} \cdot h$$
+Dados não agrupados: Para dados ordenados: se $n$ ímpar, $Md = x_{(\frac{n+1}{2})}$; se $n$ par, $Md = \frac{x_{(\frac{n}{2})} + x_{(\frac{n}{2}+1)}}{2}$
 
-### Decis
-**Dados não agrupados:**
-$$D_k = x_{\left(\frac{k(n+1)}{10}\right)}$$, onde $k=1,2,...,9$
+Dados agrupados: $$Md = L + \frac{\left(\frac{N}{2} - F_{ant}\right)}{f_{Md}} \cdot h$$ onde: $L$ = limite inferior da classe mediana, $N$ = total de observações, $F_{ant}$ = frequência acumulada antes da classe mediana, $f_{Md}$ = frequência da classe mediana, $h$ = amplitude da classe.
 
-**Dados agrupados:**
-$$D_k = L + \frac{\left(\frac{kN}{10} - F_{ant}\right)}{f_{D_k}} \cdot h$$
+Quartis
 
-### Percentis
-**Dados não agrupados:**
-$$P_k = x_{\left(\frac{k(n+1)}{100}\right)}$$, onde $k=1,2,...,99$
+Dados não agrupados: $$Q_k = x_{\left(\frac{k(n+1)}{4}\right)}$$, onde $k=1,2,3$
 
-**Dados agrupados:**
-$$P_k = L + \frac{\left(\frac{kN}{100} - F_{ant}\right)}{f_{P_k}} \cdot h$$
+Dados agrupados: $$Q_k = L + \frac{\left(\frac{kN}{4} - F_{ant}\right)}{f_{Q_k}} \cdot h$$
 
-### Moda
-**Dados não agrupados:** valor mais frequente.
+Decis
 
-**Dados agrupados:**
-$$Mo = L + \frac{(f_1 - f_0)}{(2f_1 - f_0 - f_2)} \cdot h$$
-onde:
-$L$ = limite inferior da classe modal,
-$f_1$ = frequência da classe modal,
-$f_0$ = frequência da classe anterior,
-$f_2$ = frequência da classe posterior,
-$h$ = amplitude da classe.
+Dados não agrupados: $$D_k = x_{\left(\frac{k(n+1)}{10}\right)}$$, onde $k=1,2,...,9$
 
-## Medidas de dispersão
+Dados agrupados: $$D_k = L + \frac{\left(\frac{kN}{10} - F_{ant}\right)}{f_{D_k}} \cdot h$$
 
-### Variância (dados não agrupados)
+Percentis
+
+Dados não agrupados: $$P_k = x_{\left(\frac{k(n+1)}{100}\right)}$$, onde $k=1,2,...,99$
+
+Dados agrupados: $$P_k = L + \frac{\left(\frac{kN}{100} - F_{ant}\right)}{f_{P_k}} \cdot h$$
+
+Moda
+
+Dados não agrupados: valor mais frequente.
+
+Dados agrupados: $$Mo = L + \frac{(f_1 - f_0)}{(2f_1 - f_0 - f_2)} \cdot h$$ onde: $L$ = limite inferior da classe modal, $f_1$ = frequência da classe modal, $f_0$ = frequência da classe anterior, $f_2$ = frequência da classe posterior, $h$ = amplitude da classe.
+
+Medidas de dispersão
+
+Variância (dados não agrupados)
+
 $$s^2 = \frac{\sum_{i=1}^n (x_i - \bar{x})^2}{n-1}$$
 
-### Desvio padrão (dados não agrupados)
+Desvio padrão (dados não agrupados)
+
 $$s = \sqrt{\frac{\sum_{i=1}^n (x_i - \bar{x})^2}{n-1}}$$
 
-### Variância (dados agrupados)
+Variância (dados agrupados)
+
 $$s^2 = \frac{\sum_{i=1}^k f_i (x_i - \bar{x})^2}{\sum_{i=1}^k f_i - 1}$$
 
-### Desvio padrão (dados agrupados)
+Desvio padrão (dados agrupados)
+
 $$s = \sqrt{\frac{\sum_{i=1}^k f_i (x_i - \bar{x})^2}{\sum_{i=1}^k f_i - 1}}$$
 
-### Coeficiente de variação
+Coeficiente de variação
+
 $$CV = \frac{s}{\bar{x}} \times 100\%$$
 
-## Quantis empiricos
+Quantis empiricos
 
-## Box Plot
+Box Plot
 
-## Transformações
+Transformações
