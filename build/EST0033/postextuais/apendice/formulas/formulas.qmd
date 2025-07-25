@@ -6,7 +6,7 @@
 
     $$\bar{x} = \frac{\sum_{i=1}^n x_i}{n}$$
 
-2.  Média aritmética (dados agrupados: 
+2.  Média aritmética (dados agrupados): 
     $$\bar{x} = \frac{\sum_{i=1}^k f_i x_i}{\sum_{i=1}^k f_i}$$
 
 3.  Média geral 
