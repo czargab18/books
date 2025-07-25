@@ -192,7 +192,8 @@
     "**/.quarto": true,
     "**/delete": true,
     "**/_book": true,
-    "**/*libs*": true
+    "**/*libs*": true,
+    "**/build/**/.gitignore": true
   },
   // AUTO SAVE
   "files.autoSave": "afterDelay",
