@@ -1,33 +1,61 @@
 # Formulas de Medidas Resumo
 
 ## Medidas de posição
-### Média aritmética (dados não agrupados)
+### Média aritmética
+**Dados não agrupados:**
 $$\bar{x} = \frac{\sum_{i=1}^n x_i}{n}$$
 
-### Média aritmética (dados agrupados)
+**Dados agrupados:**
 $$\bar{x} = \frac{\sum_{i=1}^k f_i x_i}{\sum_{i=1}^k f_i}$$
 
 ### Média geral
 $$\bar{x}_g = \frac{\sum_{j=1}^m n_j \bar{x}_j}{\sum_{j=1}^m n_j}$$
 
 ### Média harmônica
+**Dados não agrupados:**
 $$H = \frac{n}{\sum_{i=1}^n \frac{1}{x_i}}$$
 
+**Dados agrupados:**
+$$H = \frac{\sum_{i=1}^k f_i}{\sum_{i=1}^k \frac{f_i}{x_i}}$$
+
 ### Mediana
+**Dados não agrupados:**
 Para dados ordenados: se $n$ ímpar, $Md = x_{(\frac{n+1}{2})}$; se $n$ par, $Md = \frac{x_{(\frac{n}{2})} + x_{(\frac{n}{2}+1)}}{2}$
 
+**Dados agrupados:**
+$$Md = L + \frac{\left(\frac{N}{2} - F_{ant}\right)}{f_{Md}} \cdot h$$
+onde:
+$L$ = limite inferior da classe mediana,
+$N$ = total de observações,
+$F_{ant}$ = frequência acumulada antes da classe mediana,
+$f_{Md}$ = frequência da classe mediana,
+$h$ = amplitude da classe.
+
 ### Quartis
+**Dados não agrupados:**
 $$Q_k = x_{\left(\frac{k(n+1)}{4}\right)}$$, onde $k=1,2,3$
 
+**Dados agrupados:**
+$$Q_k = L + \frac{\left(\frac{kN}{4} - F_{ant}\right)}{f_{Q_k}} \cdot h$$
+
 ### Decis
+**Dados não agrupados:**
 $$D_k = x_{\left(\frac{k(n+1)}{10}\right)}$$, onde $k=1,2,...,9$
 
+**Dados agrupados:**
+$$D_k = L + \frac{\left(\frac{kN}{10} - F_{ant}\right)}{f_{D_k}} \cdot h$$
+
 ### Percentis
+**Dados não agrupados:**
 $$P_k = x_{\left(\frac{k(n+1)}{100}\right)}$$, onde $k=1,2,...,99$
 
+**Dados agrupados:**
+$$P_k = L + \frac{\left(\frac{kN}{100} - F_{ant}\right)}{f_{P_k}} \cdot h$$
+
 ### Moda
-Para dados não agrupados: valor mais frequente.
-Para dados agrupados:
+**Dados não agrupados:** valor mais frequente.
+
+**Dados agrupados:**
 $$Mo = L + \frac{(f_1 - f_0)}{(2f_1 - f_0 - f_2)} \cdot h$$
 onde:
 $L$ = limite inferior da classe modal,
