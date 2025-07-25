@@ -1,0 +1,20 @@
+# Formulas de Medidas Resumo
+
+## Medidas de posição
+- média artimetica (dados não agrupados)
+- média artimetica (dados agrupados)
+- media geral
+- media harmonica
+- mediana
+- quartis
+- decis
+- percentis
+- moda
+
+## Medidas de dispersão
+
+## Quantis empiricos
+
+## Box Plot
+
+## Transformações
