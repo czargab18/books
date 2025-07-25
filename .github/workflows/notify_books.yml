@@ -1,5 +1,5 @@
 # Código gerado/assistido por IA
-name: Notifica books para atualizar submodule
+name: notify_books
 
 on:
   push:
