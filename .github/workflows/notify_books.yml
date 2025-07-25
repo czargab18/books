@@ -9,13 +9,15 @@ on:
 jobs:
   notifica-books:
     runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    env:
+      TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
     steps:
       - name: Dispara 'repository_dispatch' no books
-        env:
-          PERSONAL_ACCESS_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           curl -X POST \
             -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer $PERSONAL_ACCESS_TOKEN" \
+            -H "Authorization: Bearer $TOKEN" \
             https://api.github.com/repos/czargab18/books/dispatches \
             -d '{"event_type": "atualiza-books"}'
