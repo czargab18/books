@@ -9,8 +9,6 @@ delete/
 _book/
 .quarto
 
-# local da renderização remota
-book/
 
 ##### NÃO IGNORAR
 !fluxograma.pdf
