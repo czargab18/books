@@ -76,14 +76,6 @@ jobs:
           rsync -av --update wss/fonts.css books/book/wss/
           rsync -av --update wss/fonts books/book/wss/
 
-      - name: Remover subpastas e arquivos do 'deploy'
-        working-directory: books
-        run: |
-          PASTAS=("build" ".github" ".vscode" "README.md" "delete" "_docs" "node_modules" "index_files")
-          for PASTA in "${PASTAS[@]}"; do
-            find books -type d -name "$PASTA" -exec rm -rf {} + 2>/dev/null
-          done
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
