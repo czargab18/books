@@ -77,7 +77,7 @@ jobs:
           rsync -av --update wss/fonts books/book/wss/
 
       - name: Remover subpastas e arquivos do 'deploy'
-        working-directory: books/book
+        working-directory: books
         run: |
           PASTAS=("build" ".github" ".vscode" "README.md" "delete" "_docs" "node_modules" "index_files")
           for PASTA in "${PASTAS[@]}"; do
