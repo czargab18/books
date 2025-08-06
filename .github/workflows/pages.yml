@@ -71,14 +71,15 @@ jobs:
           path: "wss"
           ref: "main"
 
-      - name: Copiar arquivos modificados de wss para books/wss
+      - name: Adiciona 'fonts'
         run: |
-          rsync -av --update wss/fonts.css books/wss/
-          rsync -av --update wss/fonts books/wss/
+          rsync -av --update wss/fonts.css books/book/wss/
+          rsync -av --update wss/fonts books/book/wss/
 
       - name: Remover subpastas e arquivos do 'deploy'
+        working-directory: books/book
         run: |
-          PASTAS=("build" ".github" ".vscode" "README.md")
+          PASTAS=("build" ".github" ".vscode" "README.md" "delete" "_docs" "node_modules" "index_files")
           for PASTA in "${PASTAS[@]}"; do
             find books -type d -name "$PASTA" -exec rm -rf {} + 2>/dev/null
           done
@@ -89,7 +90,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: books
+          path: book
           name: github-pages
 
       - name: Deploy to GitHub Pages
