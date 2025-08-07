@@ -33,3 +33,4 @@ renv/staging/
 !**/renv/settings.json
 !.Rprofile
 !renv.lock
+/.quarto/
