@@ -1,23 +1,36 @@
-# Código gerado/assistido por IA
-name: notify_books
+name: Dispatch Update Submodule
 
 on:
+  workflow_dispatch:
   push:
     branches: [main]
-    paths: ["books/**/*.qmd", "books/**/*.yml", "books/*.html", "books/*.bib"]
+    paths: ["**/*.css", "**/*.yml", "**/*.html", "**/*.bib"] 
+
+permissions:
+  contents: write
+  pull-requests: read
+  id-token: write
 
 jobs:
-  notifica-books:
+  dispatch:
     runs-on: ubuntu-latest
     environment:
-      name: ENVIRONMENT
+      name: ENVIRONMENTS
     env:
-      TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
+      TOKEN: ${{ secrets.UPDATE_SUBMODULE }}
+      USEREMAIL: ${{ secrets.USEREMAIL }}
+      USERNAME: ${{ github.repository_owner }}
     steps:
-      - name: Dispara 'repository_dispatch' no books
-        run: |
-          curl -X POST \
-            -H "Accept: application/vnd.github+json" \
-            -H "Authorization: Bearer $TOKEN" \
-            https://api.github.com/repos/czargab18/books/dispatches \
-            -d '{"event_type": "atualiza-books"}'
+      - name: Atualizar 'submódulo books'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          repository: ${{ env.USERNAME }}/estatistica
+          token: ${{ env.TOKEN }}
+          event-type: atualizar-books
+      
+      - name: Mensagem sucesso
+        run: echo "Disparo realizado com sucesso!"
+
+
+# referências:
+# - https://medium.com/@0xWerz/how-to-automatically-update-git-submodules-using-github-actions-d71c8126e82e
