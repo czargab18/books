@@ -16,8 +16,12 @@ jobs:
   renderizar:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout do repositório
-        uses: actions/checkout@v4
+
+    - run: |
+        echo "Renderizando livros Quarto..."
+
+      # - name: Checkout do repositório
+      #   uses: actions/checkout@v4
 
       # - name: Configura Quarto
       #   uses: quarto-dev/quarto-actions/setup@v2
@@ -50,8 +54,8 @@ jobs:
       #     name: github-pages
       #     path: "./_docs"
 
-      - name: Faz deploy para GitHub Pages - Books
-        uses: ./.github/actions/pages
+    - name: Faz deploy para GitHub Pages - Books
+      uses: ./.github/actions/pages
 
   estatistica:
     needs: [renderizar]
