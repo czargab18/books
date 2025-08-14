@@ -13,7 +13,7 @@ permissions:
   id-token: write
 
 jobs:
-  build-books:
+  renderizar:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout do repositório
@@ -57,7 +57,7 @@ jobs:
 
 
   estatistica:
-    needs: [build-books]
+    needs: [renderizar]
     runs-on: ubuntu-latest
     steps:
       - name: Notifica Estatística
