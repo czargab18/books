@@ -75,21 +75,6 @@ jobs:
       USERNAME: ${{ github.repository_owner }}
       TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
     steps:
-      - name: Clonar submódulo wss
-        uses: actions/checkout@v4
-        with:
-          repository: ${{ github.repository_owner }}/wss
-          token: ${{ secrets.TOKEN_REPO_SYNC }}
-          path: "wss"
-          ref: "main"
-
-      - name: Adiciona fonts
-        run: |
-          mkdir -p books/book/wss/
-          rsync -av --update wss/fonts.css books/book/wss/
-          rsync -av --update wss/fonts books/book/wss/
-        shell: bash
-
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
@@ -106,6 +91,7 @@ jobs:
           artifact_name: github-pages
 
   dispatch:
+    needs: [renderizar]
     runs-on: ubuntu-latest
     environment:
       name: ENVIRONMENT
