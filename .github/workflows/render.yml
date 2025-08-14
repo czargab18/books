@@ -12,16 +12,17 @@ permissions:
   pages: write
   id-token: write
 
+env:
+  url: ${{ vars.URL }}
+  USEREMAIL: ${{ secrets.USEREMAIL }}
+  USERNAME: ${{ github.repository_owner }}
+  TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
+
 jobs:
   renderizar:
     runs-on: ubuntu-latest
     environment:
       name: ENVIRONMENT
-    env:
-      url: ${{ vars.URL }}
-      USEREMAIL: ${{ secrets.USEREMAIL }}
-      USERNAME: ${{ github.repository_owner }}
-      TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
     steps:
       - run: |
           echo "Renderizando livros Quarto..."
@@ -67,6 +68,8 @@ jobs:
   deploy:
     needs: [renderizar]
     runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
     env:
       USEREMAIL: ${{ secrets.USEREMAIL }}
       USERNAME: ${{ github.repository_owner }}
@@ -102,9 +105,20 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           artifact_name: github-pages
 
-  estatistica:
-    needs: [renderizar]
+  dispatch:
     runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
     steps:
-      - name: Notifica Estatística
-        uses: ./.github/actions/notify_estatistica
+      - name: Atualizar 'submódulo books'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          repository: ${{ env.USERNAME }}/estatistica
+          token: ${{ env.TOKEN }}
+          event-type: atualizar-books
+
+      - name: Mensagem sucesso
+        run: echo "Disparo realizado com sucesso!"
+  
+  # referências:
+  # - https://medium.com/@0xWerz/how-to-automatically-update-git-submodules-using-github-actions-d71c8126e82e
