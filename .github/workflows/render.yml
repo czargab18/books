@@ -15,6 +15,13 @@ permissions:
 jobs:
   renderizar:
     runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    env:
+      url: ${{ vars.URL }}
+      USEREMAIL: ${{ secrets.USEREMAIL }}
+      USERNAME: ${{ github.repository_owner }}
+      TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
     steps:
 
     - run: |
@@ -54,7 +61,12 @@ jobs:
       #     name: github-pages
       #     path: "./_docs"
 
-    - uses: ./.github/actions/pages
+    - name: Deploy to GitHub Pages - Books
+      uses: ./.github/actions/pages
+      with:
+        useremail: ${{ secrets.USEREMAIL }}
+        username: ${{ github.repository_owner }}
+        token: ${{ secrets.TOKEN_REPO_SYNC }}
 
   estatistica:
     needs: [renderizar]
