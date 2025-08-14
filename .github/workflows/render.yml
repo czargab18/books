@@ -24,13 +24,9 @@ jobs:
     environment:
       name: ENVIRONMENT
     steps:
-      - run: |
-          echo "Renderizando livros Quarto..."
-
       - name: Checkout do repositório
         uses: actions/checkout@v4
 
-      # Descomente se/quando quiser renderizar os livros
       - name: Configura Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
@@ -42,7 +38,6 @@ jobs:
               quarto render "build/$folder" --to html --execute --output-dir "_docs/$folder"
             fi
           done
-        shell: bash
 
       - name: Remove versões antigas dos livros renderizados
         run: |
@@ -50,20 +45,18 @@ jobs:
           for folder in $(ls _docs); do
             rm -rf "book/$folder"
           done
-        shell: bash
 
       - name: Move novos livros renderizados para book
         run: |
           for folder in $(ls _docs); do
             mv "_docs/$folder" "book/$folder"
           done
-        shell: bash
 
       - name: Exporta livros renderizados
         uses: actions/upload-artifact@v4
         with:
           name: books_renderizados
-          path: "./_docs"
+          path: "./book"
 
   deploy:
     needs: [renderizar]
