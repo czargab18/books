@@ -1,33 +1,33 @@
-name: 'GitHub Pages - Books'
-description: 'Deploy custom GitHub Pages for Books'
+name: "GitHub Pages - Books"
+description: "Deploy custom GitHub Pages for Books"
 inputs:
   useremail:
-    description: 'User email'
+    description: "User email"
     required: true
   username:
-    description: 'Repository owner'
+    description: "Repository owner"
     required: true
   token:
-    description: 'Token for checkout'
+    description: "Token for checkout"
     required: true
 runs:
-  using: 'composite'
+  using: "composite"
   steps:
     - name: Checkout books
       uses: actions/checkout@v4
       with:
         repository: ${{ inputs.username }}/books
         token: ${{ inputs.token }}
-        path: 'books'
-        ref: 'main'
+        path: "books"
+        ref: "main"
 
     - name: Clonar submódulo wss
       uses: actions/checkout@v4
       with:
         repository: ${{ inputs.username }}/wss
         token: ${{ inputs.token }}
-        path: 'wss'
-        ref: 'main'
+        path: "wss"
+        ref: "main"
 
     - name: Adiciona fonts
       run: |
@@ -44,7 +44,6 @@ runs:
         name: github-pages
 
     - name: Deploy to GitHub Pages
-      id: deployment
       uses: actions/deploy-pages@v4
       with:
         token: ${{ github.token }}
