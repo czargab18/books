@@ -159,7 +159,7 @@ jobs:
     # - https://medium.com/@0xWerz/how-to-automatically-update-git-submodules-using-github-actions-d71c8126e82e
 
   cleanup:
-    needs: [deploy]
+    needs: [deploy, estatistica, dispatch]
     runs-on: ubuntu-latest
     steps:
       - name: Deleta artefatos
