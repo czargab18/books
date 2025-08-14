@@ -60,6 +60,22 @@ jobs:
       #   with:
       #     name: github-pages
       #     path: "./_docs"
+  deploy:
+    needs: [renderizar]
+    runs-on: ubuntu-latest
+    steps:
+    - name: Clonar submódulo wss
+      uses: actions/checkout@v4
+      with:
+        repository: ${{ inputs.username }}/wss
+        token: ${{ inputs.token }}
+        path: "wss"
+        ref: "main"
+
+    - name: Adiciona fonts
+      run: |
+        rsync -av --update wss/fonts.css books/book/wss/
+        rsync -av --update wss/fonts books/book/wss/
 
     - name: Deploy to GitHub Pages - Books
       uses: ./.github/actions/pages
