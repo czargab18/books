@@ -19,39 +19,39 @@ jobs:
       - name: Checkout do repositório
         uses: actions/checkout@v4
 
-      - name: Configura Quarto
-        uses: quarto-dev/quarto-actions/setup@v2
+      # - name: Configura Quarto
+      #   uses: quarto-dev/quarto-actions/setup@v2
 
-      - name: Renderiza livros Quarto
-        run: |
-          mkdir -p _docs
-          for folder in $(ls build); do
-            if [ -d "build/$folder" ]; then
-              quarto render "build/$folder" --to html --execute --output-dir "_docs/$folder"
-            fi
-          done
+      # - name: Renderiza livros Quarto
+      #   run: |
+      #     mkdir -p _docs
+      #     for folder in $(ls build); do
+      #       if [ -d "build/$folder" ]; then
+      #         quarto render "build/$folder" --to html --execute --output-dir "_docs/$folder"
+      #       fi
+      #     done
 
-      - name: Remove versões antigas dos livros renderizados
-        run: |
-          mkdir -p book
-          for folder in $(ls _docs); do
-            rm -rf "book/$folder"
-          done
+      # - name: Remove versões antigas dos livros renderizados
+      #   run: |
+      #     mkdir -p book
+      #     for folder in $(ls _docs); do
+      #       rm -rf "book/$folder"
+      #     done
 
-      - name: Move novos livros renderizados para book
-        run: |
-          for folder in $(ls _docs); do
-            mv "_docs/$folder" "book/$folder"
-          done
+      # - name: Move novos livros renderizados para book
+      #   run: |
+      #     for folder in $(ls _docs); do
+      #       mv "_docs/$folder" "book/$folder"
+      #     done
 
-      - name: Salva artefato para GitHub Pages
-        uses: actions/upload-pages-artifact@v3
-        with:
-          name: github-pages
-          path: "./_docs"
+      # - name: Salva artefato para GitHub Pages
+      #   uses: actions/upload-pages-artifact@v3
+      #   with:
+      #     name: github-pages
+      #     path: "./_docs"
 
       - name: Faz deploy para GitHub Pages - Books
-        uses: ./actions/pages
+        uses: ./.github/actions/pages
 
   estatistica:
     needs: [renderizar]
