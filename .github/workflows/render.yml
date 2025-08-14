@@ -16,7 +16,7 @@ env:
   url: ${{ vars.URL }}
   USEREMAIL: ${{ secrets.USEREMAIL }}
   USERNAME: ${{ github.repository_owner }}
-  TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
+  TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
 
 jobs:
   renderizar:
@@ -70,10 +70,6 @@ jobs:
     runs-on: ubuntu-latest
     environment:
       name: ENVIRONMENT
-    env:
-      USEREMAIL: ${{ secrets.USEREMAIL }}
-      USERNAME: ${{ github.repository_owner }}
-      TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
     steps:
       - name: Setup Pages
         uses: actions/configure-pages@v5
@@ -87,7 +83,7 @@ jobs:
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ env.TOKEN }}
           artifact_name: github-pages
 
   dispatch:
