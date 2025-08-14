@@ -19,11 +19,6 @@ jobs:
       - name: Checkout do repositório
         uses: actions/checkout@v4
 
-      - name: Instala dependências do Python
-        run: |
-          python -m pip install --upgrade pip
-          pip install -r run/requirements.txt
-
       - name: Configura Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
@@ -48,10 +43,6 @@ jobs:
           for folder in $(ls _docs); do
             mv "_docs/$folder" "book/$folder"
           done
-
-      - name: Corrige links para GitHub Pages - Books
-        run: |
-          python run/cleanBooks.py --base-dir _docs/ --base-ac build/ac/books
 
       - name: Salva artefato para GitHub Pages
         uses: actions/upload-pages-artifact@v3
