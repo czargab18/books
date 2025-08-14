@@ -74,7 +74,7 @@ jobs:
       - name: Baixa artefato
         uses: actions/download-artifact@v4
         with:
-          name: books_detectados
+          name: books_renderizados
           path: books
 
       - name: Setup Pages
@@ -102,7 +102,7 @@ jobs:
           path: estatistica
           fetch-depth: 0
           repository: ${{ env.USERNAME }}/estatistica
-          token: ${{ secrets.TOKEN }}
+          token: ${{ env.TOKEN }}
 
       - name: Baixa artefato dos livros renderizados
         uses: actions/download-artifact@v4
@@ -159,7 +159,7 @@ jobs:
     # - https://medium.com/@0xWerz/how-to-automatically-update-git-submodules-using-github-actions-d71c8126e82e
 
   cleanup:
-    needs: [deploy, estatistica, dispatch]
+    needs: [renderizar, deploy, estatistica, dispatch]
     runs-on: ubuntu-latest
     steps:
       - name: Deleta artefatos
@@ -169,4 +169,5 @@ jobs:
             github-pages
             books_renderizados
 
-# 
+# referências:
+# - 
