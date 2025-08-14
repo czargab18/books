@@ -61,4 +61,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Notifica Estatística
-        uses: ./notify_estatistica.yml
+        uses: ./.github/actions/notify_estatistica
