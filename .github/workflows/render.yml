@@ -23,13 +23,13 @@ jobs:
       USERNAME: ${{ github.repository_owner }}
       TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
     steps:
+      - run: |
+          echo "Renderizando livros Quarto..."
 
-    - run: |
-        echo "Renderizando livros Quarto..."
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
 
-    - name: Checkout do repositório
-      uses: actions/checkout@v4
-
+      # Descomente se/quando quiser renderizar os livros
       # - name: Configura Quarto
       #   uses: quarto-dev/quarto-actions/setup@v2
 
@@ -41,6 +41,7 @@ jobs:
       #         quarto render "build/$folder" --to html --execute --output-dir "_docs/$folder"
       #       fi
       #     done
+      #   shell: bash
 
       # - name: Remove versões antigas dos livros renderizados
       #   run: |
@@ -48,41 +49,58 @@ jobs:
       #     for folder in $(ls _docs); do
       #       rm -rf "book/$folder"
       #     done
+      #   shell: bash
 
       # - name: Move novos livros renderizados para book
       #   run: |
       #     for folder in $(ls _docs); do
       #       mv "_docs/$folder" "book/$folder"
       #     done
+      #   shell: bash
 
       # - name: Salva artefato para GitHub Pages
       #   uses: actions/upload-pages-artifact@v3
       #   with:
       #     name: github-pages
       #     path: "./_docs"
+
   deploy:
     needs: [renderizar]
     runs-on: ubuntu-latest
+    env:
+      USEREMAIL: ${{ secrets.USEREMAIL }}
+      USERNAME: ${{ github.repository_owner }}
+      TOKEN_REPO_SYNC: ${{ secrets.TOKEN_REPO_SYNC }}
     steps:
-    - name: Clonar submódulo wss
-      uses: actions/checkout@v4
-      with:
-        repository: ${{ inputs.username }}/wss
-        token: ${{ inputs.token }}
-        path: "wss"
-        ref: "main"
+      - name: Clonar submódulo wss
+        uses: actions/checkout@v4
+        with:
+          repository: ${{ github.repository_owner }}/wss
+          token: ${{ secrets.TOKEN_REPO_SYNC }}
+          path: "wss"
+          ref: "main"
 
-    - name: Adiciona fonts
-      run: |
-        rsync -av --update wss/fonts.css books/book/wss/
-        rsync -av --update wss/fonts books/book/wss/
+      - name: Adiciona fonts
+        run: |
+          mkdir -p books/book/wss/
+          rsync -av --update wss/fonts.css books/book/wss/
+          rsync -av --update wss/fonts books/book/wss/
+        shell: bash
 
-    - name: Deploy to GitHub Pages - Books
-      uses: ./.github/actions/pages
-      with:
-        useremail: ${{ secrets.USEREMAIL }}
-        username: ${{ github.repository_owner }}
-        token: ${{ secrets.TOKEN_REPO_SYNC }}
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: books/book
+          name: github-pages
+
+      - name: Deploy to GitHub Pages
+        uses: actions/deploy-pages@v4
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          artifact_name: github-pages
 
   estatistica:
     needs: [renderizar]
