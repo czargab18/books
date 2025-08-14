@@ -31,39 +31,40 @@ jobs:
         uses: actions/checkout@v4
 
       # Descomente se/quando quiser renderizar os livros
-      # - name: Configura Quarto
-      #   uses: quarto-dev/quarto-actions/setup@v2
+      - name: Configura Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
 
-      # - name: Renderiza livros Quarto
-      #   run: |
-      #     mkdir -p _docs
-      #     for folder in $(ls build); do
-      #       if [ -d "build/$folder" ]; then
-      #         quarto render "build/$folder" --to html --execute --output-dir "_docs/$folder"
-      #       fi
-      #     done
-      #   shell: bash
+      - name: Renderiza livros Quarto
+        run: |
+          mkdir -p _docs
+          for folder in $(ls build); do
+            if [ -d "build/$folder" ]; then
+              quarto render "build/$folder" --to html --execute --output-dir "_docs/$folder"
+            fi
+          done
+        shell: bash
 
-      # - name: Remove versões antigas dos livros renderizados
-      #   run: |
-      #     mkdir -p book
-      #     for folder in $(ls _docs); do
-      #       rm -rf "book/$folder"
-      #     done
-      #   shell: bash
+      - name: Remove versões antigas dos livros renderizados
+        run: |
+          mkdir -p book
+          for folder in $(ls _docs); do
+            rm -rf "book/$folder"
+          done
+        shell: bash
 
-      # - name: Move novos livros renderizados para book
-      #   run: |
-      #     for folder in $(ls _docs); do
-      #       mv "_docs/$folder" "book/$folder"
-      #     done
-      #   shell: bash
+      - name: Move novos livros renderizados para book
+        run: |
+          for folder in $(ls _docs); do
+            mv "_docs/$folder" "book/$folder"
+          done
+        shell: bash
 
-      # - name: Salva artefato para GitHub Pages
-      #   uses: actions/upload-pages-artifact@v3
-      #   with:
-      #     name: github-pages
-      #     path: "./_docs"
+      - name: Exporta livros renderizados
+        uses: actions/upload-artifact@v4
+        with:
+          name: books_renderizados
+          path: "./_docs"
+
 
   deploy:
     needs: [renderizar]
@@ -71,15 +72,18 @@ jobs:
     environment:
       name: ENVIRONMENT
     steps:
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
-
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: Baixa artefato
+        uses: actions/download-artifact@v4
         with:
-          path: books/book
-          name: github-pages
+          name: books_detectados
+          path: _books
 
+      - name: Exporta livros renderizados
+        uses: actions/upload-artifact@v4
+        with:
+          name: books_renderizados
+          path: "./_docs"
+          
       - name: Deploy to GitHub Pages
         uses: actions/deploy-pages@v4
         with:
