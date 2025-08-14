@@ -51,7 +51,7 @@ jobs:
           path: "./_docs"
 
       - name: Faz deploy para GitHub Pages - Books
-        uses: ./actions/pages.yml
+        uses: ./actions/pages
 
   estatistica:
     needs: [renderizar]
