@@ -4,7 +4,7 @@
   Relaxar!!!
 
 Bibliografia a ser seguida:  
-[@rolla2025]  
+[@leorolla2025]  
   1. Espaços de Probabilidade  
   2. Probabilidade Condicional e Independência  
   3. Variáveis Aleatórias  
