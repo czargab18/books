@@ -118,7 +118,7 @@ jobs:
 
       - name: Sincroniza arquivos do artefato com a branch book
         run: |
-          rsync -av --update --delete _books/ books/book/
+          rsync -av --update _books/ books/book/
 
       - name: Configura credenciais do Git
         working-directory: books
