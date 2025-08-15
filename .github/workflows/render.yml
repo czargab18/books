@@ -130,7 +130,7 @@ jobs:
       - name: Faz commit e push dos livros renderizados
         working-directory: books
         run: |
-          git add books/
+          git add book/
           git commit -m "books: atualiza books a partir do repo:books" || echo "Nada a commitar"
           git push --force origin book
 
