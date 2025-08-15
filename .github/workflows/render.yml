@@ -82,20 +82,21 @@ jobs:
         id: deployment
         uses: actions/deploy-pages@v4
 
-  estatistica:
+
+  books:
     needs: [renderizar]
     runs-on: ubuntu-latest
     environment:
       name: ENVIRONMENT
     steps:
-      - name: Clona o Repositório ESTATISTICA
+      - name: Clona o Repositório books
         uses: actions/checkout@v4
         with:
           ref: book
-          path: estatistica
+          path: books
           fetch-depth: 0
-          repository: ${{ env.USERNAME }}/estatistica
           token: ${{ env.TOKEN }}
+          repository: ${{ env.USERNAME }}/books
 
       - name: Baixa artefato dos livros renderizados
         uses: actions/download-artifact@v4
@@ -104,7 +105,7 @@ jobs:
           path: _books
 
       - name: Garante que a branch book existe e faz checkout
-        working-directory: estatistica
+        working-directory: books
         run: |
           if ! git rev-parse --verify book >/dev/null 2>&1; then
             git checkout --orphan book
@@ -117,19 +118,19 @@ jobs:
 
       - name: Sincroniza arquivos do artefato com a branch book
         run: |
-          rsync -av --update --delete _books/ estatistica/books/
+          rsync -av --update _books/ books/book/
 
       - name: Configura credenciais do Git
-        working-directory: estatistica
+        working-directory: books
         run: |
           git config user.name "${{ env.USERNAME }}"
           git config user.email "${{ env.USEREMAIL }}"
-          git remote set-url origin https://x-access-token:${{ env.TOKEN }}@github.com/${{ env.USERNAME }}/estatistica.git
+          git remote set-url origin https://x-access-token:${{ env.TOKEN }}@github.com/${{ env.USERNAME }}/books.git
 
       - name: Faz commit e push dos livros renderizados
-        working-directory: estatistica
+        working-directory: books
         run: |
-          git add books/
+          git add book/
           git commit -m "books: atualiza books a partir do repo:books" || echo "Nada a commitar"
           git push --force origin book
 
@@ -152,7 +153,7 @@ jobs:
     # - https://medium.com/@0xWerz/how-to-automatically-update-git-submodules-using-github-actions-d71c8126e82e
 
   cleanup:
-    needs: [renderizar, deploy, estatistica, dispatch]
+    needs: [renderizar, deploy, books, dispatch]
     runs-on: ubuntu-latest
     steps:
       - name: Deleta artefatos
