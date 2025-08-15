@@ -1,0 +1,224 @@
+# Programa de Estatística Básica  
+Esta ementa está sendo adaptada da disciplina ofertada pelo Departamentod de Estatística da Universidade de Brasília
+
+## 2. OBJETIVOS:
+
+- Introduzir noções básicas de Análise Exploratória de Dados, familiarizando o estudante com sua terminologia e principais técnicas.  
+- Familiarizar o estudante com as fases do trabalho estatístico e capacitá-lo, através da solução e discussão de exercícios, a sedimentar e utilizar os conceitos aprendidos na análise de dados.  
+- Apresentar ao estudante uma visão geral da Estatística no Brasil: campo de aplicação, a profissão e sua regulamentação.  
+- Apresentar ao estudante as principais fontes de dados estatísticos no Brasil.  
+- Introduzir o estudante ao uso de aplicativos estatísticos para microcomputadores.  
+- Desenvolver a capacidade crítica e analítica do estudante através da discussão de exercícios e problemas, bem como a capacidade de se expressar oralmente e por escrito.  
+
+
+## UNIDADE I: INTRODUÇÃO À ESTATÍSTICA  
+### 1. Conceitos Fundamentais  
+- O que é Estatística?  
+  - Definição, aplicações e divisões (descritiva × inferencial).  
+- Estatística no Brasil  
+  - Histórico e papel no setor público e privado.  
+
+### 2. Profissão e Sistema Estatístico  
+- Atuação do Estatístico  
+  - Áreas de trabalho e regulamentação profissional.  
+- Sistema Estatístico Brasileiro  
+  - IBGE, CONCLA, e outras instituições.  
+
+### 3. Fontes de Dados  
+- Bases nacionais  
+  - Censos, PNAD, registros administrativos (ex: DATASUS).  
+
+
+## UNIDADE II: ETAPAS DO MÉTODO ESTATÍSTICO  
+### 1. Planejamento  
+- Projeto de Pesquisa  
+  - Definição de objetivos, população e amostra.  
+
+### 2. Coleta de Dados  
+- Métodos  
+  - Censos, amostragem (probabilística e não-probabilística).  
+- Instrumentos  
+  - Elaboração de questionários (tipos de perguntas, validação).  
+
+### 3. Organização e Apuração  
+- Variáveis e Escalas  
+  - Qualitativas (nominal/ordinal) × Quantitativas (discreta/contínua).  
+
+### 4. Apresentação de Dados  
+- Séries Estatísticas  
+  - Temporal, geográfica, categórica.  
+- Gráficos para Variáveis Qualitativas  
+  - Barras, setores, pictogramas.  
+
+
+## UNIDADE III: ANÁLISE UNIVARIADA 
+### 1. Representação Gráfica  
+- Diagrama de pontos, ramo-e-folhas, histogramas.  
+
+### 2. Medidas-Resumo  
+- Posição: Média, mediana, moda.  
+- Variabilidade: Amplitude, desvio padrão.  
+- Forma: Coeficientes de assimetria e curtose.  
+
+### 3. Análise Robustez  
+- Box-plot: Interpretação e identificação de outliers.  
+
+
+## UNIDADE IV: ANÁLISE BIVARIADA *(Cap. 4 – Bussab & Morettin, 10ª ed.)*  
+### 1. Variáveis Qualitativas  
+- Tabelas de contingência  
+- Medidas de associação: Qui-Quadrado, V de Cramer.  
+
+### 2. Variáveis Quantitativas  
+- Diagrama de dispersão  
+- Correlação: Pearson (linear) e Spearman (monotônica).  
+
+### 3. Relações Qualitativa × Quantitativa  
+- Comparação de grupos: Box-plot por categoria.  
+
+
+
+## REFERÊNCIAS
+
+### Básica
+1. BARATELA MARTINS NETO, Daniele da Silva. Cálculo de Probabilidade 1. Notas de aula. Universidade de Brasília (UnB), Departamento de Matemática, 2025. Disponível mediante solicitação por e-mail: danielebaratela@unb.br.
+2. BARBETTA, Pedro A. Estatística Aplicada às Ciências Sociais. 7. ed. Florianópolis: Ed. da UFSC, 2007.
+3. BUSSAB, W.; MORETTIN, P. Estatística Básica. 5. ed. São Paulo: Saraiva, 2003.
+4. FONSECA, J. S.; MARTINS, G. A. Curso de Estatística. São Paulo: Atlas, 1994.
+5. MAGALHÃES, Marcos N.; LIMA, Antonio Carlos P. Noções de Probabilidade e Estatística. São Paulo: EdUSP, 2002.
+6. TOLEDO, G. L.; OVALLE, I. J. Estatística Básica. 2. ed. São Paulo: Atlas, 2010.
+
+### Complementar
+7. BERQUÓ, E. S.; GOTLIEB, Sabina L. D.; SOUSA, J. M. P. de. Bioestatística. 2. ed. rev. São Paulo: Editora Pedagógica e Universitária Ltda., 2001.
+8. HAKKERT, R. Fontes de dados demográficos. Belo Horizonte: ABEP, 1996. (Textos Didáticos)
+9. LEOROLLA, F. Estatística para Engenheiros. Brasília: UnB, 2025.
+10. LEVIN, J.; FOX, J. A. Estatística Aplicada às Ciências Humanas. 9. ed. São Paulo: Pearson, 2004.
+11. LEVINE, D. M. Estatística: Teoria e Aplicações usando o Microsoft Excel © em Português. 6. ed. Rio de Janeiro: Livros Técnicos e Científicos Editora S.A., 2012.
+12. SHELDON, R. Estatística para Negócios. São Paulo: Atlas, 2009.
+13. STEVENSON, W.J. Estatística Aplicada à Administração. São Paulo: Harbra, 2000.
+14. TRIOLA, M.F. Introdução à Estatística - Atualização da Tecnologia. 11. ed. Rio de Janeiro: Livros Técnicos e Científicos Editora S.A., 2013.
+15. TRIOLA, M.F. E-Book - Introdução à Estatística - Atualização da Tecnologia. 11. ed. Rio de Janeiro: Livros Técnicos e Científicos Editora S.A., 2013.
+16. VELLEMAN, P.; HOAGLIN, D.C. Applications, Basics and Computing Exploratory Data Analysis. 1. ed. Boston: Duxbury Press, 1981.
+17. WILD, C. J.; SEBER, G. A. F. Encontros com o acaso: um primeiro curso de análise de dados e inferência. Rio de Janeiro: Livros Técnicos e Científicos, 2004.
+
+---
+## Estrutura do Curso de Estatística Básica
+
+### 1. Visão Geral do Curso
+- Slide
+- Visão Geral do Curso (vídeo, 6m)
+
+### 2. Conceitos Iniciais
+- Slides - Conceitos Iniciais
+- Conceitos Iniciais (vídeo, 20m)
+
+### 3. Séries Estatísticas
+- Slides - Séries Estatísticas
+- Séries Estatísticas (vídeo, 5m)
+
+### 4. Gráficos
+- Slides - Gráficos
+- Gráficos (vídeo, 15m)
+- Diagrama de Pareto (vídeo, 6m)
+
+### 5. Distribuição de Frequências
+- Slides - Distribuição de Frequências
+- Distribuição de Frequências (vídeo, 18m)
+- Exercícios - Distribuição de Frequências
+- Resoluções Exercícios - Distribuição de Frequências
+
+### 6. Histograma e Polígono de Frequências
+- Slides - Histograma e Polígono de Frequências
+- Histograma e Polígono de Frequências (vídeo, 5m)
+
+### 7. Medidas de Posição
+- Slides - Medidas de Posição
+- Média Aritmética (vídeo, 9m)
+- Média Ponderada (vídeo, 6m)
+- Exercícios - Média Aritmética e Média Ponderada
+- Resoluções Exercícios - Média Aritmética e Média Ponderada
+- Mediana (vídeo, 20m)
+- Exercícios - Mediana
+- Resoluções Exercícios - Mediana
+- Moda (vídeo, 8m)
+- Exercícios - Moda
+- Resoluções Exercícios - Moda
+
+### 8. Medidas Separatrizes
+- Slides - Medidas Separatrizes
+- Medidas Separatrizes (vídeo, 14m)
+- Medidas Separatrizes no Excel (vídeo, 5m)
+- Exercícios - Medidas Separatrizes
+- Resoluções Exercícios - Medidas Separatrizes
+
+### 9. Probabilidade
+- Slides - Probabilidade
+- Probabilidade - Conceitos Iniciais (vídeo, 7m)
+- Probabilidade Frequentista (vídeo, 13m)
+- Probabilidade - Teoremas da Soma (vídeo, 20m)
+- Probabilidade - Teoremas do Produto (vídeo, 18m)
+- Exercícios - Probabilidade
+- Resoluções Exercícios - Probabilidade
+
+### 10. Medidas de Dispersão
+- Slides - Medidas de Dispersão
+- Variância (vídeo, 10m)
+- Desvio Padrão (vídeo, 18m)
+- Coeficiente de Variação (vídeo, 5m)
+- Exercícios Propostos - Medidas de Dispersão
+- Resolução Exercícios Propostos - Medidas de Dispersão
+
+### 11. Distribuição Binomial
+- Slides - Distribuição Binomial
+- Distribuição Binomial (vídeo, 24m)
+- Exercícios - Distribuição Binomial
+- Resoluções Exercícios - Distribuição Binomial
+
+### 12. Medidas de Associação
+- Slides - Medidas de Associação
+- Medidas de Associação (vídeo, 30m)
+- Exercícios - Medidas de Associação
+- Resoluções Exercícios - Medidas de Associação
+
+### 13. Análise de Regressão Linear Simples
+- Slides - Análise de Regressão Linear Simples
+- Análise de Regressão Linear Simples (vídeo, 36m)
+- Exercícios - Análise de Regressão Linear Simples
+- Resoluções Exercícios - Análise de Regressão Linear Simples
+
+### 14. Distribuição Normal
+- Slides - Distribuição Normal
+- Tabela Distribuição Normal Padrão
+- Distribuição Normal (vídeo, 33m)
+- Aproximação da Distribuição Binomial pela Distribuição Normal (vídeo, 3m)
+- Função Distribuição Normal no Excel (vídeo, 3m)
+- Exercícios - Distribuição Normal
+- Resoluções Exercícios - Distribuição Normal
+
+### 15. Teorema do Limite Central - TLC
+- Slides - Teorema do Limite Central - TLC
+- Teorema do Limite Central - TLC (vídeo, 22m)
+- Exercícios - Teorema do Limite Central
+- Resoluções Exercícios - Teorema do Limite Central
+
+### 16. Estimação
+- Slides - Estimação
+- Tabela Distribuição t
+- População Normal e Desvio Padrão Conhecido (vídeo, 19m)
+- Distribuição t (vídeo, 13m)
+- Como Escolher a Distribuição Adequada (vídeo, 4m)
+- Estimativa Intervalar Para Proporções Populacionais (vídeo, 11m)
+- Exercícios Propostos - Estimação
+- Resoluções Exercícios Propostos - Estimação
+
+### 17. Teste de Hipóteses Com Uma Amostra
+- Slides - Teste de Hipóteses
+- Teste de Hipóteses - Introdução e Distribuição Normal (vídeo, 29m)
+- Teste de Hipóteses - Distribuição t (vídeo, 7m)
+- Teste de Hipóteses para Proporções (vídeo, 11m)
+- Exercícios - Teste de Hipóteses
+- Resoluções Exercícios - Teste de Hipóteses
+- Errata Correção Questão 6
+
+### 18. Referências Bibliográficas
+- Referências Bibliográficas
