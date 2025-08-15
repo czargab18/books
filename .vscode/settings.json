@@ -36,7 +36,7 @@
   // CONFIGURAÇÕES PYTHON
   "python.terminal.activateEnvironment": true,
   "python.analysis.autoImportCompletions": true,
-  "python.languageServer": "Pylance",
+  "python.languageServer": "None",
   "python.analysis.typeCheckingMode": "basic",
   "python.createEnvironment.trigger": "off",
   // JUPYTER NOTEBOOKS
@@ -112,7 +112,7 @@
   // CONFIGURAÇÕES DO WORKSPACE
   "workbench.colorTheme": "GitHub Dark",
   "workbench.iconTheme": "vs-seti",
-  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreview": true,
   "workbench.editor.labelFormat": "short",
   "workbench.startupEditor": "readme",
   "workbench.tree.enableStickyScroll": false,
@@ -172,7 +172,6 @@
   // ARQUIVOS OCULTOS
   "files.exclude": {
     "**/.vscode": false,
-    "**/*_cache": true,
     "**/*.synctex*": true,
     "**/*.fdb_latexmk": true,
     "**/*.run.xml": true,
@@ -187,9 +186,14 @@
     "**/*.blg": true,
     "**/*.out": true,
     "**/*.dvi": true,
-    "**/__pycache__": true,
-    "node_modules": true,
-    "build": false
+    "**/*cache*": true,
+    "**/node_modules": true,
+    "**/build": false,
+    "**/.quarto": true,
+    "**/delete": true,
+    "**/_book": true,
+    "**/*libs*": true,
+    "**/build/**/.gitignore": true
   },
   // AUTO SAVE
   "files.autoSave": "afterDelay",
@@ -198,6 +202,8 @@
   "cSpell.enabledFileTypes": {
     "quarto": true,
     "markdown": true,
+    "md": true,
+    "qmd": true,
     "latex": false,
     "python": false,
     "r": false
@@ -213,5 +219,7 @@
   "emmet.includeLanguages": {
     "javascript": "javascriptreact",
     "quarto": "html"
-  }
+  },
+  "cursorpyright.analysis.autoImportCompletions": true,
+  "cursorpyright.analysis.typeCheckingMode": "basic"
 }

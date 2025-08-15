@@ -1,7 +1,7 @@
 project:
   type: book
-#  output-dir: "../../docs/EST0033"
-  #lib-dir: "./../delete/site_libs"
+  output-dir: "../../book/EST0033"
+#  lib-dir:  "_libs"
   preview:
     navigate: true
     browser: false
@@ -9,28 +9,46 @@ project:
     port: 4200
   
 book:
+  sidebar: 
+    collapse: true
+    collapse-level: 1
+    style: "floating"
+    code-link: false
+    pinned: true
+    search: true
+  search: 
+    location: sidebar
+    type: "textbox"
+    limit: 20
+      
+
   chapters:
     - index.qmd
     - pretextuais/sumario.qmd
-    - pretextuais/introducao.qmd
-  
-    - part: "Titulo do Capitulo 1"
+    # A Unidade I é destinada a falar sobre a area de Estatística, eoutras coisas.
+    # talvez, seja mais interresante apenas jogar o conteúdo para TAS0000
+    # deixando aqui apenas o conteúdo sobre métodos estatistica para análise de dados
+    - part: "Unidade I"
       chapters:
-        - textuais/cap1/introd.qmd
-        - textuais/cap1/secao1.qmd
-        - textuais/cap1/secao1exercicios.qmd
-        - textuais/cap1/cap1exercicios.qmd
+        - textuais/unid1/introd.qmd 
+        - textuais/unid1/brasil.qmd 
 
-    - part: "Titulo do Capitulo 2"
+    - part: "Unidade II"
       chapters:
-        - textuais/cap2/introd.qmd
-        - textuais/cap2/secao1.qmd
-        - textuais/cap2/secao2exercicios.qmd
-        - textuais/cap2/cap2exercicios.qmd
+        - textuais/unid2/introd.qmd 
+
+    - part: "Unidade III"
+      chapters:
+        - textuais/unid3/introd.qmd 
+
+    - part: "Unidade IV"
+      chapters:
+        - textuais/unid4/introd.qmd 
 
     - part: "Anexos"
       chapters:
-        - postextuais/apendice/formulas/cap1.qmd
+        - postextuais/apendice/ementa.qmd
+        - postextuais/apendice/formulas/formulas.qmd
 
     - postextuais/bibliografia/references.qmd
 
@@ -38,12 +56,12 @@ bibliography: postextuais/bibliografia/references.bib
 
 format:
   html:
-    toc: false
-    sidebar: true
-    theme:
-      - cosmo
-      - brand
-    code-link: true
-    search: true
-
-number-sections: false
+     toc: true
+     toc-location: left
+     toc-title: "Conteúdo"
+     toc-depth: 2
+     toc-expand: false
+     bread-crumbs: false
+     number-sections: false
+     anchor-sections: false
+     code-link: false

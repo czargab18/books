@@ -1,6 +1,9 @@
-# 📚 Books - Livros Acadêmicos com Quarto
+# A Arte da Estatística
+O nome desta série é inspirado na famosa coleção de Donald Knuth chamada “The Art of Computer Programming”, veja (tarara, xxx). Esta série ou coleção será construída com base em minhas notas de aulas e exercícios resolvidos.
 
 <!-- 🤖 README melhorado por IA - GitHub Copilot -->
+
+## Livros construidos com Quarto
 
 > **Projeto acadêmico para criação de livros e materiais educacionais** utilizando Quarto, R, Python e LaTeX, com foco em disciplinas de Estatística, Matemática e Ciência da Computação.
 
@@ -9,6 +12,7 @@
 Este repositório contém **anotações, códigos e projetos acadêmicos** desenvolvidos com o [Quarto](https://quarto.org/), organizados por disciplinas universitárias. O projeto combina diferentes linguagens e formatos para criar materiais educacionais interativos e de alta qualidade.
 
 ### 🚀 **Tecnologias Utilizadas:**
+
 - **[Quarto](https://quarto.org/)**: Sistema de publicação científica e técnica
 - **R**: Análise estatística e visualização de dados
 - **Python**: Ciência de dados e automação
@@ -17,6 +21,7 @@ Este repositório contém **anotações, códigos e projetos acadêmicos** desen
 - **HTML/CSS**: Apresentações web
 
 ### 🤖 **Desenvolvimento Assistido por IA**
+
 - **Mínimo 75% do código é gerado ou assistido por IA** (GitHub Copilot)
 - Todas as contribuições de IA são devidamente marcadas e documentadas
 - Uso responsável e transparente de ferramentas de IA
@@ -43,30 +48,35 @@ books/
 ```
 
 ### 📚 **Disciplinas Incluídas:**
+
 - **CIC0007**: Introdução à Ciência da Computação
-- **EST0033**: Estatística Exploratória  
+- **EST0033**: Estatística Exploratória
 - **EST0046**: Métodos Estatísticos
 - **EST0081**: Trabalho de Conclusão de Curso
 - **EST0091/092**: Computação Estatística I e II
 - **MAT0075**: Matemática Básica
 - **TAS0000**: Tópicos Avançados em Estatística
-- **_arquivos**: Ementas e materiais de planejamento
+- **\_arquivos**: Ementas e materiais de planejamento
 
 ## 🚀 Como Usar
 
 ### 🌥️ **Opção 1: GitHub Codespace (Recomendado)**
+
 1. **Abra no Codespace**: Clique em "Code" → "Codespaces" → "Create codespace on main"
 2. **Ambiente pré-configurado**: R, Python, Quarto e LaTeX já instalados
 3. **VS Code otimizado**: Extensões e configurações personalizadas
 
 ### 💻 **Opção 2: Local**
+
 1. **Clone o repositório**:
+
    ```bash
    git clone https://github.com/cesargabrielphd/books.git
    cd books
    ```
 
 2. **Instale as dependências**:
+
    ```bash
    # Quarto
    https://quarto.org/docs/get-started/
@@ -74,7 +84,7 @@ books/
    # R packages
    install.packages(c("tidyverse", "ggplot2", "rmarkdown", "knitr"))
 
-   # Python packages  
+   # Python packages
    pip install pandas numpy matplotlib jupyter quarto
    ```
 
@@ -86,22 +96,26 @@ books/
 ### 📝 **Trabalhando com os Documentos**
 
 #### **Renderizar um documento Quarto:**
+
 ```bash
 quarto render documento.qmd
 ```
 
 #### **Visualizar em tempo real:**
+
 ```bash
 quarto preview
 ```
 
 #### **Executar análises R:**
+
 ```r
 # Abrir arquivo .qmd ou .Rmd no VS Code
 # Usar Ctrl+Shift+Enter para executar chunks
 ```
 
 #### **Executar notebooks Python:**
+
 ```bash
 jupyter lab
 # ou usar diretamente no VS Code
@@ -110,7 +124,7 @@ jupyter lab
 ## 🎨 Estrutura das Branches
 
 - **🌟 `main`**: Código principal e documentação finalizada
-- **🔧 `dev1`**: Desenvolvimento de novas funcionalidades  
+- **🔧 `dev1`**: Desenvolvimento de novas funcionalidades
 - **🧪 `stag`**: Ambiente de teste e validação
 - **📖 `books`**: Deploy automático para GitHub Pages
 
@@ -119,12 +133,14 @@ jupyter lab
 Este projeto utiliza **GitHub Copilot** e outras ferramentas de IA de forma transparente:
 
 ### ✅ **Diretrizes de IA:**
+
 - **Mínimo 75% do código** é marcado como gerado por IA
 - Uso de comentários específicos: `# 🤖 Código gerado por IA - GitHub Copilot`
 - Commits incluem percentual de código gerado por IA
 - Documentação completa em [`.copilot-instructions.md`](.copilot-instructions.md)
 
 ### 📝 **Exemplo de Commit:**
+
 ```
 feat(quarto): adicionar análise estatística para EST0033
 
@@ -137,12 +153,14 @@ feat(quarto): adicionar análise estatística para EST0033
 ## 🛠️ Desenvolvimento
 
 ### **Configurações Incluídas:**
+
 - **DevContainer**: Ambiente completo para Codespace
 - **VS Code Settings**: Configurações otimizadas para R, Python, Quarto
 - **GitHub Copilot**: Templates e snippets personalizados
 - **Extensões**: Lista curada de extensões essenciais
 
 ### **Comandos Úteis:**
+
 ```bash
 # Renderizar todos os documentos
 quarto render
@@ -160,7 +178,7 @@ pip install -r requirements.txt
 ## 📊 Estatísticas do Projeto
 
 - **📚 Disciplinas**: 8+ disciplinas universitárias
-- **📄 Documentos**: 50+ arquivos Quarto/RMarkdown  
+- **📄 Documentos**: 50+ arquivos Quarto/RMarkdown
 - **🔬 Análises**: 100+ scripts R e Python
 - **🤖 IA**: 75%+ código assistido por GitHub Copilot
 - **📖 Páginas**: Disponível em [GitHub Pages](https://cesargabrielphd.github.io/books/)
@@ -168,6 +186,7 @@ pip install -r requirements.txt
 ## 🎓 Sobre o Autor
 
 **César Gabriel Castro de Oliveira**
+
 - 🎓 Estatística - Universidade de Brasília (UnB)
 - 💼 Especialização em Ciência de Dados
 - 🤖 Entusiasta de IA aplicada à educação
@@ -181,6 +200,7 @@ pip install -r requirements.txt
 5. **Abra** um Pull Request
 
 ### 📋 **Checklist para Contribuições:**
+
 - [ ] Código comentado em português
 - [ ] Indicação de código gerado por IA (mín. 75%)
 - [ ] Documentação atualizada
@@ -205,6 +225,13 @@ Este projeto está sob a licença **MIT** - veja o arquivo [LICENSE](LICENSE) pa
 
 **📚 Construído com ❤️ e 🤖 IA**
 
-*Este repositório é atualizado continuamente com novos conteúdos e melhorias.*
+_Este repositório é atualizado continuamente com novos conteúdos e melhorias._
 
 </div>
+
+---
+
+echo "Navegando para o diretório do livro e renderizando..."
+echo "Renderizando o livro..."
+echo "Voltando para a raiz do projeto..."
+echo "Automatizando a limpeza dos HTMLs..."

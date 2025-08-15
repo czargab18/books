@@ -1,13 +1,17 @@
 ###########################################
-################## pastas:#################
+################### RAIZ ##################
 ###########################################
 ##### IGNORAR
 *.pdf
-/delete
-/ac
 **/.gitignore
+delete/
+*libs*/
+_book/
+.quarto
+
+
 ##### NÃO IGNORAR
-# !fluxograma.pdf
+!fluxograma.pdf
 !/.gitignore
 
 ###########################################
@@ -29,3 +33,4 @@ renv/staging/
 !**/renv/settings.json
 !.Rprofile
 !renv.lock
+/.quarto/
