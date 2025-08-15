@@ -1,0 +1,166 @@
+name: books_v5
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib", ".github/workflows/*books*.yml"]
+
+permissions:
+  contents: write
+  pull-requests: read
+  pages: write
+  id-token: write
+
+env:
+  url: ${{ vars.URL }}
+  USEREMAIL: ${{ secrets.USEREMAIL }}
+  USERNAME: ${{ github.repository_owner }}
+  TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
+
+jobs:
+  renderizar:
+    runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    steps:
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+
+      - name: Configura Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Renderiza livros Quarto
+        run: |
+          mkdir -p _docs
+          for folder in $(ls build); do
+            if [ -d "build/$folder" ]; then
+              quarto render "build/$folder" --to html --execute --output-dir "_docs/$folder"
+            fi
+          done
+
+      - name: Remove versões antigas dos livros renderizados
+        run: |
+          mkdir -p book
+          for folder in $(ls _docs); do
+            rm -rf "book/$folder"
+          done
+
+      - name: Move novos livros renderizados para book
+        run: |
+          for folder in $(ls _docs); do
+            mv "_docs/$folder" "book/$folder"
+          done
+
+      - name: Exporta livros renderizados
+        uses: actions/upload-artifact@v4
+        with:
+          name: books_renderizados
+          path: "./book"
+
+  deploy:
+    needs: [renderizar]
+    runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    steps:
+      - name: Baixa artefato
+        uses: actions/download-artifact@v4
+        with:
+          name: books_renderizados
+          path: books
+
+      - name: Setup Pages
+        uses: actions/configure-pages@v5
+
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: books
+
+      - name: Deploy to GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
+
+  books:
+    needs: [renderizar]
+    runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    steps:
+      - name: Clona o Repositório books
+        uses: actions/checkout@v4
+        with:
+          ref: book
+          path: books
+          fetch-depth: 0
+          token: ${{ env.TOKEN }}
+          repository: ${{ env.USERNAME }}/books
+
+      - name: Baixa artefato dos livros renderizados
+        uses: actions/download-artifact@v4
+        with:
+          name: books_renderizados
+          path: _books
+
+      - name: Garante que a branch book existe e faz checkout
+        working-directory: books
+        run: |
+          if ! git rev-parse --verify book >/dev/null 2>&1; then
+            git checkout --orphan book
+            git rm -rf .
+            git commit --allow-empty -m "Cria branch book inicial"
+            git push origin book
+          else
+            git checkout book
+          fi
+
+      - name: Sincroniza arquivos do artefato com a branch book
+        run: |
+          rsync -av --update --delete _books/ books/book/
+
+      - name: Configura credenciais do Git
+        working-directory: books
+        run: |
+          git config user.name "${{ env.USERNAME }}"
+          git config user.email "${{ env.USEREMAIL }}"
+          git remote set-url origin https://x-access-token:${{ env.TOKEN }}@github.com/${{ env.USERNAME }}/books.git
+
+      - name: Faz commit e push dos livros renderizados
+        working-directory: books
+        run: |
+          git add books/
+          git commit -m "books: atualiza books a partir do repo:books" || echo "Nada a commitar"
+          git push --force origin book
+
+  dispatch:
+    needs: [renderizar]
+    runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    steps:
+      - name: Atualizar 'submódulo books'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          repository: ${{ env.USERNAME }}/estatistica
+          token: ${{ env.TOKEN }}
+          event-type: atualizar-books
+
+      - name: Mensagem sucesso
+        run: echo "Disparo realizado com sucesso!"
+    # referências:
+    # - https://medium.com/@0xWerz/how-to-automatically-update-git-submodules-using-github-actions-d71c8126e82e
+
+  cleanup:
+    needs: [renderizar, deploy, books, dispatch]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deleta artefatos
+        uses: geekyeggo/delete-artifact@v5
+        with:
+          name: |
+            github-pages
+            books_renderizados
+
+# referências:
+# - 
