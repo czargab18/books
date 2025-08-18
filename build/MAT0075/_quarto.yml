@@ -31,10 +31,6 @@ book:
     - pretextuais/prefacio.qmd
     - pretextuais/sumario.qmd
 
-    - part: "Capítulo 0: Análise Combinatória"
-      chapters:
-        - textuais/cap00/combinatoria.qmd
-
     - part: "Capítulo 1: Espaços de Probabilidade"
       chapters:
         - textuais/cap01/modelos-probabilisticos.qmd
@@ -43,9 +39,9 @@ book:
         - textuais/cap01/espacos-medida.qmd
         - textuais/cap01/exercicios.qmd
 
-    - part: "Capítulo 0: Análise Combinatória"
+    - part: "Capítulo 2: Análise Combinatória"
       chapters:
-        - textuais/cap00/combinatoria.qmd
+        - textuais/cap02/combinatoria.qmd
         
     - part: "Capítulo 2: Probabilidade Condicional e Independência"
       chapters:
