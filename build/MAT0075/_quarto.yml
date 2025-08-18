@@ -24,12 +24,22 @@ book:
   chapters:
     - index.qmd
 
+    - part: "Pré-textuais"
+      chapters:
+        - pretextuais/sumario.qmd
+
+    - part: "Requisitos"
+      chapters:
+        - requisitos/combinatoria.qmd
+
     - part: "Espaço de Probabilidade"
       chapters:
         - textuais/topico1.qmd
         - exercicios/topico1.qmd
 
-    - postextuais/references.qmd
+    - part: "Pós-textuais"
+      chapters:
+        - postextuais/references.qmd
 
 bibliography: postextuais/references.bib
 

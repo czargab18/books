@@ -1,0 +1,77 @@
+A seguir, apresento as fórmulas e conceitos fundamentais abordados nos Capítulos 1 a 5 do livro *Probabilidade* de Leonardo T. Rolla e Bernardo N. B. de Lima, conforme o documento disponível no site do IME-USP .([Doceru][1])
+
+## 📘 Capítulo 1: Espaços de Probabilidade
+
+### 1.1 Modelo Probabilístico
+
+* **Espaço amostral**: Conjunto não vazio de todos os resultados possíveis de um experimento aleatório.
+* **Evento**: Subconjunto do espaço amostral.
+* **Probabilidade**: Função que associa a cada evento um número real entre 0 e 1, representando a chance de ocorrência do evento.([Scribd][2])
+
+### 1.2 Contagem e Simetria
+
+* **Princípio multiplicativo**: Se um experimento pode ser realizado de $m$ maneiras e outro de $n$ maneiras, então o número total de maneiras de realizar ambos os experimentos é $m \times n$.
+* **Permutações**: Número de maneiras de arranjar $n$ objetos distintos é $n!$.
+* **Combinações**: Número de maneiras de escolher $k$ objetos de um conjunto de $n$ objetos é dado por $\binom{n}{k} = \frac{n!}{k!(n-k)!}$.
+
+## 📘 Capítulo 2: Variáveis Aleatórias
+
+### 2.1 Definição e Tipos
+
+* **Variável aleatória discreta**: Função que associa a cada ponto do espaço amostral um número real, assumindo um número finito ou enumerável de valores.
+* **Variável aleatória contínua**: Função que associa a cada ponto do espaço amostral um número real, assumindo um número não enumerável de valores.
+
+### 2.2 Função de Probabilidade e Densidade
+
+* **Função de probabilidade**: Para variáveis discretas, $P(X = x) = p_X(x)$.
+* **Função de densidade de probabilidade**: Para variáveis contínuas, $f_X(x)$, tal que $P(a \leq X \leq b) = \int_a^b f_X(x) \, dx$.([Scribd][2])
+
+## 📘 Capítulo 3: Esperança Matemática
+
+### 3.1 Definição
+
+* **Esperança de uma variável aleatória discreta**: $E[X] = \sum_{x} x \cdot P(X = x)$.
+* **Esperança de uma variável aleatória contínua**: $E[X] = \int_{-\infty}^{\infty} x \cdot f_X(x) \, dx$.([IME-USP][3])
+
+### 3.2 Propriedades
+
+* **Linearidade**: $E[aX + b] = aE[X] + b$.
+* **Não-negatividade**: Se $X \geq 0$, então $E[X] \geq 0$.
+* **Monotonicidade**: Se $X \leq Y$, então $E[X] \leq E[Y]$.([Academia][4])
+
+## 📘 Capítulo 4: Variância e Desvio Padrão
+
+### 4.1 Definição
+
+* **Variância**: $\text{Var}(X) = E[X^2] - (E[X])^2$.
+* **Desvio padrão**: $\sigma_X = \sqrt{\text{Var}(X)}$.
+
+### 4.2 Propriedades
+
+* **Linearidade**: $\text{Var}(aX + b) = a^2 \cdot \text{Var}(X)$.
+* **Independência**: Se $X$ e $Y$ são independentes, então $\text{Var}(X + Y) = \text{Var}(X) + \text{Var}(Y)$.
+
+## 📘 Capítulo 5: Esperança Matemática (Continuação)
+
+### 5.1 Variáveis Aleatórias Simples
+
+* **Definição**: Uma variável aleatória $X$ é simples se assume um número finito de valores.
+* **Esperança**: $E[X] = \sum_{x} x \cdot P(X = x)$.([Scribd][2])
+
+### 5.2 Esperança Matemática
+
+* **Definição**: A esperança matemática de uma variável aleatória $X$ é o valor médio ponderado de seus possíveis valores, com os pesos sendo as probabilidades associadas.
+* **Propriedades**:
+
+  * **Linearidade**: $E[aX + b] = aE[X] + b$.
+  * **Não-negatividade**: Se $X \geq 0$, então $E[X] \geq 0$.
+  * **Monotonicidade**: Se $X \leq Y$, então $E[X] \leq E[Y]$.
+
+Essas fórmulas e conceitos são fundamentais para o entendimento da teoria da probabilidade e servem como base para tópicos mais avançados, como distribuições conjuntas, variáveis aleatórias contínuas e discretas, e teoremas de convergência.
+
+Se desejar, posso auxiliá-lo na resolução de exercícios práticos ou na aplicação desses conceitos em situações específicas.
+
+[1]: https://doceru.com/doc/xss0s88n?utm_source=chatgpt.com "Probabilidade - Leonardo T. Rolla e Bernardo N. B. de Lima - Baixar ..."
+[2]: https://pt.scribd.com/document/635766376/Leonardo-Rolla-Bernardo-de-Lima-Probabilidade?utm_source=chatgpt.com "(Leonardo Rolla, Bernardo de Lima) Probabilidade | PDF - Scribd"
+[3]: https://www.ime.usp.br/~leorolla/papers/probabilidade.pdf?utm_source=chatgpt.com "[PDF] Probabilidade - IME-USP"
+[4]: https://www.academia.edu/35779000/Introdu%C3%A7%C3%A3o_%C3%A0_Probabilidade_Notas_de_Aula?utm_source=chatgpt.com "(PDF) Introdução à Probabilidade Notas de Aula - Academia.edu"
