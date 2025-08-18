@@ -24,34 +24,45 @@ book:
   chapters:
     - index.qmd
 
-    - part: "Pré-textuais"
+    - part: "Fundamentos"
       chapters:
-        - pretextuais/sumario.qmd
+        - fundamentos/combinatoria.qmd
+        - fundamentos/espacos-probabilidade.qmd
 
-    - part: "Requisitos"
+    - part: "Probabilidade"
       chapters:
-        - requisitos/combinatoria.qmd
+        - probabilidade/definicao.qmd
+        - probabilidade/propriedades.qmd
+        - probabilidade/condicional.qmd
+        - probabilidade/independencia.qmd
 
-    - part: "Espaço de Probabilidade"
+    - part: "Variáveis Aleatórias"
       chapters:
-        - textuais/topico1.qmd
-        - exercicios/topico1.qmd
+        - variaveis-aleatorias/discretas.qmd
+        - variaveis-aleatorias/continuas.qmd
+        - variaveis-aleatorias/distribuicoes.qmd
 
-    - part: "Pós-textuais"
+    - part: "Exercícios"
       chapters:
-        - postextuais/references.qmd
+        - exercicios/lista1.qmd
+        - exercicios/lista2.qmd
 
-bibliography: postextuais/references.bib
+    - part: "Referências"
+      chapters:
+        - references.qmd
+
+bibliography: references.bib
 
 format:
   html:
      toc: true
      toc-location: left
      toc-title: "Conteúdo"
-     toc-depth: 2
-     toc-expand: false
-     bread-crumbs: false
-     number-sections: false
-     anchor-sections: false
-     code-link: false
+     toc-depth: 3
+     toc-expand: true
+     bread-crumbs: true
+     number-sections: true
+     anchor-sections: true
+     code-link: true
+     theme: cosmo
 
