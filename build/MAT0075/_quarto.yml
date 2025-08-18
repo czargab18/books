@@ -49,9 +49,9 @@ book:
 
     - part: "Referências"
       chapters:
-        - references.qmd
+        - postextuais/bibliografia/references.qmd
 
-bibliography: references.bib
+bibliography: postextuais/bibliografia/references.bib
 
 format:
   html:
