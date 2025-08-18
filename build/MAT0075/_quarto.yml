@@ -9,13 +9,9 @@ project:
     port: 4200
   
 book:
-  title: "Cálculo de Probabilidades 1"
-  author: "MAT0075"
-  date: today
-  
   sidebar: 
     collapse: true
-    collapse-level: 2
+    collapse-level: 1
     style: "floating"
     code-link: false
     pinned: true
