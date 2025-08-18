@@ -9,9 +9,13 @@ project:
     port: 4200
   
 book:
+  title: "Probabilidade e Teoria da Medida"
+  author: "MAT0075"
+  date: today
+  
   sidebar: 
     collapse: true
-    collapse-level: 1
+    collapse-level: 2
     style: "floating"
     code-link: false
     pinned: true
@@ -23,35 +27,143 @@ book:
 
   chapters:
     - index.qmd
+    
+    - prefacio.qmd
 
-    - part: "Fundamentos"
+    - part: "Capítulo 1: Espaços de Probabilidade"
       chapters:
-        - fundamentos/combinatoria.qmd
-        - fundamentos/espacos-probabilidade.qmd
+        - cap01/modelos-probabilisticos.qmd
+        - cap01/contagem-simetria.qmd
+        - cap01/axiomas-kolmogorov.qmd
+        - cap01/espacos-medida.qmd
+        - cap01/exercicios.qmd
 
-    - part: "Probabilidade"
+    - part: "Capítulo 2: Probabilidade Condicional e Independência"
       chapters:
-        - probabilidade/definicao.qmd
-        - probabilidade/propriedades.qmd
-        - probabilidade/condicional.qmd
-        - probabilidade/independencia.qmd
+        - cap02/probabilidade-condicional.qmd
+        - cap02/independencia.qmd
+        - cap02/exercicios.qmd
 
-    - part: "Variáveis Aleatórias"
+    - part: "Capítulo 3: Variáveis Aleatórias"
       chapters:
-        - variaveis-aleatorias/discretas.qmd
-        - variaveis-aleatorias/continuas.qmd
-        - variaveis-aleatorias/distribuicoes.qmd
+        - cap03/variaveis-aleatorias.qmd
+        - cap03/discretas.qmd
+        - cap03/continuas.qmd
+        - cap03/distribuicoes-mistas.qmd
+        - cap03/funcoes-mensuravei.qmd
+        - cap03/exercicios.qmd
 
-    - part: "Exercícios"
+    - part: "Capítulo 4: Vetores Aleatórios"
       chapters:
-        - exercicios/lista1.qmd
-        - exercicios/lista2.qmd
+        - cap04/vetores-aleatorios.qmd
+        - cap04/soma-variaveis.qmd
+        - cap04/metodo-jacobiano.qmd
+        - cap04/sequencias-independentes.qmd
+        - cap04/exercicios.qmd
 
-    - part: "Referências"
+    - part: "Capítulo 5: Esperança Matemática"
       chapters:
-        - postextuais/bibliografia/references.qmd
+        - cap05/variaveis-simples.qmd
+        - cap05/esperanca-matematica.qmd
+        - cap05/convergencia-esperanca.qmd
+        - cap05/esperanca-condicional-evento.qmd
+        - cap05/integral-lebesgue.qmd
+        - cap05/exercicios.qmd
 
-bibliography: postextuais/bibliografia/references.bib
+    - part: "Capítulo 6: Momentos e Desigualdades"
+      chapters:
+        - cap06/momentos-variancia.qmd
+        - cap06/correlacao.qmd
+        - cap06/desigualdades-basicas.qmd
+        - cap06/exercicios.qmd
+
+    - part: "Capítulo 7: Convergência de Variáveis Aleatórias"
+      chapters:
+        - cap07/modos-convergencia.qmd
+        - cap07/borel-cantelli.qmd
+        - cap07/relacoes-convergencia.qmd
+        - cap07/convergencia-distribuicao.qmd
+        - cap07/exercicios.qmd
+
+    - part: "Capítulo 8: Lei dos Grandes Números"
+      chapters:
+        - cap08/lei-fraca.qmd
+        - cap08/lei-forte.qmd
+        - cap08/kolmogorov.qmd
+        - cap08/aplicacoes.qmd
+        - cap08/exercicios.qmd
+
+    - part: "Capítulo 9: Teorema do Limite Central"
+      chapters:
+        - cap09/limite-central.qmd
+        - cap09/de-moivre-laplace.qmd
+        - cap09/lyapunov.qmd
+        - cap09/lindeberg.qmd
+        - cap09/slutsky-delta.qmd
+        - cap09/exercicios.qmd
+
+    - part: "Capítulo 10: Transformadas"
+      chapters:
+        - cap10/funcao-geradora-momentos.qmd
+        - cap10/funcao-caracteristica.qmd
+        - cap10/unicidade-convergencia.qmd
+        - cap10/formula-inversao.qmd
+        - cap10/exercicios.qmd
+
+    - part: "Capítulo 11: Esperança Condicional"
+      chapters:
+        - cap11/esperanca-particao.qmd
+        - cap11/probabilidade-condicional.qmd
+        - cap11/densidade-condicional.qmd
+        - cap11/sigma-algebra.qmd
+        - cap11/radon-nikodym.qmd
+        - cap11/distribuicao-condicional.qmd
+        - cap11/exercicios.qmd
+
+    - part: "Capítulo 12: Martingales"
+      chapters:
+        - cap12/definicoes-exemplos.qmd
+        - cap12/tempos-parada.qmd
+        - cap12/amostragem-opcional.qmd
+        - cap12/convergencia-quase-certa.qmd
+        - cap12/convergencia-lp.qmd
+        - cap12/decomposicao-doob.qmd
+        - cap12/exercicios.qmd
+
+    - part: "Capítulo 13: Leis 0-1 e Séries Aleatórias"
+      chapters:
+        - cap13/algebras-sequencias.qmd
+        - cap13/independencia-sigma-algebras.qmd
+        - cap13/lei-kolmogorov.qmd
+        - cap13/lei-hewitt-savage.qmd
+        - cap13/series-aleatorias.qmd
+        - cap13/exercicios.qmd
+
+    - part: "Capítulo 14: Teoria Ergódica"
+      chapters:
+        - cap14/transformacoes-medida.qmd
+        - cap14/birkhoff.qmd
+        - cap14/ergodicas-misturadoras.qmd
+        - cap14/rotacao-circulo.qmd
+        - cap14/von-neumann.qmd
+        - cap14/exercicios.qmd
+
+    - part: "Capítulo 15: Grandes Desvios"
+      chapters:
+        - cap15/concentracao.qmd
+        - cap15/principio-grandes-desvios.qmd
+        - cap15/teorema-cramer.qmd
+
+    - part: "Apêndices"
+      chapters:
+        - apendices/preliminares.qmd
+        - apendices/stirling.qmd
+        - apendices/reta-real-infinito.qmd
+        - apendices/teoria-medida.qmd
+
+    - references.qmd
+
+bibliography: references.bib
 
 format:
   html:
@@ -59,10 +171,11 @@ format:
      toc-location: left
      toc-title: "Conteúdo"
      toc-depth: 3
-     toc-expand: true
+     toc-expand: false
      bread-crumbs: true
      number-sections: true
      anchor-sections: true
      code-link: true
      theme: cosmo
+     css: styles.css
 
