@@ -1,10 +1,48 @@
 {
-  "1": ["CIC0007", "EST0001", "EST0033", "EST0069", "MAT0025"],
-  "2": ["EST0070", "MAT0026", "MAT0031"],
-  "3": ["EST0017", "EST0087", "MAT0027", "MAT0053", "MAT0075"],
-  "4": ["EST0035", "EST0036", "MAT0076"],
-  "5": ["EST0004", "EST0038", "EST0042", "EST0048", "EST0088"],
-  "6": ["EST0005", "EST0040", "EST0051", "EST0064", "EST0124"],
-  "7": ["EST0006", "EST0041", "EST0043", "EST0049", "EST0089"],
-  "8": ["EST0123"]
+  "1": [
+    { "codigo": "CIC0007", "nome": "INTRODUÇÃO À CIÊNCIA DA COMPUTAÇÃO" },
+    { "codigo": "EST0001", "nome": "COMPUTAÇÃO EM ESTATÍSTICA 1" },
+    { "codigo": "EST0033", "nome": "ESTATÍSTICA EXPLORATÓRIA" },
+    { "codigo": "EST0069", "nome": "INTRODUCAO A PROBABILIDADE" },
+    { "codigo": "MAT0025", "nome": "CÁLCULO 1" }
+  ],
+  "2": [
+    { "codigo": "EST0070", "nome": "METODOS ESTATISTICOS 1" },
+    { "codigo": "MAT0026", "nome": "CÁLCULO 2" },
+    { "codigo": "MAT0031", "nome": "INTRODUCAO A ALGEBRA LINEAR" }
+  ],
+  "3": [
+    { "codigo": "EST0017", "nome": "MÉTODOS ESTATÍSTICOS 2" },
+    { "codigo": "EST0087", "nome": "PRÁTICAS DE EXTENSÃO EM ESTATÍSTICA 1" },
+    { "codigo": "MAT0027", "nome": "CÁLCULO 3" },
+    { "codigo": "MAT0053", "nome": "CALCULO NUMERICO" },
+    { "codigo": "MAT0075", "nome": "CALCULO DE PROBABILIDADE 1" }
+  ],
+  "4": [
+    { "codigo": "EST0035", "nome": "INFERENCIA ESTATISTICA" },
+    { "codigo": "EST0036", "nome": "TECNICAS DE AMOSTRAGEM" },
+    { "codigo": "MAT0076", "nome": "CALCULO DE PROBABILIDADE 2" }
+  ],
+  "5": [
+    { "codigo": "EST0004", "nome": "ESTATÍSTICA COMPUTACIONAL" },
+    { "codigo": "EST0038", "nome": "ANÁLISE DE REGRESSÃO LINEAR" },
+    { "codigo": "EST0042", "nome": "DELINEAMENTO E ANÁLISE DE EXPERIMENTOS" },
+    { "codigo": "EST0048", "nome": "PROCESSOS ESTOCASTICOS" },
+    { "codigo": "EST0088", "nome": "PRÁTICAS DE EXTENSÃO EM ESTATÍSTICA 2" }
+  ],
+  "6": [
+    { "codigo": "EST0005", "nome": "INFERÊNCIA BAYESIANA" },
+    { "codigo": "EST0040", "nome": "ANÁLISE MULTIVARIADA 1" },
+    { "codigo": "EST0051", "nome": "ANÁLISE DE SÉRIES TEMPORAIS" },
+    { "codigo": "EST0064", "nome": "ANALISE DE DADOS CATEGORIZADOS" },
+    { "codigo": "EST0124", "nome": "LABORATÓRIO DE ESTATÍSTICA 1" }
+  ],
+  "7": [
+    { "codigo": "EST0006", "nome": "ANÁLISE MULTIVARIADA 2" },
+    { "codigo": "EST0041", "nome": "ANÁLISE DE DADOS LONGITUDINAIS" },
+    { "codigo": "EST0043", "nome": "DELINEAMENTO E ANÁLISE DE EXPERIMENTOS 2" },
+    { "codigo": "EST0049", "nome": "REGRESSÃO NÃO LINEAR" },
+    { "codigo": "EST0089", "nome": "PRÁTICAS DE EXTENSÃO EM ESTATÍSTICA 3" }
+  ],
+  "8": [{ "codigo": "EST0123", "nome": "TRABALHO DE CONCLUSÃO DE CURSO 2" }]
 }
