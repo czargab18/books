@@ -15,8 +15,8 @@ Onde:
 - $P(E)$ é a probabilidade marginal de E (evidência)
 
 
-Quase como um algoritmo quando se tem apenas 2 coisas, uma Hipotese e uma evidencia. O resto quase vem de graça. Bom, Hipotese é hipotese e não há nada a ser discutido. Evidencia, podemos ter um certo debate. Podemos fazer estudos aprofundados ou não para obter ou calcular essa probabilidade. A P(E|H) chamada de verossimilhança, indica o quanto a informação/evidencia é confiavel.
-A forma estendidad do teorema, quando E pode ser decomposto em eventos mutuamente exclusivos e exaustivos $H_1, H_2, ..., H_n$, tem-se: 
+Quase como um algoritmo quando se tem apenas 2 coisas, uma Hipótese e uma evidência. O resto quase vem de graça. Bom, Hipótese é hipótese e não há nada a ser discutido. Evidência, podemos ter um certo debate. Podemos fazer estudos aprofundados ou não para obter ou calcular essa probabilidade. A P(E|H) chamada de verossimilhança, indica o quanto a informação/evidência é confiável.
+A forma estendida do teorema, quando E pode ser decomposto em eventos mutuamente exclusivos e exaustivos $H_1, H_2, ..., H_n$, tem-se: 
 
 $$
 P(H_i|E) = \frac{P(E|H_i) \cdot P(H_i)}{\sum_{j=1}^{n} P(E|H_j) \cdot P(H_j)}
