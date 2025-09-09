@@ -1,7 +1,7 @@
 project:
   type: book
 #  output-dir: "../../book/MAT0075"
-  output-dir: "_book/"
+#  output-dir: "_book/"
 #  lib-dir:  "_libs"
   preview:
     navigate: true
