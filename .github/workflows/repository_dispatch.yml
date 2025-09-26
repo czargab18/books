@@ -1,6 +1,6 @@
 # Código gerado/assistido por Claude Sonnet 4
-name: repository_dispatch - books
-description: Dispara evento 'repository_dispatch' no repositório 'books' quando há push para main em arquivos específicos.
+name: repository_dispatch - estatistica
+description: Dispara evento 'repository_dispatch' no repositório 'estatistica' quando há push para main em arquivos específicos.
 
 on:
   workflow_dispatch:
@@ -8,13 +8,23 @@ on:
     branches: [main]
     paths: ["books/build/**/*.qmd",  "books/build/**/*.yml", "books/build/*.bib"]
 
+permissions:
+  contents: read
+  actions: write
+
+env:
+  USERNAME: ${{ github.repository_owner }}
+  TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
+
 jobs:
-  notifica-books:
+  notificar-estatistica:
+    environment:
+      name: ENVIRONMENT
     runs-on: ubuntu-latest
     steps:
-      - name: Dispara 'repository_dispatch' no books
+      - name: Dispara 'repository_dispatch' no estatistica
         uses: peter-evans/repository-dispatch@v3
         with:
-          repository: ${{ github.repository_owner}}/estatistica
-          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: ${{ env.USERNAME }}/estatistica
+          token: ${{ env.TOKEN }}
           event-type: atualizar-books
