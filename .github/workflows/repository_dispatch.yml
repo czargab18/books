@@ -1,10 +1,10 @@
 # Código gerado/assistido por IA
-name: Notifica books para atualizar submodule
+name: repository_dispatch - books
 
 on:
   push:
     branches: [main]
-    paths: ["books/**/*.py", "books/**/*.yml", "books/*.html", "books/*.bib"]
+    paths: ["books/build/**/*.py", "books/build/**/*.yml", "books/build/*.html", "books/build/*.bib"]
 
 jobs:
   notifica-books:
