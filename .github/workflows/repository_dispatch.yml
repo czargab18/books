@@ -15,6 +15,6 @@ jobs:
       - name: Dispara 'repository_dispatch' no books
         uses: peter-evans/repository-dispatch@v3
         with:
-          repository: czargab18/books
+          repository: czargab18/estatistica
           token: ${{ secrets.GITHUB_TOKEN }}
           event-type: atualiza-books
