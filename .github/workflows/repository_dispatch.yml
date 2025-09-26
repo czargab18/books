@@ -1,0 +1,20 @@
+# Código gerado/assistido por Claude Sonnet 4
+name: repository_dispatch - books
+description: Dispara evento 'repository_dispatch' no repositório 'books' quando há push para main em arquivos específicos.
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["books/build/**/*.qmd",  "books/build/**/*.yml", "books/build/*.bib"]
+
+jobs:
+  notifica-books:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispara 'repository_dispatch' no books
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          repository: czargab18/books
+          token: ${{ secrets.GITHUB_TOKEN }}
+          event-type: atualiza-books

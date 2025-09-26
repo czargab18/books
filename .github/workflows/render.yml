@@ -114,10 +114,53 @@ jobs:
           else
             git checkout book
           fi
-      - name: Sincroniza arquivos do artefato com a branch book
+
+      - name: Lista livros a serem atualizados
         working-directory: books
         run: |
-          rsync -av --update ../_books/ book/
+          # Garante que o diretório book existe
+          mkdir -p book
+          
+          # Lista os livros que serão atualizados
+          echo "=== Livros a serem atualizados ==="
+          ls ../_books/ 2>/dev/null || echo "Nenhum livro encontrado"
+
+      - name: Remove versões antigas dos livros
+        working-directory: books
+        run: |
+          # Remove versões antigas apenas dos livros que serão atualizados
+          for folder in $(ls ../_books/ 2>/dev/null || echo ""); do
+            if [ -d "book/$folder" ]; then
+              echo "🗑️  Removendo versão antiga: $folder"
+              rm -rf "book/$folder"
+            else
+              echo "📁 Novo livro detectado: $folder"
+            fi
+          done
+
+      - name: Sincroniza novos livros
+        working-directory: books
+        run: |
+          # Sincroniza os novos livros
+          echo "=== Sincronizando livros ==="
+          rsync -av ../_books/ book/
+
+      - name: Mostra resumo final da sincronização
+        working-directory: books
+        run: |
+          # Mostra resumo final
+          echo "=== Resumo Final ==="
+          echo "Livros na pasta book:"
+          ls -la book/ 2>/dev/null || echo "Pasta book vazia"
+          
+          echo ""
+          echo "Total de arquivos por livro:"
+          for folder in $(ls book/ 2>/dev/null || echo ""); do
+            if [ -d "book/$folder" ]; then
+              count=$(find "book/$folder" -type f | wc -l)
+              echo "📚 $folder: $count arquivos"
+            fi
+          done
 
       # - name: Atualiza lista de books
       #   run: |
