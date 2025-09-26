@@ -114,10 +114,20 @@ jobs:
           else
             git checkout book
           fi
-
       - name: Sincroniza arquivos do artefato com a branch book
+        working-directory: books
         run: |
-          rsync -av --update _books/ books/book/
+          rsync -av --update ../_books/ book/
+
+      # - name: Atualiza lista de books
+      #   run: |
+      #     echo "em desenvolvimento..."
+      # ..................................
+      # Talvez eu possa apenas gerar um arquivo .json com a lista de livros
+      # e salvar dentro em book para ser consumida por um script no site.
+      # o script analisa a lista e muda o discply dos livros na página.
+      # a página já teria o link par atodos os livros mas ocultos ao usuário.
+      # ..................................
 
       # - name: Atualiza lista de books
       #   run: |
