@@ -17,4 +17,4 @@ jobs:
         with:
           repository: ${{ github.repository_owner}}/estatistica
           token: ${{ secrets.GITHUB_TOKEN }}
-          event-type: atualiza-books
+          event-type: atualizar-books
