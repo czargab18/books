@@ -7,9 +7,6 @@ Profª Daniele Baratela
 
 1.  Seja (Ω, F, 𝛲) um espaço de probabilidade, onde 𝒜 é a σ-álgebra de todos os subconjuntos de Ω e P uma medida de probabilidade que associa a probabilidade p \> 0 a cada conjunto de um ponto de Ω.
     1.  Mostre que Ω deve ter um número finito de pontos. Sugestão: mostre que Ω não pode ter mais de p-1 pontos.
-
-        [Resposta inicial (estupida)]{.reposta-inicial .resp-estupida}
-
     2.  Mostre que se n é o número de pontos em Ω, então p deve ser igual a n-1. Nos exercícios de 2 a 6, descreva primeiramente um espaço de probabilidade adequado ao experimento em questão.
 
 2.  Pode-se construir um modelo para um “spinner” aleatório tomando um espaço uniforme de probabilidade sobre a circunferência de um círculo de raio 1, de modo que a probabilidade de que o ponteiro do “spinner” pare sobre um arco de comprimento s é 𝑠/2𝜋. Suponha que o círculo esteja dividido em 37 zonas numeradas de 1 a 37. Determine a probabilidade de que o ponteiro pare sobre uma zona par.

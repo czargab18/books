@@ -58,30 +58,29 @@ jobs:
           name: books_renderizados
           path: "./book"
 
-  deploy:
-    needs: [renderizar]
-    runs-on: ubuntu-latest
-    environment:
-      name: ENVIRONMENT
-    steps:
-      - name: Baixa artefato
-        uses: actions/download-artifact@v4
-        with:
-          name: books_renderizados
-          path: books
+  # deploy:
+  #   needs: [renderizar]
+  #   runs-on: ubuntu-latest
+  #   environment:
+  #     name: ENVIRONMENT
+  #   steps:
+  #     - name: Baixa artefato
+  #       uses: actions/download-artifact@v4
+  #       with:
+  #         name: books_renderizados
+  #         path: books
 
-      - name: Setup Pages
-        uses: actions/configure-pages@v5
+  #     - name: Setup Pages
+  #       uses: actions/configure-pages@v5
 
-      - name: Upload artifact
-        uses: actions/upload-pages-artifact@v3
-        with:
-          path: books
+  #     - name: Upload artifact
+  #       uses: actions/upload-pages-artifact@v3
+  #       with:
+  #         path: books
 
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
-
+  #     - name: Deploy to GitHub Pages
+  #       id: deployment
+  #       uses: actions/deploy-pages@v4
 
   books:
     needs: [renderizar]
@@ -130,6 +129,10 @@ jobs:
       # a página já teria o link par atodos os livros mas ocultos ao usuário.
       # ..................................
 
+      # - name: Atualiza lista de books
+      #   run: |
+      #     echo "em desenvolvimento..."
+
       - name: Configura credenciais do Git
         working-directory: books
         run: |
@@ -163,7 +166,7 @@ jobs:
     # - https://medium.com/@0xWerz/how-to-automatically-update-git-submodules-using-github-actions-d71c8126e82e
 
   cleanup:
-    needs: [renderizar, deploy, books, dispatch]
+    needs: [renderizar, books, dispatch]
     runs-on: ubuntu-latest
     steps:
       - name: Deleta artefatos
@@ -174,4 +177,4 @@ jobs:
             books_renderizados
 
 # referências:
-# - 
+# -

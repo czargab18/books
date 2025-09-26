@@ -1,0 +1,24 @@
+# Teorema de bayes {#title .headline-page }
+
+## Fórmula do Teorema de Bayes
+
+O Teorema de Bayes é dado pela seguinte fórmula:
+
+$$
+P(H|E) = \frac{P(E|H) \cdot P(H)}{P(E)}
+$$
+
+Onde:
+- $P(H|E)$ é a probabilidade condicional de H dado E (probabilidade *a posteriori*)
+- $P(E|H)$ é a probabilidade condicional de E dado H (verossimilhança)
+- $P(H)$ é a probabilidade marginal de H (probabilidade *a priori*)
+- $P(E)$ é a probabilidade marginal de E (evidência)
+
+
+Quase como um algoritmo quando se tem apenas 2 coisas, uma Hipótese e uma evidência. O resto quase vem de graça. Bom, Hipótese é hipótese e não há nada a ser discutido. Evidência, podemos ter um certo debate. Podemos fazer estudos aprofundados ou não para obter ou calcular essa probabilidade. A P(E|H) chamada de verossimilhança, indica o quanto a informação/evidência é confiável.
+A forma estendida do teorema, quando E pode ser decomposto em eventos mutuamente exclusivos e exaustivos $H_1, H_2, ..., H_n$, tem-se: 
+
+$$
+P(H_i|E) = \frac{P(E|H_i) \cdot P(H_i)}{\sum_{j=1}^{n} P(E|H_j) \cdot P(H_j)}
+$$
+

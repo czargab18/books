@@ -1,8 +1,8 @@
 # A Arte da Estatística {#title .headline-page }
 
-O nome desta série é inspirado na famosa coleção de Donald Knuth chamada "The Art of Computer Programming", veja [@knuthTAOCP]. Esta coleção será construída com base em minhas notas e exercícios de aulas.
+O nome desta série é inspirada na famosa coleção de Donald Knuth chamada "The Art of Computer Programming", veja [@knuthTAOCP]. Esta coleção será construída com base em minhas notas e exercícios de aulas.
 
-Os Livros já disponiveis podem ser encontrados na [lista de livros](https://www.estatistica.pro/book/EST0033/)
+Os Livros já disponiveis podem ser encontrados na [lista de livros](https://www.estatistica.pro/book/)
 
 ::: {.callout-note title="Nota"}
 Esta seção e os livros associados passam por atualizações regulares para incorporar melhorias, informações atualizadas e novos conteúdos.
