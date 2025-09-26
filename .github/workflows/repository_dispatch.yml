@@ -28,3 +28,9 @@ jobs:
           repository: ${{ env.USERNAME }}/estatistica
           token: ${{ env.TOKEN }}
           event-type: atualizar-books
+
+      # Posteriormente: Talvez seja útil detectar os livros modificados e enviar como client-payload
+      # client-payload: '{"livros": ["livro1", "livro2"]}'
+      # E no workflow do repositório 'estatistica', usar os livros modificados.
+      # Exemplo:
+      # if: contains(github.event.client_payload.livros, 'livro1') 
