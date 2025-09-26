@@ -114,10 +114,22 @@ jobs:
           else
             git checkout book
           fi
+
+      - name: Excluindo versões antigas dos livros na branch book
+        working-directory: books
+        run: |
+          for folder in $(ls ../_books/ 2>/dev/null || echo ""); do
+            if [ -d "book/$folder" ]; then
+              echo "Removendo versão antiga de: $folder"
+              rm -rf "book/$folder"
+            fi
+          done
+          
       - name: Sincroniza arquivos do artefato com a branch book
         working-directory: books
         run: |
-          rsync -av --update ../_books/ book/
+          mkdir -p book
+          rsync -av ../_books/ book/
 
       # - name: Atualiza lista de books
       #   run: |
