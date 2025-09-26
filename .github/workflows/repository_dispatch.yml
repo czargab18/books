@@ -33,4 +33,112 @@ jobs:
       # client-payload: '{"livros": ["livro1", "livro2"]}'
       # E no workflow do repositório 'estatistica', usar os livros modificados.
       # Exemplo:
-      # if: contains(github.event.client_payload.livros, 'livro1') 
+
+# 1. Workflow que Detecta Livros Modificados: 
+
+# # Código gerado/assistido por Claude Sonnet 4
+# name: repository_dispatch - estatistica
+# description: Dispara evento 'repository_dispatch' no repositório 'estatistica' quando há push para main em arquivos específicos.
+
+# on:
+#   workflow_dispatch:
+#   push:
+#     branches: [main]
+#     paths: ["books/build/**/*.qmd", "books/build/**/*.yml", "books/build/*.bib"]
+
+# permissions:
+#   contents: read
+#   actions: write
+
+# env:
+#   USERNAME: ${{ github.repository_owner }}
+#   TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
+
+# jobs:
+#   notificar-estatistica:
+#     environment:
+#       name: ENVIRONMENT
+#     runs-on: ubuntu-latest
+#     steps:
+#       - name: Checkout para detectar mudanças
+#         uses: actions/checkout@v4
+#         with:
+#           fetch-depth: 2
+
+#       - name: Detectar livros modificados
+#         id: detect-books
+#         run: |
+#           # Detecta arquivos modificados no último commit
+#           CHANGED_FILES=$(git diff --name-only HEAD~1 HEAD)
+          
+#           # Extrai os códigos dos livros dos caminhos modificados
+#           LIVROS_MODIFICADOS=$(echo "$CHANGED_FILES" | grep -E "books/build/[A-Z]{3}[0-9]{4}" | sed -E 's|books/build/([A-Z]{3}[0-9]{4})/.*|\1|' | sort -u | tr '\n' ',' | sed 's/,$//')
+          
+#           echo "Arquivos modificados: $CHANGED_FILES"
+#           echo "Livros detectados: $LIVROS_MODIFICADOS"
+          
+#           # Cria array JSON dos livros
+#           if [ -n "$LIVROS_MODIFICADOS" ]; then
+#             LIVROS_JSON=$(echo "$LIVROS_MODIFICADOS" | sed 's/,/","/g' | sed 's/^/["/' | sed 's/$/"]/')
+#           else
+#             LIVROS_JSON='[]'
+#           fi
+          
+#           echo "livros-json=$LIVROS_JSON" >> $GITHUB_OUTPUT
+#           echo "tem-livros=$( [ -n "$LIVROS_MODIFICADOS" ] && echo 'true' || echo 'false' )" >> $GITHUB_OUTPUT
+
+#       - name: Dispara 'repository_dispatch' no estatistica
+#         if: steps.detect-books.outputs.tem-livros == 'true'
+#         uses: peter-evans/repository-dispatch@v3
+#         with:
+#           repository: ${{ env.USERNAME }}/estatistica
+#           token: ${{ env.TOKEN }}
+#           event-type: atualizar-books
+#           client-payload: |
+#             {
+#               "livros": ${{ steps.detect-books.outputs.livros-json }},
+#               "repository": "${{ github.repository }}",
+#               "commit": "${{ github.sha }}",
+#               "ref": "${{ github.ref }}"
+#             }
+
+
+
+#2. Workflow no Repositório Estatística (submodules.yml):
+# jobs:
+#   books:
+#     permissions:
+#       contents: write
+#     if: ${{ github.event_name == 'workflow_dispatch' || github.event.action == 'atualizar-books' }}
+#     runs-on: ubuntu-latest
+#     environment:
+#       name: ENVIRONMENT
+#     steps:
+#       - name: Checkout
+#         uses: actions/checkout@v4
+#         with:
+#           repository: ${{ env.USERNAME }}/estatistica
+#           token: ${{ env.TOKEN }}
+#           path: "estatistica"
+#           ref: "stag"
+#           fetch-tags: true
+
+#       - name: Processar livros modificados
+#         run: |
+#           if [ "${{ github.event_name }}" == "repository_dispatch" ]; then
+#             # Extrai livros do payload
+#             LIVROS='${{ toJson(github.event.client_payload.livros) }}'
+#             echo "Livros a processar: $LIVROS"
+            
+#             # Converte JSON array para bash array
+#             LIVROS_ARRAY=$(echo $LIVROS | jq -r '.[]')
+            
+#             for LIVRO in $LIVROS_ARRAY; do
+#               echo "Processando livro: $LIVRO"
+#               # Aqui você adiciona a lógica específica para cada livro
+#               # Exemplo: renderizar, copiar arquivos, etc.
+#             done
+#           else
+#             echo "Processando todos os livros (workflow_dispatch manual)"
+#             # Lógica para processar todos os livros
+#           fi
