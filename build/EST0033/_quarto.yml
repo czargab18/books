@@ -28,27 +28,27 @@ book:
     # A Unidade I é destinada a falar sobre a area de Estatística, eoutras coisas.
     # talvez, seja mais interresante apenas jogar o conteúdo para TAS0000
     # deixando aqui apenas o conteúdo sobre métodos estatistica para análise de dados
-    - part: "Unidade I"
-      chapters:
-        - textuais/unid1/introd.qmd 
-        - textuais/unid1/brasil.qmd 
+    # - part: "Unidade I"
+    #   chapters:
+    #     - textuais/unid1/introd.qmd 
+    #     - textuais/unid1/brasil.qmd 
 
-    - part: "Unidade II"
-      chapters:
-        - textuais/unid2/introd.qmd 
+    # - part: "Unidade II"
+    #   chapters:
+    #     - textuais/unid2/introd.qmd 
 
-    - part: "Unidade III"
-      chapters:
-        - textuais/unid3/introd.qmd 
+    # - part: "Unidade III"
+    #   chapters:
+    #     - textuais/unid3/introd.qmd 
 
-    - part: "Unidade IV"
-      chapters:
-        - textuais/unid4/introd.qmd 
+    # - part: "Unidade IV"
+    #   chapters:
+    #     - textuais/unid4/introd.qmd 
 
-    - part: "Anexos"
-      chapters:
-        - postextuais/apendice/ementa.qmd
-        - postextuais/apendice/formulas/formulas.qmd
+    # - part: "Anexos"
+    #   chapters:
+    #     - postextuais/apendice/ementa.qmd
+    #     - postextuais/apendice/formulas/formulas.qmd
 
     - postextuais/bibliografia/references.qmd
 
