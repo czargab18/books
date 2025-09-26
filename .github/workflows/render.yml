@@ -115,21 +115,34 @@ jobs:
             git checkout book
           fi
 
-      - name: Excluindo versões antigas dos livros na branch book
+      - name: Atualiza livros na branch book (remove + sincroniza)
         working-directory: books
         run: |
+          # Garante que o diretório book existe
+          mkdir -p book
+          
+          # Lista os livros que serão atualizados
+          echo "=== Livros a serem atualizados ==="
+          ls ../_books/ 2>/dev/null || echo "Nenhum livro encontrado"
+          
+          # Remove versões antigas apenas dos livros que serão atualizados
           for folder in $(ls ../_books/ 2>/dev/null || echo ""); do
             if [ -d "book/$folder" ]; then
-              echo "Removendo versão antiga de: $folder"
+              echo "🗑️  Removendo versão antiga: $folder"
               rm -rf "book/$folder"
+            else
+              echo "📁 Novo livro: $folder"
             fi
           done
           
-      - name: Sincroniza arquivos do artefato com a branch book
-        working-directory: books
-        run: |
-          mkdir -p book
+          # Sincroniza os novos livros
+          echo "=== Sincronizando livros ==="
           rsync -av ../_books/ book/
+          
+          # Mostra resumo final
+          echo "=== Resumo ==="
+          echo "Livros na pasta book:"
+          ls -la book/ 2>/dev/null || echo "Pasta book vazia"
 
       # - name: Atualiza lista de books
       #   run: |
