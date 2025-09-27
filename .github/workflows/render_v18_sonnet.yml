@@ -73,15 +73,22 @@ jobs:
             rsync -a --remove-source-files "_rendered/$folder/" "book/$folder/"
           done
 
-      - name: Gera índice dos livros (JSON)
-        run: |
-          echo "📋 Gerando índice de livros..."
-          echo '{
-            "books": [' > book/books-index.json
+      # - name: Gera índice dos livros (JSON)
+      #   run: |
+      #     echo "📋 Gerando índice de livros..."
+      #     echo '{ "books": [' > book/books-index.json
 
-          first=true
-          # Processa apenas livros que seguem o padrão [A-Z]{3}[0-9]{4}
-          for folder in $(ls book 2>/dev/null | grep -E '^[A-Z]{3}[0-9]{4}
+      #     first=true
+      #     for folder in $(ls book 2>/dev/null | grep -E '^[A-Z]{3}[0-9]{4}'); do
+      #       if [ "$first" = true ]; then
+      #         first=false
+      #       else
+      #         echo ',' >> book/books-index.json
+      #       fi
+      #       echo "  { \"id\": \"$folder\", \"path\": \"book/$folder/index.html\" }" >> book/books-index.json
+      #     done
+
+      #     echo ']}' >> book/books-index.json
 
       - name: Cria Pull Request para branch padrão
         id: create-pr
