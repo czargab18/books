@@ -42,6 +42,14 @@ jobs:
           echo "🔍 Buscando livros com padrão [A-Z]{3}[0-9]{4}..."
           book_list=$(find build -maxdepth 1 -type d -regex '.*/[A-Z]{3}[0-9]{4}' -printf '%f\n' | sort)
 
+      - name: Renderiza livros Quarto
+        run: |
+          for folder in $(cat book_list.txt); do
+            if [ -d "build/$folder" ]; then
+              quarto render "build/$folder" --to html --execute --output-dir "_rendered/$folder"
+            fi
+          done
+
       - name: Prepara estrutura para Pull Request
         run: |
           echo "🔄 Preparando arquivos para PR na branch principal..."
