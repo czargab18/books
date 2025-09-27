@@ -81,7 +81,7 @@
   "editor.lineHeight": 1.6,
   "editor.tabSize": 2,
   "editor.wordWrap": "on",
-  "editor.minimap.enabled": true,
+  "editor.minimap.enabled": false,
   "editor.formatOnSave": true,
   "editor.formatOnPaste": true,
   "editor.detectIndentation": false,
