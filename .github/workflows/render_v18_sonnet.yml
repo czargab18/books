@@ -3,7 +3,7 @@ description: Renderiza livros Quarto e cria PR para revisão
 
 on:
   push:
-    branches: [main]
+    branches: [main, dev1]
     paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
   workflow_dispatch:
 
@@ -18,6 +18,8 @@ env:
 
 jobs:
   render:
+    environment: 
+      name: ENVIRONMENT
     runs-on: ubuntu-latest
     outputs:
       pull-request-number: ${{ steps.create-pr.outputs.pull-request-number }}
