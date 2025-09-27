@@ -50,9 +50,24 @@ jobs:
             fi
           done
       
-      - name: Livros dentro das pastas '_rendered/' e 'book/'
+      - name: Sincronizar '_rendered/' e 'book/'
         run: |
-          echo ""
+          echo "🔄 Removendo arquivos duplicados de book/..."
+          for folder in $(ls _rendered 2>/dev/null); do
+            if [ -d "book/$folder" ]; then
+              for file in $(find _rendered/$folder -type f); do
+                relpath=${file#_rendered/}
+                if [ -f "book/$relpath" ]; then
+                  rm "book/$relpath"
+                  echo "Removido: book/$relpath"
+                fi
+              done
+            fi
+          done
+
+      - name: Move livros de '_rendered/' para 'book/'
+        run: |
+           
 
       - name: Prepara estrutura para Pull Request
         run: |
