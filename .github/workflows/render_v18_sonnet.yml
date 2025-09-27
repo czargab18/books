@@ -40,7 +40,7 @@ jobs:
         id: list-books
         run: |
           echo "🔍 Buscando livros com padrão [A-Z]{3}[0-9]{4}..."
-          book_list=$(find build -maxdepth 1 -type d -regex '.*/[A-Z]\{3\}[0-9]\{4\}) -printf '%f\n' | sort)
+          book_list=$(find build -maxdepth 1 -type d -regex '.*/[A-Z]{3}[0-9]{4}' -printf '%f\n' | sort)
 
       - name: Prepara estrutura para Pull Request
         run: |
