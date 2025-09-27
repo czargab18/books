@@ -1,5 +1,6 @@
-name: render-books
+name: renderbooks
 description: Renderiza livros Quarto e cria PR para revisão
+# modelos de ia: Cloude Sonnet 4 e Gemini Pro
 
 on:
   workflow_dispatch:
@@ -18,12 +19,13 @@ env:
   TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
 
 jobs:
+  # ===================================================================
+  # JOB 1: Renderiza os livros e salva o resultado como um artefato
+  # ===================================================================
   render:
     environment:
       name: ENVIRONMENT
     runs-on: ubuntu-latest
-    outputs:
-      pull-request-number: ${{ steps.create-pr.outputs.pull-request-number }}
     steps:
       - name: Checkout repositório
         uses: actions/checkout@v4
@@ -49,13 +51,44 @@ jobs:
         run: |
           for folder in $(cat book_list.txt); do
             if [ -d "build/$folder" ]; then
+              echo "🚀 Renderizando livro: $folder"
               quarto render "build/$folder" --to html --execute --output-dir "_rendered/$folder"
             fi
           done
 
+      - name: Faz upload dos livros renderizados como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: rendered-books
+          path: _rendered/
+          retention-days: 1
+
+  # ===================================================================
+  # JOB 2: Baixa o artefato e cria a Pull Request
+  # ===================================================================
+  create-pr:
+    needs: render
+    environment:
+      name: ENVIRONMENT
+    runs-on: ubuntu-latest
+    outputs:
+      pull-request-number: ${{ steps.create-pr.outputs.pull-request-number }}
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+        with:
+          token: ${{ env.TOKEN }}
+          fetch-depth: 0
+
+      - name: Baixa o artefato com os livros renderizados
+        uses: actions/download-artifact@v4
+        with:
+          name: rendered-books
+          path: _rendered/
+
       - name: Sincronizar '_rendered/' e 'book/'
         run: |
-          echo "🔄 Removendo arquivos duplicados de book/..."
+          echo "🔄 Removendo arquivos duplicados de book/ para evitar conflitos..."
           for folder in $(ls _rendered 2>/dev/null); do
             if [ -d "book/$folder" ]; then
               for file in $(find _rendered/$folder -type f); do
@@ -76,33 +109,9 @@ jobs:
             rsync -a --remove-source-files "_rendered/$folder/" "book/$folder/"
           done
 
-      # - name: Gera índice dos livros (JSON)
-      #   run: |
-      #     echo "📋 Gerando índice de livros..."
-      #     echo '{ "books": [' > book/books-index.json
-
-      #     first=true
-      #     for folder in $(ls book 2>/dev/null | grep -E '^[A-Z]{3}[0-9]{4}'); do
-      #       if [ "$first" = true ]; then
-      #         first=false
-      #       else
-      #         echo ',' >> book/books-index.json
-      #       fi
-      #       echo "  { \"id\": \"$folder\", \"path\": \"book/$folder/index.html\" }" >> book/books-index.json
-      #     done
-
-      #     echo ']}' >> book/books-index.json
-
-      # ================================================
-      # ================================================
-      # Ao usar a ação 'peter-evans/create-pull-request' no GitHub Actions,
-      # não é necessário criar manualmente um commit ou uma branch antes.
-      # A própria ação faz tudo automaticamente:
-      # - Cria uma branch nova (ex: books-render-20250927-123456)
-      # - Adiciona e commita todas as mudanças feitas pelo workflow
-      # - Cria a Pull Request dessa branch para
-      # ================================================
-      # ================================================
+      # O passo 'Gera índice dos livros (JSON)' foi mantido comentado.
+      # Se for reativá-lo, este é o lugar correto, pois ele precisa
+      # que os arquivos já estejam na pasta `book/`.
 
       - name: Define nome da branch dos livros
         run: echo "BOOK_BRANCH=book-$(date +%Y%m%d-%H%M%S)" >> $GITHUB_ENV
@@ -127,10 +136,9 @@ jobs:
             books: atualiza livros renderizados
 
             Livros processados:
-            $(ls _rendered 2>/dev/null | sed 's/^/- /' || echo "- Nenhum")
+            $(ls book 2>/dev/null | grep -E '^[A-Z]{3}[0-9]{4}' | sed 's/^/- /' || echo "- Nenhum")
 
             - Renderização Quarto → HTML
-            - Índice JSON gerado automaticamente
             - Estrutura organizada em book/
 
             Commit fonte: ${{ github.sha }}
@@ -141,29 +149,19 @@ jobs:
             Esta PR contém os livros atualizados renderizados a partir das mudanças aprovadas enviadas para a branch `main`.
 
             ### 📋 Detalhes da Renderização
-            - **Commit fonte**: ${{ github.sha }}
-            - **Workflow**: ${{ github.run_id }}
+            - **Commit fonte**: `${{ github.sha }}`
+            - **Workflow**: `${{ github.run_id }}`
             - **Data**: $(date +'%Y-%m-%d %H:%M:%S UTC')
-            - **Triggering commit**: ${{ github.event.head_commit.message }}
+            - **Triggering commit**: `${{ github.event.head_commit.message }}`
 
             ### 📚 Livros Renderizados
-            $(ls _rendered 2>/dev/null | sed 's/^/- 📖 /' || echo "- Nenhum livro renderizado")
+            $(ls book 2>/dev/null | grep -E '^[A-Z]{3}[0-9]{4}' | sed 's/^/- 📖 /' || echo "- Nenhum livro renderizado")
 
             ### 🔄 Mudanças Incluídas
             - ✅ Livros Quarto renderizados para HTML na pasta `book/`
-            - ✅ Índice de livros atualizado (`book/books-index.json`)
             - ✅ Estrutura de arquivos organizada
 
-            ### 📁 Estrutura Adicionada/Atualizada
-            ```
-            book/
-            ├── livro1/
-            ├── livro2/
-            └── ...
-            ```
-
             ### 📝 Arquivos Principais
-            - `book/books-index.json` - Índice com metadata dos livros
             - `book/*/index.html` - Páginas principais dos livros
             - Assets e recursos complementares
 
@@ -173,10 +171,9 @@ jobs:
 
             Por favor, verifique:
             - [ ] 📖 Livros foram renderizados corretamente
-            - [ ] 🎨 Formatação e estilos estão adequados  
+            - [ ] 🎨 Formatação e estilos estão adequados
             - [ ] 🔗 Links internos funcionam
             - [ ] 📱 Layout é responsivo
-            - [ ] 📋 Índice JSON está correto
             - [ ] 📁 Estrutura de pastas está organizada
 
             ---
@@ -192,23 +189,13 @@ jobs:
             ## 🤖 Instruções Automáticas
 
             ### 📋 Status do Workflow
-            ✅ Livros renderizados com sucesso  
-            ✅ Pull Request criada  
-            ⏳ **Aguardando sua aprovação**  
+            ✅ Livros renderizados com sucesso
+            ✅ Pull Request criada
+            ⏳ **Aguardando sua aprovação**
 
             ### 🔍 Como Revisar
-
             1. **Verifique os arquivos alterados** na aba "Files changed"
-            2. **Teste os livros localmente** se necessário:
-               ```bash
-               git checkout update-books-$(date +%Y%m%d-%H%M%S)
-               # Abra book/*/index.html no navegador
-               ```
-            3. **Aprove a PR** quando estiver satisfeito
-
-            ### 📁 Arquivos Importantes
-            - `books-index.json` - Metadata dos livros
-            - Cada pasta de livro contém o HTML renderizado
+            2. **Aprove a PR** quando estiver satisfeito
 
             ---
             *Esta PR foi criada automaticamente e **requer sua aprovação** para merge.*
@@ -218,10 +205,12 @@ jobs:
           rm -rf _rendered
           echo "✅ Arquivos temporários removidos"
 
-  # create-pr: usando artefato
-
+  # ===================================================================
+  # JOB 3: Notifica outro repositório após a criação da PR
+  # ===================================================================
   notificar-estatistica:
-    needs: [render]
+    needs: [create-pr] # Alterado para depender da criação da PR
+    if: needs.create-pr.outputs.pull-request-number != '' # Executa apenas se a PR foi criada
     environment:
       name: ENVIRONMENT
     runs-on: ubuntu-latest
@@ -232,6 +221,3 @@ jobs:
           repository: ${{ env.USERNAME }}/estatistica
           token: ${{ env.TOKEN }}
           event-type: atualizar-books
-
-      # Posteriormente: Talvez seja útil detectar os livros modificados e enviar como client-payload
-      # client-payload: '{"livros": ["livro1", "livro2"]}'
