@@ -67,18 +67,11 @@ jobs:
 
       - name: Move livros de '_rendered/' para 'book/'
         run: |
-           
-
-      - name: Prepara estrutura para Pull Request
-        run: |
-          # Atualiza diretório book/ na própria main
-          echo "🔄 Sincronizando livros renderizados na pasta book/..."
-
-          # Remove versões antigas apenas dos livros que foram re-renderizados
-          # (livros que seguem o padrão [A-Z]{3}[0-9]{4})
-          for folder in $(ls _rendered 2>/dev/null || echo ""); do
-            # Verifica se o nome segue o padrão antes de remover
-            if echo "$folder" | grep -qE '^[A-Z]{3}[0-9]{4}
+          echo "🚚 Movendo livros renderizados para a pasta book/..."
+          for folder in $(ls _rendered 2>/dev/null); do
+            mkdir -p "book/$folder"
+            rsync -a --remove-source-files "_rendered/$folder/" "book/$folder/"
+          done
 
       - name: Gera índice dos livros (JSON)
         run: |
