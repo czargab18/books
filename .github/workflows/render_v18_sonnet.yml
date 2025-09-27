@@ -49,12 +49,14 @@ jobs:
               quarto render "build/$folder" --to html --execute --output-dir "_rendered/$folder"
             fi
           done
+      
+      - name: Livros dentro das pastas '_rendered/' e 'book/'
+        run: |
+          echo ""
 
       - name: Prepara estrutura para Pull Request
         run: |
-          echo "🔄 Preparando arquivos para PR na branch principal..."
-
-          # Cria/atualiza diretório book/ na própria main
+          # Atualiza diretório book/ na própria main
           echo "🔄 Sincronizando livros renderizados na pasta book/..."
 
           # Remove versões antigas apenas dos livros que foram re-renderizados
