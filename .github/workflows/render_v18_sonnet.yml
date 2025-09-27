@@ -17,7 +17,7 @@ env:
   TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
 
 jobs:
-  render-and:
+  render:
     runs-on: ubuntu-latest
     outputs:
       pull-request-number: ${{ steps.create-pr.outputs.pull-request-number }}
@@ -90,18 +90,49 @@ jobs:
 
       #     echo ']}' >> book/books-index.json
 
+      # ================================================
+      # ================================================
+      # Ao usar a ação 'peter-evans/create-pull-request' no GitHub Actions,
+      # não é necessário criar manualmente um commit ou uma branch antes.
+      # A própria ação faz tudo automaticamente:
+      # - Cria uma branch nova (ex: books-render-20250927-123456)
+      # - Adiciona e commita todas as mudanças feitas pelo workflow
+      # - Cria a Pull Request dessa branch para
+      # ================================================
+      # ================================================
+
       - name: Cria Pull Request para branch padrão
         id: create-pr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ env.TOKEN }}
-          branch: books-render-$(date +%Y%m%d-%H%M%S)
+          branch: book-$(date +%Y%m%d-%H%M%S)
           base: main # ou master, dependendo da sua branch padrão
-          title: "📚 Atualização dos livros renderizados - $(date +'%Y-%m-%d %H:%M')"
+          title: "books: atualiza books renderizados pelo GitHub Actions"
+          labels: |
+            books
+            quarto
+            action
+            needs-review
+            automated-pr
+          assignees: ${{ github.repository_owner }}
+          draft: false
+          commit-message: |
+            books: atualiza livros renderizados
+
+            Livros processados:
+            $(ls _rendered 2>/dev/null | sed 's/^/- /' || echo "- Nenhum")
+
+            - Renderização Quarto → HTML
+            - Índice JSON gerado automaticamente
+            - Estrutura organizada em book/
+
+            Commit fonte: ${{ github.sha }}
+            Data: $(date +'%Y-%m-%d %H:%M:%S UTC')
           body: |
             ## 📖 Nova Renderização dos Livros Quarto
 
-            Esta PR contém os livros atualizados renderizados a partir das mudanças na branch `main`.
+            Esta PR contém os livros atualizados renderizados a partir das mudanças aprovadas enviadas para a branch `main`.
 
             ### 📋 Detalhes da Renderização
             - **Commit fonte**: ${{ github.sha }}
@@ -120,13 +151,8 @@ jobs:
             ### 📁 Estrutura Adicionada/Atualizada
             ```
             book/
-            ├── books-index.json     ← Índice com metadata
             ├── livro1/
-            │   ├── index.html
-            │   └── assets/
             ├── livro2/
-            │   ├── index.html
-            │   └── assets/
             └── ...
             ```
 
@@ -149,25 +175,6 @@ jobs:
 
             ---
             **⚠️ Esta PR requer aprovação manual do proprietário antes do merge.**
-          labels: |
-            books-update
-            quarto-render
-            needs-review
-            automated-pr
-          assignees: ${{ github.repository_owner }}
-          draft: false
-          commit-message: |
-            📚 Adiciona/Atualiza livros renderizados
-
-            Livros processados:
-            $(ls _rendered 2>/dev/null | sed 's/^/- /' || echo "- Nenhum")
-
-            - Renderização Quarto → HTML
-            - Índice JSON gerado automaticamente
-            - Estrutura organizada em book/
-
-            Commit fonte: ${{ github.sha }}
-            Data: $(date +'%Y-%m-%d %H:%M:%S UTC')
 
       - name: Adiciona comentário com instruções
         if: steps.create-pr.outputs.pull-request-number
@@ -205,4 +212,20 @@ jobs:
           rm -rf _rendered
           echo "✅ Arquivos temporários removidos"
 
-#  create-pr:
+  # create-pr: usando artefato
+          
+  notificar-estatistica:
+    needs: [render]
+    environment:
+      name: ENVIRONMENT
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispara 'repository_dispatch' no estatistica
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          repository: ${{ env.USERNAME }}/estatistica
+          token: ${{ env.TOKEN }}
+          event-type: atualizar-books
+
+      # Posteriormente: Talvez seja útil detectar os livros modificados e enviar como client-payload
+      # client-payload: '{"livros": ["livro1", "livro2"]}'
