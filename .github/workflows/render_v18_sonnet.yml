@@ -10,6 +10,7 @@ on:
 permissions:
   contents: write
   actions: write
+  pull-requests: write
 
 env:
   USERNAME: ${{ github.repository_owner }}
@@ -18,7 +19,7 @@ env:
 
 jobs:
   render:
-    environment: 
+    environment:
       name: ENVIRONMENT
     runs-on: ubuntu-latest
     outputs:
@@ -51,7 +52,7 @@ jobs:
               quarto render "build/$folder" --to html --execute --output-dir "_rendered/$folder"
             fi
           done
-      
+
       - name: Sincronizar '_rendered/' e 'book/'
         run: |
           echo "🔄 Removendo arquivos duplicados de book/..."
@@ -103,12 +104,15 @@ jobs:
       # ================================================
       # ================================================
 
+      - name: Define nome da branch dos livros
+        run: echo "BOOK_BRANCH=book-$(date +%Y%m%d-%H%M%S)" >> $GITHUB_ENV
+
       - name: Cria Pull Request para branch padrão
         id: create-pr
         uses: peter-evans/create-pull-request@v5
         with:
           token: ${{ env.TOKEN }}
-          branch: book-$(date +%Y%m%d-%H%M%S)
+          branch: ${{ env.BOOK_BRANCH }}
           base: main # ou master, dependendo da sua branch padrão
           title: "books: atualiza books renderizados pelo GitHub Actions"
           labels: |
@@ -215,7 +219,7 @@ jobs:
           echo "✅ Arquivos temporários removidos"
 
   # create-pr: usando artefato
-          
+
   notificar-estatistica:
     needs: [render]
     environment:
