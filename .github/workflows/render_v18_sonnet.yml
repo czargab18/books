@@ -2,10 +2,10 @@ name: render-books
 description: Renderiza livros Quarto e cria PR para revisão
 
 on:
+  workflow_dispatch:
   push:
     branches: [main, dev1]
     paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
-  workflow_dispatch:
 
 permissions:
   contents: write
