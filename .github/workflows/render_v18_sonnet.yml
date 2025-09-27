@@ -35,15 +35,12 @@ jobs:
         run: |
           echo "📁 Criando diretório para livros renderizados..."
           mkdir -p _rendered
-          echo "✅ Diretório _rendered criado"
 
       - name: Lista livros válidos
         id: list-books
         run: |
           echo "🔍 Buscando livros com padrão [A-Z]{3}[0-9]{4}..."
-          
-          # Usa regex mais limpa no find
-          book_list=$(find build -maxdepth 1 -type d -regex '.*/[A-Z]\{3\}[0-9]\{4\}
+          book_list=$(find build -maxdepth 1 -type d -regex '.*/[A-Z]\{3\}[0-9]\{4\}) -printf '%f\n' | sort)
 
       - name: Prepara estrutura para Pull Request
         run: |
@@ -183,3 +180,4 @@ jobs:
           rm -rf _rendered
           echo "✅ Arquivos temporários removidos"
 
+#  create-pr: 
