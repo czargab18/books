@@ -40,7 +40,7 @@ jobs:
         id: list-books
         run: |
           echo "🔍 Buscando livros com padrão [A-Z]{3}[0-9]{4}..."
-          book_list=$(find build -maxdepth 1 -type d -regex '.*/[A-Z]{3}[0-9]{4}' -printf '%f\n' | sort)
+          find build -maxdepth 1 -type d -regex '.*/[A-Z]{3}[0-9]{4}' -printf '%f\n' | sort > book_list.txt
 
       - name: Renderiza livros Quarto
         run: |
@@ -53,10 +53,10 @@ jobs:
       - name: Prepara estrutura para Pull Request
         run: |
           echo "🔄 Preparando arquivos para PR na branch principal..."
-          
+
           # Cria/atualiza diretório book/ na própria main
           echo "🔄 Sincronizando livros renderizados na pasta book/..."
-          
+
           # Remove versões antigas apenas dos livros que foram re-renderizados
           # (livros que seguem o padrão [A-Z]{3}[0-9]{4})
           for folder in $(ls _rendered 2>/dev/null || echo ""); do
@@ -68,7 +68,7 @@ jobs:
           echo "📋 Gerando índice de livros..."
           echo '{
             "books": [' > book/books-index.json
-          
+
           first=true
           # Processa apenas livros que seguem o padrão [A-Z]{3}[0-9]{4}
           for folder in $(ls book 2>/dev/null | grep -E '^[A-Z]{3}[0-9]{4}
@@ -79,27 +79,27 @@ jobs:
         with:
           token: ${{ env.TOKEN }}
           branch: books-render-$(date +%Y%m%d-%H%M%S)
-          base: main  # ou master, dependendo da sua branch padrão
+          base: main # ou master, dependendo da sua branch padrão
           title: "📚 Atualização dos livros renderizados - $(date +'%Y-%m-%d %H:%M')"
           body: |
             ## 📖 Nova Renderização dos Livros Quarto
-            
+
             Esta PR contém os livros atualizados renderizados a partir das mudanças na branch `main`.
-            
+
             ### 📋 Detalhes da Renderização
             - **Commit fonte**: ${{ github.sha }}
             - **Workflow**: ${{ github.run_id }}
             - **Data**: $(date +'%Y-%m-%d %H:%M:%S UTC')
             - **Triggering commit**: ${{ github.event.head_commit.message }}
-            
+
             ### 📚 Livros Renderizados
             $(ls _rendered 2>/dev/null | sed 's/^/- 📖 /' || echo "- Nenhum livro renderizado")
-            
+
             ### 🔄 Mudanças Incluídas
             - ✅ Livros Quarto renderizados para HTML na pasta `book/`
             - ✅ Índice de livros atualizado (`book/books-index.json`)
             - ✅ Estrutura de arquivos organizada
-            
+
             ### 📁 Estrutura Adicionada/Atualizada
             ```
             book/
@@ -112,16 +112,16 @@ jobs:
             │   └── assets/
             └── ...
             ```
-            
+
             ### 📝 Arquivos Principais
             - `book/books-index.json` - Índice com metadata dos livros
             - `book/*/index.html` - Páginas principais dos livros
             - Assets e recursos complementares
-            
+
             ---
-            
+
             ## 👀 Review Checklist
-            
+
             Por favor, verifique:
             - [ ] 📖 Livros foram renderizados corretamente
             - [ ] 🎨 Formatação e estilos estão adequados  
@@ -129,7 +129,7 @@ jobs:
             - [ ] 📱 Layout é responsivo
             - [ ] 📋 Índice JSON está correto
             - [ ] 📁 Estrutura de pastas está organizada
-            
+
             ---
             **⚠️ Esta PR requer aprovação manual do proprietário antes do merge.**
           labels: |
@@ -141,14 +141,14 @@ jobs:
           draft: false
           commit-message: |
             📚 Adiciona/Atualiza livros renderizados
-            
+
             Livros processados:
             $(ls _rendered 2>/dev/null | sed 's/^/- /' || echo "- Nenhum")
-            
+
             - Renderização Quarto → HTML
             - Índice JSON gerado automaticamente
             - Estrutura organizada em book/
-            
+
             Commit fonte: ${{ github.sha }}
             Data: $(date +'%Y-%m-%d %H:%M:%S UTC')
 
@@ -160,14 +160,14 @@ jobs:
           issue-number: ${{ steps.create-pr.outputs.pull-request-number }}
           body: |
             ## 🤖 Instruções Automáticas
-            
+
             ### 📋 Status do Workflow
             ✅ Livros renderizados com sucesso  
             ✅ Pull Request criada  
             ⏳ **Aguardando sua aprovação**  
-            
+
             ### 🔍 Como Revisar
-            
+
             1. **Verifique os arquivos alterados** na aba "Files changed"
             2. **Teste os livros localmente** se necessário:
                ```bash
@@ -175,11 +175,11 @@ jobs:
                # Abra book/*/index.html no navegador
                ```
             3. **Aprove a PR** quando estiver satisfeito
-            
+
             ### 📁 Arquivos Importantes
             - `books-index.json` - Metadata dos livros
             - Cada pasta de livro contém o HTML renderizado
-            
+
             ---
             *Esta PR foi criada automaticamente e **requer sua aprovação** para merge.*
 
@@ -188,4 +188,4 @@ jobs:
           rm -rf _rendered
           echo "✅ Arquivos temporários removidos"
 
-#  create-pr: 
+#  create-pr:
