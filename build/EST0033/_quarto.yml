@@ -50,6 +50,7 @@ book:
     #     - postextuais/apendice/ementa.qmd
     #     - postextuais/apendice/formulas/formulas.qmd
 
+    - postextuais/apendice/formulas/formulas.qmd
     - postextuais/bibliografia/references.qmd
 
 bibliography: postextuais/bibliografia/references.bib
