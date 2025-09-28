@@ -1,3 +1,5 @@
 # Estatística Exploratória {.title-page}
 
 Livro em desenvolvimento. Acesse algumas [formulas](postextuais/apendice/formulas/formulas.qmd)
+
+Para ter acesso aos demais livros em desenvolvimento, acesse [book](https://www.estatistica.pro/book/)
