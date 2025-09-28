@@ -5,7 +5,7 @@ description: Renderiza livros Quarto e cria PR para revisão
 on:
   workflow_dispatch:
   push:
-    branches: [main, dev1]
+    branches: [main]
     paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
 
 permissions:
