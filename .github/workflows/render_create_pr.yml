@@ -5,7 +5,7 @@ description: Renderiza livros Quarto e cria 'Pull Request' automaticamente para 
 on:
   workflow_dispatch:
   push:
-    branches: [main, stag, book, dev1]
+    branches: [stag]
     paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
 
 permissions:
@@ -59,6 +59,7 @@ jobs:
       - name: Commit e criar Pull Request
         uses: peter-evans/create-pull-request@v5
         with:
+          base: stag # branch base onde a PR (de book para stag)
           branch: book
           title: "book: atualiza novos livros Quarto renderizados"
           labels: |
@@ -73,14 +74,9 @@ jobs:
           commit-message: |
             books: atualiza livros renderizados
 
-            Livros processados:
-            $(ls book 2>/dev/null | grep -E '^[A-Z]{3}[0-9]{4}' | sed 's/^/- /' || echo "- Nenhum")
-
-            - Renderização Quarto → HTML
-            - Estrutura organizada em book/
-
             Commit fonte: ${{ github.sha }}
             Data: $(date +'%Y-%m-%d %H:%M:%S UTC')
+            
           body: |
             ## 📖 atualiza books renderizados pelo GitHub Actions
 
@@ -105,17 +101,3 @@ jobs:
 
             ---
             **⚠️ Esta PR requer aprovação manual do proprietário antes do merge.**
-
-      # # (Opcional) Aprovar PR automaticamente
-      # - name: Aprovar PR automaticamente
-      #   if: ${{ github.actor == 'github-actions[bot]' }}
-      #   uses: hmarr/auto-approve-action@v4
-      #   with:
-      #     pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
-
-      # # (Opcional) Merge automático
-      # - name: Merge automático
-      #   if: ${{ github.actor == 'github-actions[bot]' }}
-      #   uses: pascalgn/automerge-action@v0.15.6
-      #   with:
-      #     pull-request-number: ${{ steps.create-pull-request.outputs.pull-request-number }}
