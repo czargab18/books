@@ -111,7 +111,7 @@
   },
   // CONFIGURAÇÕES DO WORKSPACE
   "workbench.colorTheme": "GitHub Dark",
-  "workbench.iconTheme": "vs-seti",
+  "workbench.iconTheme": "symbols",
   "workbench.editor.enablePreview": true,
   "workbench.editor.labelFormat": "short",
   "workbench.startupEditor": "readme",
