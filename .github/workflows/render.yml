@@ -1,0 +1,226 @@
+name: renderbooks
+description: Renderiza livros Quarto e cria PR para revisão
+# modelos de ia: Cloude Sonnet 4 e Gemini Pro
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
+
+permissions:
+  contents: write
+  actions: write
+  pull-requests: write
+
+env:
+  USERNAME: ${{ github.repository_owner }}
+  USEREMAIL: ${{ secrets.USEREMAIL }}
+  TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
+
+jobs:
+  # ===================================================================
+  # JOB 1: Renderiza os livros e salva o resultado como um artefato
+  # ===================================================================
+  render:
+    environment:
+      name: ENVIRONMENT
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+        with:
+          token: ${{ env.TOKEN }}
+          fetch-depth: 0
+
+      - name: Configura Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+
+      - name: Cria diretório de renderização
+        run: |
+          echo "📁 Criando diretório para livros renderizados..."
+          mkdir -p _rendered
+
+      - name: Lista livros válidos
+        id: list-books
+        run: |
+          echo "🔍 Buscando livros com padrão [A-Z]{3}[0-9]{4}..."
+          find build -maxdepth 1 -type d -regex '.*/[A-Z]{3}[0-9]{4}' -printf '%f\n' | sort > book_list.txt
+
+      - name: Renderiza livros Quarto
+        run: |
+          for folder in $(cat book_list.txt); do
+            if [ -d "build/$folder" ]; then
+              echo "🚀 Renderizando livro: $folder"
+              quarto render "build/$folder" --to html --execute --output-dir "_rendered/$folder"
+            fi
+          done
+
+      - name: Faz upload dos livros renderizados como artefato
+        uses: actions/upload-artifact@v4
+        with:
+          name: rendered-books
+          path: _rendered/
+          retention-days: 1
+
+  # ===================================================================
+  # JOB 2: Baixa o artefato e cria a Pull Request
+  # ===================================================================
+  create-pr:
+    needs: render
+    environment:
+      name: ENVIRONMENT
+    runs-on: ubuntu-latest
+    outputs:
+      pull-request-number: ${{ steps.create-pr.outputs.pull-request-number }}
+    steps:
+      - name: Checkout repositório
+        uses: actions/checkout@v4
+        with:
+          token: ${{ env.TOKEN }}
+          fetch-depth: 0
+
+      - name: Baixa o artefato com os livros renderizados
+        uses: actions/download-artifact@v4
+        with:
+          name: rendered-books
+          path: _rendered/
+
+      - name: Sincronizar '_rendered/' e 'book/'
+        run: |
+          echo "🔄 Removendo arquivos duplicados de book/ para evitar conflitos..."
+          for folder in $(ls _rendered 2>/dev/null); do
+            if [ -d "book/$folder" ]; then
+              for file in $(find _rendered/$folder -type f); do
+                relpath=${file#_rendered/}
+                if [ -f "book/$relpath" ]; then
+                  rm "book/$relpath"
+                  echo "Removido: book/$relpath"
+                fi
+              done
+            fi
+          done
+
+      - name: Move livros de '_rendered/' para 'book/'
+        run: |
+          echo "🚚 Movendo livros renderizados para a pasta book/..."
+          for folder in $(ls _rendered 2>/dev/null); do
+            mkdir -p "book/$folder"
+            rsync -a --remove-source-files "_rendered/$folder/" "book/$folder/"
+          done
+
+      # O passo 'Gera índice dos livros (JSON)' foi mantido comentado.
+      # Se for reativá-lo, este é o lugar correto, pois ele precisa
+      # que os arquivos já estejam na pasta `book/`.
+
+      - name: Define nome da branch dos livros
+        run: echo "BOOK_BRANCH=book-$(date +%Y%m%d-%H%M%S)" >> $GITHUB_ENV
+
+      - name: Define nome da branch dos livros
+        run: echo "BOOK_BRANCH=book-$(date +%Y%m%d-%H%M%S)" >> $GITHUB_ENV
+
+      - name: Cria Pull Request para branch padrão
+        id: create-pr
+        uses: peter-evans/create-pull-request@v5
+        with:
+          token: ${{ env.TOKEN }}
+          branch: ${{ env.BOOK_BRANCH }}
+          base: main # ou master, dependendo da sua branch padrão
+          title: "books: atualiza books renderizados pelo GitHub Actions"
+          labels: |
+            books
+            quarto
+            action
+            needs-review
+            automated-pr
+          assignees: ${{ github.repository_owner }}
+          draft: false
+          commit-message: |
+            books: atualiza livros renderizados
+
+            Livros processados:
+            $(ls book 2>/dev/null | grep -E '^[A-Z]{3}[0-9]{4}' | sed 's/^/- /' || echo "- Nenhum")
+
+            - Renderização Quarto → HTML
+            - Estrutura organizada em book/
+
+            Commit fonte: ${{ github.sha }}
+            Data: $(date +'%Y-%m-%d %H:%M:%S UTC')
+          body: |
+            ## 📖 Nova Renderização dos Livros Quarto
+
+            Esta PR contém os livros atualizados renderizados a partir das mudanças aprovadas enviadas para a branch `main`.
+
+            ### 📋 Detalhes da Renderização
+            - **Commit fonte**: `${{ github.sha }}`
+            - **Workflow**: `${{ github.run_id }}`
+            - **Data**: $(date +'%Y-%m-%d %H:%M:%S UTC')
+            - **Triggering commit**: `${{ github.event.head_commit.message }}`
+
+            ### 📚 Livros Renderizados
+            $(ls book 2>/dev/null | grep -E '^[A-Z]{3}[0-9]{4}' | sed 's/^/- 📖 /' || echo "- Nenhum livro renderizado")
+
+            ### 🔄 Mudanças Incluídas
+            - ✅ Livros Quarto renderizados para HTML na pasta `book/`
+            - ✅ Estrutura de arquivos organizada
+
+            ### 📝 Arquivos Principais
+            - `book/*/index.html` - Páginas principais dos livros
+            - Assets e recursos complementares
+
+            ---
+
+            ## 👀 Review Checklist
+
+            Por favor, verifique:
+            - [ ] 📖 Livros foram renderizados corretamente
+            - [ ] 🎨 Formatação e estilos estão adequados
+            - [ ] 🔗 Links internos funcionam
+            - [ ] 📱 Layout é responsivo
+            - [ ] 📁 Estrutura de pastas está organizada
+
+            ---
+            **⚠️ Esta PR requer aprovação manual do proprietário antes do merge.**
+
+      - name: Adiciona comentário com instruções
+        if: steps.create-pr.outputs.pull-request-number
+        uses: peter-evans/create-or-update-comment@v3
+        with:
+          token: ${{ env.TOKEN }}
+          issue-number: ${{ steps.create-pr.outputs.pull-request-number }}
+          body: |
+            ## 🤖 Instruções Automáticas
+
+            ### 📋 Status do Workflow
+            ✅ Livros renderizados com sucesso
+            ✅ Pull Request criada
+            ⏳ **Aguardando sua aprovação**
+
+            ### 🔍 Como Revisar
+            1. **Verifique os arquivos alterados** na aba "Files changed"
+            2. **Aprove a PR** quando estiver satisfeito
+
+            ---
+            *Esta PR foi criada automaticamente e **requer sua aprovação** para merge.*
+
+      - name: Limpa arquivos temporários
+        run: |
+          rm -rf _rendered
+          echo "✅ Arquivos temporários removidos"
+
+  # ===================================================================
+  # JOB 3: Notifica outro repositório após a criação da PR
+  # ===================================================================
+  notificar-estatistica:
+    needs: [create-pr] # Alterado para depender da criação da PR
+    if: needs.create-pr.outputs.pull-request-number != '' # Executa apenas se a PR foi criada
+    environment:
+      name: ENVIRONMENT
+    runs-on: ubuntu-latest
+    steps:
+      - name: Dispara 'repository_dispatch' no estatistica
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          repository: ${{ env.USERNAME }}/estatistica
+          token: ${{ env.TOKEN }}
+          event-type: atualizar-books
