@@ -18,9 +18,9 @@ env:
   USEREMAIL: ${{ secrets.USEREMAIL }}
   TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
 
-defaults:
-  run:
-    working-directory: book
+# defaults:
+#   run:
+#     working-directory: book
 
 jobs:
   renderizar:
@@ -33,7 +33,6 @@ jobs:
         uses: actions/checkout@v4
         with:
           token: ${{ env.TOKEN }}
-          path: book
 
       - name: Configura Quarto
         uses: quarto-dev/quarto-actions/setup@v2
