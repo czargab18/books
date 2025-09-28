@@ -56,6 +56,7 @@ jobs:
         with:
           base: stag # branch base onde a PR (de book para stag)
           branch: book
+          delete-branch: true
           title: "book: atualiza novos livros Quarto renderizados"
           labels: |
             books
