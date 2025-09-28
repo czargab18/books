@@ -116,6 +116,9 @@ jobs:
       - name: Define nome da branch dos livros
         run: echo "BOOK_BRANCH=book-$(date +%Y%m%d-%H%M%S)" >> $GITHUB_ENV
 
+      - name: Define nome da branch dos livros
+        run: echo "BOOK_BRANCH=book-$(date +%Y%m%d-%H%M%S)" >> $GITHUB_ENV
+
       - name: Cria Pull Request para branch padrão
         id: create-pr
         uses: peter-evans/create-pull-request@v5
