@@ -3,7 +3,6 @@ description: Renderiza livros Quarto e cria 'Pull Request' automaticamente para 
 # modelos de ia: Cloude Sonnet 4 e Gemini Pro
 
 on:
-  workflow_dispatch:
   push:
     branches: [stag]
     paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
@@ -17,10 +16,6 @@ env:
   USERNAME: ${{ github.repository_owner }}
   USEREMAIL: ${{ secrets.USEREMAIL }}
   TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
-
-# defaults:
-#   run:
-#     working-directory: book
 
 jobs:
   renderizar:
@@ -37,10 +32,10 @@ jobs:
       - name: Configura Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-    # paaso: Encontrar uma maneira de detectar apenas o livro que foi modificado
-    #        pois, o quarto já vai sobreescrever o livro atualizado em book sem
-    #        sem precisar 'mover/sincronizar/verificar/ect.'
-    #        substituuir ' $(ls build)' pelo novo metódo.
+      # paaso: Encontrar uma maneira de detectar apenas o livro que foi modificado
+      #        pois, o quarto já vai sobreescrever o livro atualizado em book sem
+      #        sem precisar 'mover/sincronizar/verificar/ect.'
+      #        substituuir ' $(ls build)' pelo novo metódo.
 
       - name: Renderiza livros Quarto
         run: |
@@ -76,7 +71,7 @@ jobs:
 
             Commit fonte: ${{ github.sha }}
             Data: $(date +'%Y-%m-%d %H:%M:%S UTC')
-            
+
           body: |
             ## 📖 atualiza books renderizados pelo GitHub Actions
 
@@ -101,3 +96,16 @@ jobs:
 
             ---
             **⚠️ Esta PR requer aprovação manual do proprietário antes do merge.**
+
+  repository_dispatch:
+    needs: [renderizar]
+    runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    steps:
+      - name: Dispara 'repository_dispatch' no estatistica
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          repository: ${{ env.USERNAME }}/estatistica
+          token: ${{ env.TOKEN }}
+          event-type: atualizar-books
