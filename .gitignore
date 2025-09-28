@@ -8,7 +8,7 @@ delete/
 *libs*/
 _book/
 .quarto
-
+.secrets
 
 ##### NÃO IGNORAR
 !fluxograma.pdf
