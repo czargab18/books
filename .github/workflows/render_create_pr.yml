@@ -18,6 +18,10 @@ env:
   USEREMAIL: ${{ secrets.USEREMAIL }}
   TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
 
+defaults:
+  run:
+    working-directory: book
+
 jobs:
   renderizar:
     runs-on: ubuntu-latest
@@ -34,49 +38,24 @@ jobs:
       - name: Configura Quarto
         uses: quarto-dev/quarto-actions/setup@v2
 
-      # - name: Cria pasta '_rendered'
-      #   run: |
-      #     echo "Criando diretório para os livros renderizados..."
-      #     mkdir -p _rendered
+    # paaso: Encontrar uma maneira de detectar apenas o livro que foi modificado
+    #        pois, o quarto já vai sobreescrever o livro atualizado em book sem
+    #        sem precisar 'mover/sincronizar/verificar/ect.'
+    #        substituuir ' $(ls build)' pelo novo metódo.
 
       - name: Renderiza livros Quarto
-        working-directory: books
         run: |
           for folder in $(ls build); do
             if [ -d "build/$folder" ]; then
               echo "Renderizando livro: $folder"
-              quarto render "build/$folder" --to html --execute --output-dir "./../_rendered/$folder"
+              quarto render "build/$folder" --to html --execute --output-dir "./../../book/$folder"
             fi
           done
 
-      - name: Verificar pasta 'books/book' existe
-        working-directory: books
-        id: check-book-folder
-        run: |
-          if [ ! -d "book" ]; then
-            echo "A pasta 'book' não existe. Criando a pasta..."
-            mkdir -p book
-          else
-            echo "A pasta 'book' já existe."
-          fi
-
-      - name: Lista os livros renderizados
-        run: |
-          echo "Livros renderizados:"
-          echo "RENDERED_BOOKS=$(ls build/_rendered | xargs)" >> $GITHUB_ENV
-
-      - name: Remove versões antigas dos livros renderizados
-        working-directory: books
-        run: |
-          for folder in ${{ env.RENDERED_BOOKS }}; do
-            rm -rf "book/$folder"
-          done
-
-      - name: Move novos livros renderizados para book
-        run: |
-          for folder in ${{ env.RENDERED_BOOKS }}; do
-            mv "build/_rendered/$folder" "book/$folder"
-          done
+      # - name: Lista os livros renderizados
+      #   run: |
+      #     echo "Livros renderizados:"
+      #     echo "RENDERED_BOOKS=$(ls build/_rendered | xargs)" >> $GITHUB_ENV
 
       - name: Commit e criar Pull Request
         uses: peter-evans/create-pull-request@v5
