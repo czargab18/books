@@ -1,30 +1,32 @@
 # Sumário {.title-page}
 
-## UNIDADE I: INTRODUÇÃO
+Ainda em organização para melhor clareza
+
+## Introdução
 
 1. O que é Estatística?
 2. Estatística no Brasil  
-   - A profissão de estatístico no Brasil  
-   - Sistema Estatístico Brasileiro  
-   - Principais fontes de dados estatísticos
+  - A profissão de estatístico no Brasil  
+  - Sistema Estatístico Brasileiro  
+  - Principais fontes de dados estatísticos
 
-## UNIDADE II: FASES DO TRABALHO ESTATÍSTICO
+## Fases do Trabalho Estatístico
 
 1. Planejamento  
-   - Elaboração de um projeto de pesquisa
+  - Elaboração de um projeto de pesquisa
 2. Coleta de dados  
-   - Tipos de coleta: censos, amostras, registros contínuos  
-   - O questionário
+  - Tipos de coleta: censos, amostras, registros contínuos  
+  - O questionário
 3. Apuração de dados  
-   - Escala de mensuração  
-   - Tipos de variáveis
+  - Escala de mensuração  
+  - Tipos de variáveis
 4. Apresentação de dados  
-   - Séries estatísticas: temporal, especificativa, geográfica, mista  
-   - Distribuições de frequências  
-   - Tabelas de contingência  
-   - Representação gráfica de variáveis qualitativas
+  - Séries estatísticas: temporal, especificativa, geográfica, mista  
+  - Distribuições de frequências  
+  - Tabelas de contingência  
+  - Representação gráfica de variáveis qualitativas
 
-## UNIDADE III: RESUMO E REPRESENTAÇÃO DE VARIÁVEIS QUANTITATIVAS UNIDIMENSIONAIS
+## RESUMO E REPRESENTAÇÃO DE VARIÁVEIS QUANTITATIVAS UNIDIMENSIONAIS
 
 1. Representação gráfica de variáveis quantitativas  
    - Diagrama de pontos  
@@ -35,13 +37,15 @@
 3. Medidas resistentes: quantis
 4. Desenho esquemático (“Box-plot”)
 
-## UNIDADE IV: ANÁLISE DE VARIÁVEIS BIDIMENSIONAIS
+## ANÁLISE DE UMA VARIÁVEIS
+
+## ANÁLISE DE DUAS VARIÁVEIS
 
 1. Medidas de associação em tabelas de contingência  
-   - Medidas baseadas no Qui-Quadrado  
-   - Medida de Cramer
+  - Medidas baseadas no Qui-Quadrado  
+  - Medida de Cramer
 2. Associação entre variáveis quantitativas  
-   - Diagrama de dispersão  
-   - Coeficiente de correlação de Pearson  
-   - Coeficiente de correlação de Spearman
+  - Diagrama de dispersão  
+  - Coeficiente de correlação de Pearson  
+  - Coeficiente de correlação de Spearman
 
