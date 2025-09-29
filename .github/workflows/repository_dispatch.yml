@@ -45,7 +45,6 @@ jobs:
           echo "PASTAS_JSON=$PASTAS_JSON" >> $GITHUB_OUTPUT
 
       - name: Dispara 'repository_dispatch' no estatistica
-        if: ${{ steps.verificar_arquivos_no_push.outputs.PASTAS_JSON != '' }}
         uses: peter-evans/repository-dispatch@v3
         with:
           repository: ${{ env.USERNAME }}/estatistica
