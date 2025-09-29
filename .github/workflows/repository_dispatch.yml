@@ -4,7 +4,7 @@ description: Renderiza livros Quarto e cria 'Pull Request' automaticamente para 
 
 on:
   push:
-    branches: [stag]
+    branches: [main, stag, dev1]
     paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
 
 permissions:
