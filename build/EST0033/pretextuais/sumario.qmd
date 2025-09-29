@@ -2,7 +2,9 @@
 
 Ainda em organização para melhor clareza
 
-## Introdução
+## Parte 1 - Preliminares
+
+### Introdução
 
 1. O que é Estatística?
 2. Estatística no Brasil  
@@ -10,7 +12,7 @@ Ainda em organização para melhor clareza
   - Sistema Estatístico Brasileiro  
   - Principais fontes de dados estatísticos
 
-## Fases do Trabalho Estatístico
+### Fases do Trabalho Estatístico
 
 1. Planejamento  
   - Elaboração de um projeto de pesquisa
@@ -26,20 +28,24 @@ Ainda em organização para melhor clareza
   - Tabelas de contingência  
   - Representação gráfica de variáveis qualitativas
 
-## RESUMO E REPRESENTAÇÃO DE VARIÁVEIS QUANTITATIVAS UNIDIMENSIONAIS
+## Parte 1 - ANÁLISE EXPLORATÓRIA
+
+### RESUMO DADOS DE UMA VARIÁVEL
+<!-- ### RESUMO DADOS DE UMA VARIÁVEL QUANTITATIVAS UNIDIMENSIONAIS -->
 
 1. Representação gráfica de variáveis quantitativas  
-   - Diagrama de pontos  
-   - Ramo e folhas  
-   - Histograma  
-   - Polígono de frequências
-2. Medidas de posição, variabilidade, assimetria e achatamento
-3. Medidas resistentes: quantis
-4. Desenho esquemático (“Box-plot”)
+  - Diagrama de pontos  
+  - Ramo e folhas  
+  - Histograma  
+  - Polígono de frequências
+  - etc...
 
-## ANÁLISE DE UMA VARIÁVEIS
-
-## ANÁLISE DE DUAS VARIÁVEIS
+### ANÁLISE DE UMA VARIÁVEIS
+1. Medidas de posição, variabilidade, assimetria e achatamento
+2. Medidas resistentes: quantis
+3. Desenho esquemático (“Box-plot”)
+4. 
+### ANÁLISE DE DUAS VARIÁVEIS
 
 1. Medidas de associação em tabelas de contingência  
   - Medidas baseadas no Qui-Quadrado  
