@@ -41,14 +41,15 @@ jobs:
           ARQUIVOS_MODIFICADOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
           PASTAS_MODIFICADAS=$(echo "$ARQUIVOS_MODIFICADOS" | grep -oE '^build/[A-Z]{3}[0-9]{4}' | sed 's|build/||' | sort | uniq)
           echo "Pastas modificadas: $PASTAS_MODIFICADAS"
-          PASTAS_JSON=$(echo "$PASTAS_MODIFICADAS" | awk '{printf "\"%s\",", $0}' | sed 's/,$//')
+          PASTAS_JSON=$(echo "$PASTAS_MODIFICADAS" | awk '{printf \"\"%s\"\",", $0}' | sed 's/,$//')
+          echo "PASTAS_JSON=$PASTAS_JSON" >> $GITHUB_OUTPUT
           echo "client-payload={\"livros\":[${PASTAS_JSON}]}" >> $GITHUB_ENV
 
       - name: Dispara 'repository_dispatch' no estatistica
-        if: ${{ steps.verificar_arquivos_no_push.outputs.PASTAS_MODIFICADAS != '' }}
+        if: ${{ steps.verificar_arquivos_no_push.outputs.PASTAS_JSON != '' }}
         uses: peter-evans/repository-dispatch@v3
         with:
           repository: ${{ env.USERNAME }}/estatistica
           token: ${{ env.TOKEN }}
           event-type: atualizar-books
-          client-payload: ${{ env.client-payload }}
+          client-payload: ${{ steps.verificar_arquivos_no_push.outputs.PASTAS_JSON }}
