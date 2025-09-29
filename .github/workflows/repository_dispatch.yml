@@ -28,6 +28,13 @@ jobs:
         run: |
           git config --global url."https://${{ env.TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
 
+      - name: Checkout do repositório
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 5 # no mínimo 2 para pegar o commit anterior
+        env:
+          TOKEN: ${{ env.TOKEN }}
+
       - name: Verificar arquivos alterados no push
         id: verificar_arquivos_no_push
         run: |
