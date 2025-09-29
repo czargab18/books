@@ -31,22 +31,12 @@ jobs:
         id: verificar_arquivos_no_push
         run: |
           ARQUIVOS_MODIFICADOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-          echo "Lista de arquivos: \n (cat $ARQUIVOS_MODIFICADOS)"
+          PASTAS_MODIFICADAS=$(echo "$ARQUIVOS_MODIFICADOS" | grep -oE '^build/[A-Z]{3}[0-9]{4}' | sed 's|build/||' | sort | uniq)
+          echo "Pastas modificadas: $PASTAS_MODIFICADAS"
 
-      - name: Verificar livros alterados no push
-        id: verificar_livros
-        run: |
-          LIVROS_MODIFICADOS=$(echo "$ARQUIVOS_MODIFICADOS" | grep -E '\.qmd$|\.yml$|\.bib$')
-          if [ -z "$LIVROS_MODIFICADOS" ]; then
-            echo "Nenhum livro modificado."
-            echo "livros_modificados=false" >> $GITHUB_ENV
-          else
-            echo "Livros modificados: $LIVROS_MODIFICADOS"
-            echo "livros_modificados=true" >> $GITHUB_ENV
-          fi
 
       - name: Dispara 'repository_dispatch' no estatistica
-        if: env.livros_modificados == 'true'
+        if: ${{ steps.verificar_arquivos_no_push.outputs.PASTAS_MODIFICADAS != '' }}
         uses: peter-evans/repository-dispatch@v3
         with:
           repository: ${{ env.USERNAME }}/estatistica
