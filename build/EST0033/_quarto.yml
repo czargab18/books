@@ -25,9 +25,7 @@ book:
   chapters:
     - index.qmd
     - pretextuais/sumario.qmd
-    # A Unidade I é destinada a falar sobre a area de Estatística, eoutras coisas.
-    # talvez, seja mais interresante apenas jogar o conteúdo para TAS0000
-    # deixando aqui apenas o conteúdo sobre métodos estatistica para análise de dados
+
     # - part: "Unidade I"
     #   chapters:
     #     - textuais/unid1/introd.qmd 
