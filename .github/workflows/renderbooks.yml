@@ -1,4 +1,4 @@
-name: render_create_pr
+name: renderbooks_create_pr
 description: Renderiza livros Quarto e cria 'Pull Request' automaticamente para revisão
 # modelos de ia: Cloude Sonnet 4 e Gemini Pro
 

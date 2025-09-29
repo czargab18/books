@@ -1,147 +1,89 @@
-# A Arte da Estatística
-O nome desta série é inspirado na famosa coleção de Donald Knuth chamada “The Art of Computer Programming”, veja (tarara, xxx). Esta série ou coleção será construída com base em minhas notas de aulas e exercícios resolvidos.
-
 <!-- 🤖 README melhorado por IA - GitHub Copilot -->
 
-## Livros construidos com Quarto
+# A Arte da Estatística
+
+O nome desta série é inspirado na famosa coleção de Donald Knuth chamada “The Art of Computer Programming”, veja (tarara, xxx). Esta série ou coleção será construída com base em minhas notas de aulas e exercícios resolvidos.
+
+## Livros construidos com [Quarto](https://quarto.org/)
 
 > **Projeto acadêmico para criação de livros e materiais educacionais** utilizando Quarto, R, Python e LaTeX, com foco em disciplinas de Estatística, Matemática e Ciência da Computação.
-
-## 🎯 Descrição
-
-Este repositório contém **anotações, códigos e projetos acadêmicos** desenvolvidos com o [Quarto](https://quarto.org/), organizados por disciplinas universitárias. O projeto combina diferentes linguagens e formatos para criar materiais educacionais interativos e de alta qualidade.
-
-### 🚀 **Tecnologias Utilizadas:**
-
-- **[Quarto](https://quarto.org/)**: Sistema de publicação científica e técnica
-- **R**: Análise estatística e visualização de dados
-- **Python**: Ciência de dados e automação
-- **LaTeX**: Documentos acadêmicos formais
-- **Jupyter Notebooks**: Análises interativas
-- **HTML/CSS**: Apresentações web
-
-### 🤖 **Desenvolvimento Assistido por IA**
-
-- **Mínimo 75% do código é gerado ou assistido por IA** (GitHub Copilot)
-- Todas as contribuições de IA são devidamente marcadas e documentadas
-- Uso responsável e transparente de ferramentas de IA
 
 ## 📁 Estrutura do Projeto
 
 ```
 books/
-├── 📋 .devcontainer/          # Ambiente de desenvolvimento (Codespace)
-├── 🔧 .github/                # Templates e workflows GitHub
-├── ⚙️  .vscode/               # Configurações VS Code + Copilot
-├── 🌐 build/                  # Arquivos compilados e disciplinas
+├── ⚙️  .vscode/              # Configurações VS Code + Copilot
+├── 🔧 .github/               # Templates e workflows GitHub
+│   ├── 📖 README.md          # Documentação principal
+│   ├── 📖 workflows          # Ações Automaticas do GitHub
+├── 🌐 book/                  # Lista dos livros renderizados
+├── 🌐 build/                 # Arquivos compilados e disciplinas
 │   ├── 📊 CIC0007/           # Introdução à Computação (Python)
 │   ├── 📈 EST0033/           # Estatística Exploratória
-│   ├── 📉 EST0046/           # Métodos Estatísticos
-│   ├── 📐 EST0081/           # TCC - Trabalho de Conclusão
-│   ├── 🔢 EST0091/           # Computação Estatística I
-│   ├── 🧮 EST0092/           # Computação Estatística II
-│   ├── ➕ MAT0075/           # Matemática Básica
-│   ├── 📝 TAS0000/           # Tópicos Diversos
-│   └── � _arquivos/         # Recursos compartilhados
-├── 📄 .gitignore             # Arquivos ignorados pelo Git
-└── 📖 README.md              # Documentação principal
+│   ├── 📈 ....               # Livro com nome-padão [A-Z]{3}[0-9]{4}
+│   📄 disciplinas.json       # Lista de disciplinas
+└── 📄 .gitignore             # Arquivos ignorados pelo Git
 ```
 
-### 📚 **Disciplinas Incluídas:**
+> Com a nova versão do projeto, a pasta `/book/` será abandonada. Uma action detecta as mudanças em `build/` e dispara uma notificação para ao repositório principal, que por sua vez renderiza, padroniza componentes e publica os livros atualizados. Veja [https://www.estatistica.pro/book/](https://www.estatistica.pro/book/)
+> **Obs:** A pasta `/build/` é onde os livros são construídos. Cada disciplina tem sua própria pasta, nomeada com um código padrão `[A-Z]{3}[0-9]{4}` (exemplo: `EST0033` para Estatística Exploratória).
 
-- **CIC0007**: Introdução à Ciência da Computação
-- **EST0033**: Estatística Exploratória
-- **EST0046**: Métodos Estatísticos
-- **EST0081**: Trabalho de Conclusão de Curso
-- **EST0091/092**: Computação Estatística I e II
-- **MAT0075**: Matemática Básica
-- **TAS0000**: Tópicos Avançados em Estatística
-- **\_arquivos**: Ementas e materiais de planejamento
+
+## Contribuição
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests. Para grandes mudanças, por favor, abra uma issue primeiro para discutir o que você gostaria de mudar.
+
+## Branchs
+- **`main`**: Branch principal, contém a versão estável do projeto.
+- **`stag`**: Branch de testes, usada para validar mudanças antes de serem mescladas na `main`.
+- **`book`**: Branch usada pela action para atualizar os livros renderizados criando pull_request automaticos.
+- **`devX`**: Branch de desenvolvimento implementadas pelo `devX`
+
+> Por favor, evite usar as branch `main`, `stag`, `dev0`, `dev1`, `dev2`, `news`, `book` para desenvolvimento direto. Crie uma nova branch a partir de `stag` para suas alterações usando como nome o sufixo `devX`, onde X é o próximo número de devs disponível. Branches de test devem ser enviadas como `devX-test`, ou faça o merge e envia o push em `devX`.
 
 ## 🚀 Como Usar
 
-### 🌥️ **Opção 1: GitHub Codespace (Recomendado)**
+1. **Clone o repositório** e navegue para a pasta do projeto.
 
-1. **Abra no Codespace**: Clique em "Code" → "Codespaces" → "Create codespace on main"
-2. **Ambiente pré-configurado**: R, Python, Quarto e LaTeX já instalados
-3. **VS Code otimizado**: Extensões e configurações personalizadas
-
-### 💻 **Opção 2: Local**
-
-1. **Clone o repositório**:
-
-   ```bash
+   ```{bash}
    git clone https://github.com/cesargabrielphd/books.git
-   cd books
    ```
 
 2. **Instale as dependências**:
 
-   ```bash
+   ```{bash}
    # Quarto
    https://quarto.org/docs/get-started/
-
-   # R packages
-   install.packages(c("tidyverse", "ggplot2", "rmarkdown", "knitr"))
-
-   # Python packages
-   pip install pandas numpy matplotlib jupyter quarto
    ```
 
-3. **Abra no VS Code**:
-   ```bash
+3. **Abra no VS Code** onde está o projeto clonado. 
+   ```{bash}
    code .
    ```
 
-### 📝 **Trabalhando com os Documentos**
+## 📝 **Escrevendo**
+Pode adicionar suas notas de aulas, interpretações sobre determinado assundo, apenas corrigir erros textuais, ajudar com formulas LaTeX, etc...
 
-#### **Renderizar um documento Quarto:**
+## **Renderizar um documento Quarto:**
 
-```bash
-quarto render documento.qmd
-```
+- Caso deseje apenas renderizar o arquivo e ver o resultado final, use o comando abaixo. Ele renderizará para o formato html, salvando na pasta /book/ na raiz do repositório. `$folder` é o nome da pasta do código da disciplina que deseja renderizar, por exemplo `EST0033`. Veja a lista de disciplinas no arquivo `disciplinas.json`, para o curso de estatistica ofertado pela Universidade de Brasília.
 
-#### **Visualizar em tempo real:**
 
-```bash
-quarto preview
-```
+  ```{bash}
+  quarto render "build/$folder" --to html --execute --output-dir "./../book$folder"
+  ```
 
-#### **Executar análises R:**
+- Para atualizações em tempo real, basta usar o parametro `preview` ao invés do `render`
 
-```r
-# Abrir arquivo .qmd ou .Rmd no VS Code
-# Usar Ctrl+Shift+Enter para executar chunks
-```
+  ```{bash}
+  quarto preview "build/$folder" --to html --execute --output-dir "./../book$folder"
+  ```
 
-#### **Executar notebooks Python:**
+Após terminar de editar, use `CTRL + C` para parar o processo, adicione as mudanças ao git e faça o commit.
+Não precisa criar um pull_request, uma action cuidará de atualizar a branch `book` e notificar o repositório principal para renderizar os livros atualizados.
 
-```bash
-jupyter lab
-# ou usar diretamente no VS Code
-```
+**Exemplo de Commit:**
 
-## 🎨 Estrutura das Branches
-
-- **🌟 `main`**: Código principal e documentação finalizada
-- **🔧 `dev1`**: Desenvolvimento de novas funcionalidades
-- **🧪 `stag`**: Ambiente de teste e validação
-- **📖 `books`**: Deploy automático para GitHub Pages
-
-## 🤖 Uso Responsável de IA
-
-Este projeto utiliza **GitHub Copilot** e outras ferramentas de IA de forma transparente:
-
-### ✅ **Diretrizes de IA:**
-
-- **Mínimo 75% do código** é marcado como gerado por IA
-- Uso de comentários específicos: `# 🤖 Código gerado por IA - GitHub Copilot`
-- Commits incluem percentual de código gerado por IA
-- Documentação completa em [`.copilot-instructions.md`](.copilot-instructions.md)
-
-### 📝 **Exemplo de Commit:**
-
-```
+```{bash}
 feat(quarto): adicionar análise estatística para EST0033
 
 🤖 Código 85% gerado por GitHub Copilot
@@ -150,88 +92,15 @@ feat(quarto): adicionar análise estatística para EST0033
 - Documentação em português
 ```
 
-## 🛠️ Desenvolvimento
+## 🚀 **Tecnologias Utilizadas:**
 
-### **Configurações Incluídas:**
-
-- **DevContainer**: Ambiente completo para Codespace
-- **VS Code Settings**: Configurações otimizadas para R, Python, Quarto
-- **GitHub Copilot**: Templates e snippets personalizados
-- **Extensões**: Lista curada de extensões essenciais
-
-### **Comandos Úteis:**
-
-```bash
-# Renderizar todos os documentos
-quarto render
-
-# Limpar arquivos temporários
-find . -name "*_files" -type d -exec rm -rf {} +
-
-# Atualizar dependências R
-Rscript -e "update.packages(ask = FALSE)"
-
-# Instalar pacotes Python
-pip install -r requirements.txt
-```
-
-## 📊 Estatísticas do Projeto
-
-- **📚 Disciplinas**: 8+ disciplinas universitárias
-- **📄 Documentos**: 50+ arquivos Quarto/RMarkdown
-- **🔬 Análises**: 100+ scripts R e Python
-- **🤖 IA**: 75%+ código assistido por GitHub Copilot
-- **📖 Páginas**: Disponível em [GitHub Pages](https://cesargabrielphd.github.io/books/)
-
-## 🎓 Sobre o Autor
-
-**César Gabriel Castro de Oliveira**
-
-- 🎓 Estatística - Universidade de Brasília (UnB)
-- 💼 Especialização em Ciência de Dados
-- 🤖 Entusiasta de IA aplicada à educação
-
-## 🤝 Como Contribuir
-
-1. **Fork** o repositório
-2. **Crie** uma branch: `git checkout -b feature/nova-funcionalidade`
-3. **Commit** suas mudanças: `git commit -m 'feat: adicionar nova funcionalidade 🤖 Código 80% gerado por IA'`
-4. **Push** para a branch: `git push origin feature/nova-funcionalidade`
-5. **Abra** um Pull Request
-
-### 📋 **Checklist para Contribuições:**
-
-- [ ] Código comentado em português
-- [ ] Indicação de código gerado por IA (mín. 75%)
-- [ ] Documentação atualizada
-- [ ] Testes funcionais (quando aplicável)
-- [ ] Commit message segue o padrão do projeto
-
-## 📄 Licença
-
-Este projeto está sob a licença **MIT** - veja o arquivo [LICENSE](LICENSE) para detalhes.
-
-## 🔗 Links Úteis
-
-- 📖 **Site do Projeto**: [books.estatistica.pro](https://cesargabrielphd.github.io/books/)
-- 📚 **Documentação Quarto**: [quarto.org](https://quarto.org/)
-- 🤖 **GitHub Copilot**: [github.com/features/copilot](https://github.com/features/copilot)
-- 📊 **R for Data Science**: [r4ds.had.co.nz](https://r4ds.had.co.nz/)
-- 🐍 **Python Data Science**: [jakevdp.github.io/PythonDataScienceHandbook](https://jakevdp.github.io/PythonDataScienceHandbook/)
-
----
-
-<div align="center">
-
-**📚 Construído com ❤️ e 🤖 IA**
-
-_Este repositório é atualizado continuamente com novos conteúdos e melhorias._
-
-</div>
-
----
-
-echo "Navegando para o diretório do livro e renderizando..."
-echo "Renderizando o livro..."
-echo "Voltando para a raiz do projeto..."
-echo "Automatizando a limpeza dos HTMLs..."
+- **[Quarto](https://quarto.org/)**: Sistema de publicação científica e técnica
+- **LaTeX**: Formulas matemáticas elegantes
+- **R**: Análise estatística e visualização de dados
+- **Python**: Ciência de dados e automação
+- **GitHub Actions**: Automação de fluxos de trabalho
+- **Git**: Controle de versão
+- **Visual Studio Code**: Ambiente de desenvolvimento integrado (IDE)
+- **GitHub Copilot**: Assistente de codificação
+- **Coude Sonnet 4**: Assistente de codificação
+- **Coude Gemini Pro**: Assistente de codificação

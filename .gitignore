@@ -1,15 +1,23 @@
 ###########################################
-################### RAIZ ##################
+################## QUARTO #################
 ###########################################
 ##### IGNORAR
-*.pdf
-**/.gitignore
-delete/
-*libs*/
-_book/
 .quarto
+delete/
+_book/
+*libs*/
+*index*html/
+**/.gitignore
+
+book/
+
+###########################################
+################# ARQUIVOS ################
+###########################################
+##### IGNORAR
 .secrets
 .env
+*.pdf
 
 ##### NÃO IGNORAR
 !fluxograma.pdf
@@ -30,8 +38,8 @@ renv/sandbox/
 renv/staging/
 
 ##### NÃO IGNORAR
-!**/renv/activate.R
-!**/renv/settings.json
-!.Rprofile
-!renv.lock
-/.quarto/
+# !**/renv/activate.R
+# !**/renv/settings.json
+# !.Rprofile
+# !renv.lock
+# /.quarto/
