@@ -42,3 +42,4 @@ jobs:
           repository: ${{ env.USERNAME }}/estatistica
           token: ${{ env.TOKEN }}
           event-type: atualizar-books
+          client-payload: ${{ env.client-payload }}
