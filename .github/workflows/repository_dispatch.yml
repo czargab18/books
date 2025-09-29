@@ -31,9 +31,10 @@ jobs:
         id: verificar_arquivos_no_push
         run: |
           ARQUIVOS_MODIFICADOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-PASTAS_MODIFICADAS=$(echo "$ARQUIVOS_MODIFICADOS" | grep -oE '^build/[A-Z]{3}[0-9]{4}' | sed 's|build/||' | sort | uniq)
-PASTAS_JSON=$(echo "$PASTAS_MODIFICADAS" | awk '{printf "\"%s\",", $0}' | sed 's/,$//')
-echo "client-payload={\"livros\":[$PASTAS_JSON]}" >> $GITHUB_ENV
+          PASTAS_MODIFICADAS=$(echo "$ARQUIVOS_MODIFICADOS" | grep -oE '^build/[A-Z]{3}[0-9]{4}' | sed 's|build/||' | sort | uniq)
+          echo "Pastas modificadas: $PASTAS_MODIFICADAS"
+          PASTAS_JSON=$(echo "$PASTAS_MODIFICADAS" | awk '{printf "\"%s\",", $0}' | sed 's/,$//')
+          echo "client-payload={\"livros\":[${PASTAS_JSON}]}" >> $GITHUB_ENV
 
 
       - name: Dispara 'repository_dispatch' no estatistica
