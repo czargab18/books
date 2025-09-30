@@ -20,5 +20,3 @@ Recomenda-se o acompanhamento regular das atualizações.
 Para ter acesso aos demais livros em desenvolvimento, acesse [book](https://www.estatistica.pro/book/)
  - **[TAS0000](https://www.estatistica.pro/book/TAS0000/)**: projeto "A Arte da Estatística"
  - **[EST0033](https://www.estatistica.pro/book/EST0033/)**: Livros de Estatística Exploratória
-
-..........
