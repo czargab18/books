@@ -15,3 +15,8 @@ As notas serão estruturadas na forma de livros Quarto, sendo que cada livro cor
 
 Trata-se de um projeto em constante evolução: os livros são documentos vivos, sujeitos a revisões, correções e expansões. As publicações ocorrerão gradualmente, à medida que os conteúdos forem sendo consolidados, permitindo aos leitores acompanhar tanto o progresso acadêmico quanto a maturação conceitual dos temas abordados.  
 Recomenda-se o acompanhamento regular das atualizações.  
+
+## A Arte da Estatística {.link-books .hradline2}
+Para ter acesso aos demais livros em desenvolvimento, acesse [book](https://www.estatistica.pro/book/)
+ - **[TAS0000](https://www.estatistica.pro/book/TAS0000/)**: projeto "A Arte da Estatística"
+ - **[EST0033](https://www.estatistica.pro/book/EST0033/)**: Livros de Estatística Exploratória
