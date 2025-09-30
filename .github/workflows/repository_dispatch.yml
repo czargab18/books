@@ -35,20 +35,24 @@ jobs:
         env:
           TOKEN: ${{ env.TOKEN }}
 
-      - name: Verificar arquivos alterados no push
-        id: verificar_arquivos_no_push
+      - name: Detectar e gerar 'payload' com os livros detectados
+        id: gerar_payload
         run: |
-          ARQUIVOS_MODIFICADOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-          PASTAS_MODIFICADAS=$(echo "$ARQUIVOS_MODIFICADOS" | grep -oE '^build/[A-Z]{3}[0-9]{4}' | sed 's|build/||' | sort | uniq)
-          echo "Pastas modificadas: $PASTAS_MODIFICADAS"
-          PASTAS_JSON=$(echo "$PASTAS_MODIFICADAS" | awk '{printf \"\"%s\"\",", $0}' | sed 's/,$//')
-          echo "PASTAS_JSON=$PASTAS_JSON" >> $GITHUB_OUTPUT
+          ARQUIVOS_DETECTADOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          LIVROS_DETECTADAS=$(echo "$ARQUIVOS_DETECTADOS" | grep -oE '^build/[A-Z]{3}[0-9]{4}' | sed 's|build/||' | sort | uniq)
+          echo "Pastas modificadas: $LIVROS_DETECTADAS"
+          if [ -z "$LIVROS_DETECTADAS" ]; then
+            echo "payload=" >> $GITHUB_OUTPUT
+          else
+            LIVROS_ARRAY=$(echo "$LIVROS_DETECTADAS" | awk '{printf "\"%s\",", $0}' | sed 's/,$//')
+            echo "payload={\"livros\": [${LIVROS_ARRAY}]}" >> $GITHUB_OUTPUT
+          fi
 
       - name: Dispara 'repository_dispatch' no estatistica
-        if: ${{ steps.verificar_arquivos_no_push.outputs.PASTAS_JSON != '' }}
+        if: ${{ steps.gerar_payload.outputs.payload != '' }}
         uses: peter-evans/repository-dispatch@v3
         with:
           repository: ${{ env.USERNAME }}/estatistica
           token: ${{ env.TOKEN }}
           event-type: atualizar-books
-          client-payload: ${{ steps.verificar_arquivos_no_push.outputs.PASTAS_JSON }}
+          client-payload: ${{ steps.gerar_payload.outputs.payload }}
