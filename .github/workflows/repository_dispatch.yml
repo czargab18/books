@@ -4,6 +4,12 @@ description: Renderiza livros Quarto e cria 'Pull Request' automaticamente para 
 
 on:
   workflow_dispatch:
+    inputs:
+      livros:
+        description: 'Livros para renderizar (ex: "EST0001,EST0002" ou "all" para todos)'
+        required: false
+        default: ''
+        type: string
   push:
     branches: [main]
     paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
@@ -38,21 +44,30 @@ jobs:
       - name: Detectar e gerar 'payload' com os livros detectados
         id: gerar_payload
         run: |
-          ARQUIVOS_DETECTADOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-          LIVROS_DETECTADAS=$(echo "$ARQUIVOS_DETECTADOS" | grep -oE '^build/[A-Z]{3}[0-9]{4}' | sed 's|build/||' | sort | uniq)
-          echo "Pastas modificadas: $LIVROS_DETECTADAS"
+          # Se foi acionado manualmente com input
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ inputs.livros }}" ]; then
+            INPUT_LIVROS="${{ inputs.livros }}"
+            
+            # Se for "all", lista todos os livros disponíveis
+            if [ "$INPUT_LIVROS" == "all" ]; then
+              LIVROS_DETECTADAS=$(find build -maxdepth 1 -type d -name '[A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9]' | sed 's|build/||' | sort)
+              echo "Renderizando todos os livros: $LIVROS_DETECTADAS"
+            else
+              # Lista específica de livros separados por vírgula
+              LIVROS_DETECTADAS=$(echo "$INPUT_LIVROS" | tr ',' '\n' | sort | uniq)
+              echo "Renderizando livros especificados: $LIVROS_DETECTADAS"
+            fi
+          else
+            # Detecta automaticamente pelos arquivos modificados (push)
+            ARQUIVOS_DETECTADOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+            LIVROS_DETECTADAS=$(echo "$ARQUIVOS_DETECTADOS" | grep -oE '^build/[A-Z]{3}[0-9]{4}' | sed 's|build/||' | sort | uniq)
+            echo "Livros detectados por push: $LIVROS_DETECTADAS"
+          fi
+          
           if [ -z "$LIVROS_DETECTADAS" ]; then
+            echo "Nenhum livro detectado para renderização"
             echo "payload=" >> $GITHUB_OUTPUT
           else
             LIVROS_ARRAY=$(echo "$LIVROS_DETECTADAS" | awk '{printf "\"%s\",", $0}' | sed 's/,$//')
             echo "payload={\"livros\": [${LIVROS_ARRAY}]}" >> $GITHUB_OUTPUT
-          fi
-
-      - name: Dispara 'repository_dispatch' no estatistica
-        if: ${{ steps.gerar_payload.outputs.payload != '' }}
-        uses: peter-evans/repository-dispatch@v3
-        with:
-          repository: ${{ env.USERNAME }}/estatistica
-          token: ${{ env.TOKEN }}
-          event-type: atualizar-books
-          client-payload: ${{ steps.gerar_payload.outputs.payload }}
+            echo "Payload gerado: {\"livros\": [${LIVROS_ARRAY}]}"
