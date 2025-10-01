@@ -11,7 +11,7 @@ on:
         default: 'all'
         type: string
   push:
-    branches: [main,dev1]
+    branches: [main]
     paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
 
 permissions:
@@ -73,4 +73,17 @@ jobs:
           else
             # Converte para array JSON
             LIVROS_ARRAY=$(echo "$LIVROS_DETECTADAS" | tr ' ' '\n' | awk '{printf "\"%s\",", $0}' | sed 's/,$//')
-            PAYLOAD="{\"livros\": [${LIVROS_ARRAY}]}"
+            PAYLOAD='{"livros": ['$LIVROS_ARRAY']}'
+            echo "payload=$PAYLOAD" >> $GITHUB_OUTPUT
+            echo "tem_livros=true" >> $GITHUB_OUTPUT
+            echo "Payload gerado: $PAYLOAD"
+          fi
+
+      - name: Dispara 'repository_dispatch' no estatistica
+        if: steps.gerar_payload.outputs.tem_livros == 'true'
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          repository: ${{ env.USERNAME }}/estatistica
+          token: ${{ env.TOKEN }}
+          event-type: atualizar-books
+          client-payload: ${{ steps.gerar_payload.outputs.payload }}
