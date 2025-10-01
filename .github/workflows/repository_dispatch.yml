@@ -11,7 +11,7 @@ on:
         default: 'all'
         type: string
   push:
-    branches: [main]
+    branches: [main,dev1]
     paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
 
 permissions:
