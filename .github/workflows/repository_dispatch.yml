@@ -8,7 +8,7 @@ on:
       livros:
         description: 'Livros para renderizar (ex: "EST0001,EST0002" ou "all" para todos)'
         required: false
-        default: ''
+        default: 'all'
         type: string
   push:
     branches: [main]
