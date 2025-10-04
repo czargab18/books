@@ -14,3 +14,22 @@ Como temos infintos numeros possíveis, a probabilidade de um ponto específico 
 
 teriamos P(X=9,53mm) = 1/∞ = 0.
 
+\(X(\omega) = 9.23\text{ mm}\)
+
+\(X(\omega) = 9.53\text{ mm}\)
+
+\(P = \frac{\text{Número de casos favoráveis}}{\text{Número de casos possíveis}}\)
+
+\(P(X = 9.53\text{ mm}) = \frac{1}{\infty} = 0\)
+
+
+Bom, podemos tentar definir a probabilidade de P(X ≤ 9,53mm). Nesse caso, há infinitos valores possíveis para X que satisfazem a condição X ≤ 9,53mm. Como são valore proximos de 0, estamos somando infinitos valores proximos de zero e não faz sentido algum.
+
+---
+
+Poder do text
+
+bom, o valor máximo de uma amostra é n-1, a população menos 1 elemento. Amostra de tamanho iguala  população N não faz sentido.
+Observe que para um teste de hipotese qualquer com uma amostra n-1, há uma grande "chance de saber" se a hipotese, seja ela qual for, é verdadeira ou não. Analogamente quando amostra é apenas 1 observação. 
+
+continua...
