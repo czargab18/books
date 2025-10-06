@@ -6,7 +6,7 @@ on:
   workflow_dispatch:
     inputs:
       livros:
-        description: 'Livros para renderizar (ex: "TAS0000",EST0033 ou "all" para todos)'
+        description: 'Livros para renderizar (ex: "TAS0000","EST0033" ou "all" para todos)'
         required: false
         default: 'all'
         type: string
