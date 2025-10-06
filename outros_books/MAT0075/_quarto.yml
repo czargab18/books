@@ -23,160 +23,162 @@ book:
 
   chapters:
     - index.qmd
+    - notas_temp.qmd
     
-    - pretextuais/prefacio.qmd
-    - pretextuais/sumario.qmd
+#     - pretextuais/prefacio.qmd
+#     - pretextuais/sumario.qmd
 
-    - part: "Capítulo 1: Espaços de Probabilidade"
-      chapters:
-        - textuais/cap01/modelos-probabilisticos.qmd
-        - textuais/cap01/contagem-simetria.qmd
-        - textuais/cap01/axiomas-kolmogorov.qmd
-        - textuais/cap01/espacos-medida.qmd
-        - textuais/cap01/exercicios.qmd
+#     - part: "Capítulo 1: Espaços de Probabilidade"
+#       chapters:
+#         - textuais/cap01/modelos-probabilisticos.qmd
+#         - textuais/cap01/contagem-simetria.qmd
+#         - textuais/cap01/axiomas-kolmogorov.qmd
+#         - textuais/cap01/espacos-medida.qmd
+#         - textuais/cap01/exercicios.qmd
 
-    - part: "Capítulo 2: Análise Combinatória"
-      chapters:
-        - textuais/cap02/combinatoria.qmd
+#     - part: "Capítulo 2: Análise Combinatória"
+#       chapters:
+#         - textuais/cap02/combinatoria.qmd
         
-    - part: "Capítulo 3: Probabilidade Condicional e Independência"
-      chapters:
-        - textuais/cap03/probabilidade-condicional.qmd
-        - textuais/cap03/independencia.qmd
-        - textuais/cap03/exercicios.qmd
+#     - part: "Capítulo 3: Probabilidade Condicional e Independência"
+#       chapters:
+#         - textuais/cap03/probabilidade-condicional.qmd
+#         - textuais/cap03/independencia.qmd
+#         - textuais/cap03/exercicios.qmd
 
-    - part: "Capítulo 4: Variáveis Aleatórias"
-      chapters:
-        - textuais/cap04/variaveis-aleatorias.qmd
-        - textuais/cap04/discretas.qmd
-        - textuais/cap04/continuas.qmd
-        - textuais/cap04/distribuicoes-mistas.qmd
-        - textuais/cap04/funcoes-mensuravei.qmd
-        - textuais/cap04/exercicios.qmd
+#     - part: "Capítulo 4: Variáveis Aleatórias"
+#       chapters:
+#         - textuais/cap04/variaveis-aleatorias.qmd
+#         - textuais/cap04/discretas.qmd
+#         - textuais/cap04/continuas.qmd
+#         - textuais/cap04/distribuicoes-mistas.qmd
+#         - textuais/cap04/funcoes-mensuravei.qmd
+#         - textuais/cap04/exercicios.qmd
 
-    - part: "Capítulo 5: Vetores Aleatórios"
-      chapters:
-        - textuais/cap05/vetores-aleatorios.qmd
-        - textuais/cap05/soma-variaveis.qmd
-        - textuais/cap05/metodo-jacobiano.qmd
-        - textuais/cap05/sequencias-independentes.qmd
-        - textuais/cap05/exercicios.qmd
+#     - part: "Capítulo 5: Vetores Aleatórios"
+#       chapters:
+#         - textuais/cap05/vetores-aleatorios.qmd
+#         - textuais/cap05/soma-variaveis.qmd
+#         - textuais/cap05/metodo-jacobiano.qmd
+#         - textuais/cap05/sequencias-independentes.qmd
+#         - textuais/cap05/exercicios.qmd
 
-    - part: "Capítulo 6: Esperança Matemática"
-      chapters:
-        - textuais/cap06/variaveis-simples.qmd
-        - textuais/cap06/esperanca-matematica.qmd
-        - textuais/cap06/convergencia-esperanca.qmd
-        - textuais/cap06/esperanca-condicional-evento.qmd
-        - textuais/cap06/integral-lebesgue.qmd
-        - textuais/cap06/exercicios.qmd
+#     - part: "Capítulo 6: Esperança Matemática"
+#       chapters:
+#         - textuais/cap06/variaveis-simples.qmd
+#         - textuais/cap06/esperanca-matematica.qmd
+#         - textuais/cap06/convergencia-esperanca.qmd
+#         - textuais/cap06/esperanca-condicional-evento.qmd
+#         - textuais/cap06/integral-lebesgue.qmd
+#         - textuais/cap06/exercicios.qmd
 
-    - part: "Capítulo 7: Momentos e Desigualdades"
-      chapters:
-        - textuais/cap07/momentos-variancia.qmd
-        - textuais/cap07/correlacao.qmd
-        - textuais/cap07/desigualdades-basicas.qmd
-        - textuais/cap07/exercicios.qmd
+#     - part: "Capítulo 7: Momentos e Desigualdades"
+#       chapters:
+#         - textuais/cap07/momentos-variancia.qmd
+#         - textuais/cap07/correlacao.qmd
+#         - textuais/cap07/desigualdades-basicas.qmd
+#         - textuais/cap07/exercicios.qmd
 
-    - part: "Capítulo 8: Convergência de Variáveis Aleatórias"
-      chapters:
-        - textuais/cap08/modos-convergencia.qmd
-        - textuais/cap08/borel-cantelli.qmd
-        - textuais/cap08/relacoes-convergencia.qmd
-        - textuais/cap08/convergencia-distribuicao.qmd
-        - textuais/cap08/exercicios.qmd
+#     - part: "Capítulo 8: Convergência de Variáveis Aleatórias"
+#       chapters:
+#         - textuais/cap08/modos-convergencia.qmd
+#         - textuais/cap08/borel-cantelli.qmd
+#         - textuais/cap08/relacoes-convergencia.qmd
+#         - textuais/cap08/convergencia-distribuicao.qmd
+#         - textuais/cap08/exercicios.qmd
 
-    - part: "Capítulo 9: Lei dos Grandes Números"
-      chapters:
-        - textuais/cap09/lei-fraca.qmd
-        - textuais/cap09/lei-forte.qmd
-        - textuais/cap09/kolmogorov.qmd
-        - textuais/cap09/aplicacoes.qmd
-        - textuais/cap09/exercicios.qmd
+#     - part: "Capítulo 9: Lei dos Grandes Números"
+#       chapters:
+#         - textuais/cap09/lei-fraca.qmd
+#         - textuais/cap09/lei-forte.qmd
+#         - textuais/cap09/kolmogorov.qmd
+#         - textuais/cap09/aplicacoes.qmd
+#         - textuais/cap09/exercicios.qmd
 
-    - part: "Capítulo 10: Teorema do Limite Central"
-      chapters:
-        - textuais/cap10/limite-central.qmd
-        - textuais/cap10/de-moivre-laplace.qmd
-        - textuais/cap10/lyapunov.qmd
-        - textuais/cap10/lindeberg.qmd
-        - textuais/cap10/slutsky-delta.qmd
-        - textuais/cap10/exercicios.qmd
+#     - part: "Capítulo 10: Teorema do Limite Central"
+#       chapters:
+#         - textuais/cap10/limite-central.qmd
+#         - textuais/cap10/de-moivre-laplace.qmd
+#         - textuais/cap10/lyapunov.qmd
+#         - textuais/cap10/lindeberg.qmd
+#         - textuais/cap10/slutsky-delta.qmd
+#         - textuais/cap10/exercicios.qmd
 
-    - part: "Capítulo 11: Transformadas"
-      chapters:
-        - textuais/cap11/funcao-geradora-momentos.qmd
-        - textuais/cap11/funcao-caracteristica.qmd
-        - textuais/cap11/unicidade-convergencia.qmd
-        - textuais/cap11/formula-inversao.qmd
-        - textuais/cap11/exercicios.qmd
+#     - part: "Capítulo 11: Transformadas"
+#       chapters:
+#         - textuais/cap11/funcao-geradora-momentos.qmd
+#         - textuais/cap11/funcao-caracteristica.qmd
+#         - textuais/cap11/unicidade-convergencia.qmd
+#         - textuais/cap11/formula-inversao.qmd
+#         - textuais/cap11/exercicios.qmd
 
-    - part: "Capítulo 12: Esperança Condicional"
-      chapters:
-        - textuais/cap12/esperanca-particao.qmd
-        - textuais/cap12/probabilidade-condicional.qmd
-        - textuais/cap12/densidade-condicional.qmd
-        - textuais/cap12/sigma-algebra.qmd
-        - textuais/cap12/radon-nikodym.qmd
-        - textuais/cap12/distribuicao-condicional.qmd
-        - textuais/cap12/exercicios.qmd
+#     - part: "Capítulo 12: Esperança Condicional"
+#       chapters:
+#         - textuais/cap12/esperanca-particao.qmd
+#         - textuais/cap12/probabilidade-condicional.qmd
+#         - textuais/cap12/densidade-condicional.qmd
+#         - textuais/cap12/sigma-algebra.qmd
+#         - textuais/cap12/radon-nikodym.qmd
+#         - textuais/cap12/distribuicao-condicional.qmd
+#         - textuais/cap12/exercicios.qmd
 
-    - part: "Capítulo 13: Martingales"
-      chapters:
-        - textuais/cap13/definicoes-exemplos.qmd
-        - textuais/cap13/tempos-parada.qmd
-        - textuais/cap13/amostragem-opcional.qmd
-        - textuais/cap13/convergencia-quase-certa.qmd
-        - textuais/cap13/convergencia-lp.qmd
-        - textuais/cap13/decomposicao-doob.qmd
-        - textuais/cap13/exercicios.qmd
+#     - part: "Capítulo 13: Martingales"
+#       chapters:
+#         - textuais/cap13/definicoes-exemplos.qmd
+#         - textuais/cap13/tempos-parada.qmd
+#         - textuais/cap13/amostragem-opcional.qmd
+#         - textuais/cap13/convergencia-quase-certa.qmd
+#         - textuais/cap13/convergencia-lp.qmd
+#         - textuais/cap13/decomposicao-doob.qmd
+#         - textuais/cap13/exercicios.qmd
 
-    - part: "Capítulo 14: Leis 0-1 e Séries Aleatórias"
-      chapters:
-        - textuais/cap14/algebras-sequencias.qmd
-        - textuais/cap14/independencia-sigma-algebras.qmd
-        - textuais/cap14/lei-kolmogorov.qmd
-        - textuais/cap14/lei-hewitt-savage.qmd
-        - textuais/cap14/series-aleatorias.qmd
-        - textuais/cap14/exercicios.qmd
+#     - part: "Capítulo 14: Leis 0-1 e Séries Aleatórias"
+#       chapters:
+#         - textuais/cap14/algebras-sequencias.qmd
+#         - textuais/cap14/independencia-sigma-algebras.qmd
+#         - textuais/cap14/lei-kolmogorov.qmd
+#         - textuais/cap14/lei-hewitt-savage.qmd
+#         - textuais/cap14/series-aleatorias.qmd
+#         - textuais/cap14/exercicios.qmd
 
-    - part: "Capítulo 15: Teoria Ergódica"
-      chapters:
-        - textuais/cap15/transformacoes-medida.qmd
-        - textuais/cap15/birkhoff.qmd
-        - textuais/cap15/ergodicas-misturadoras.qmd
-        - textuais/cap15/rotacao-circulo.qmd
-        - textuais/cap15/von-neumann.qmd
-        - textuais/cap15/exercicios.qmd
+#     - part: "Capítulo 15: Teoria Ergódica"
+#       chapters:
+#         - textuais/cap15/transformacoes-medida.qmd
+#         - textuais/cap15/birkhoff.qmd
+#         - textuais/cap15/ergodicas-misturadoras.qmd
+#         - textuais/cap15/rotacao-circulo.qmd
+#         - textuais/cap15/von-neumann.qmd
+#         - textuais/cap15/exercicios.qmd
 
-    - part: "Capítulo 16: Grandes Desvios"
-      chapters:
-        - textuais/cap16/concentracao.qmd
-        - textuais/cap16/principio-grandes-desvios.qmd
-        - textuais/cap16/teorema-cramer.qmd
+#     - part: "Capítulo 16: Grandes Desvios"
+#       chapters:
+#         - textuais/cap16/concentracao.qmd
+#         - textuais/cap16/principio-grandes-desvios.qmd
+#         - textuais/cap16/teorema-cramer.qmd
 
-    - part: "Apêndices"
-      chapters:
-        - apendices/preliminares.qmd
-        - apendices/stirling.qmd
-        - apendices/reta-real-infinito.qmd
-        - apendices/teoria-medida.qmd
+#     - part: "Apêndices"
+#       chapters:
+#         - apendices/preliminares.qmd
+#         - apendices/stirling.qmd
+#         - apendices/reta-real-infinito.qmd
+#         - apendices/teoria-medida.qmd
 
-    - postextuais/bibliografia/references.qmd
-
-bibliography: postextuais/bibliografia/references.bib
+#     - postextuais/bibliografia/references.qmd
+# bibliography: postextuais/bibliografia/references.bib
 
 format:
   html:
-     toc: true
-     toc-location: left
-     toc-title: "Conteúdo"
-     toc-depth: 3
-     toc-expand: false
-     bread-crumbs: true
-     number-sections: true
-     anchor-sections: true
-     code-link: true
-     theme: cosmo
-     css: styles.css
+    lang: "pt-BR"
+    language: "pt-BR"
+    toc: true
+    toc-location: left
+    toc-title: "Conteúdo"
+    toc-depth: 3
+    toc-expand: false
+    bread-crumbs: true
+    number-sections: true
+    anchor-sections: true
+    code-link: true
+    theme: cosmo
+    # css: styles.css
 
