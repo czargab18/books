@@ -1,0 +1,77 @@
+---
+title: Notas temporárias
+---
+
+# Variáveis Aleatórias Continuas
+
+Vamos començar com um exemplo introdutório. Suponha um laboratória que precise
+que um comprimido produzido tenha um voluma suficiente para não matar o paciente
+mas para curar ele. Observe que o volume pode assumir qualquer numero real.
+Vai ser difícil produzir com tanta precisão. Aqui, entra o conceito de [ESTXXXX](Controle Estatístico de Qualidade).
+Vamos tentar produzir o comprimido dentro de um intervalo que seja suficiente para
+atender as exigências. Mesmo que eu reduza a um intervalo, ainda há uma infinidade
+de valores que X, representando o volume do comprimido, poderá assumir dentro esse intervalo.
+
+Primeiro conceito
+$$
+P(X = x_i) = 0
+$$
+
+Se definirmos uma medida de probabilidade $ P: \sigma \rightarrow \mathbb{R} $, que associa a cada evento do espaço de eventos ao seu verdadeiro valor Real como:
+$ P = \frac{\text{"casos favoráveis"}}{\text{"todos os eventos possíveis"}} $, teríamos algo como: $ P(X = 2\text{mm}) = \frac{1}{\infty} \rightarrow 0$
+pois teríamos apenas um caso favorável, o próprio valor desejado, dentro de todos os casos possíveis, que são infinitos (cálculo, $\lim_{n \to \infty} \frac{1}{n} = 0$).
+Se pegarmos algo como $P(X \ge x_i) = 0$, considerando independência, teríamos a soma de todos esses valores $ \sum_{i=0}^{n} P(X = x_i) = 0 $
+
+
+Que tal pegarmos a quantidade de pontos no intervalo onde X possa estar e dividirmos pelo tamanho do intervalo?
+A medida que diminuirmos o intervalo onde X(w) possa estar, chegaremos cada vez mais próximos
+da probabilidade de P(X = x_i). Podemos definir uma função de probabilidade, chamada de função densidade de probabilidade, como:
+
+$$ f(x) = \lim_{\Delta x \to 0} \frac{P(x \le X \le x + \Delta x)}{\Delta x} $$
+
+As vezes, calcular essa probabilidade usando essa definição pode ser difícil. Podemos usar a função de distribuição acumulada, definida como:
+$$ F_X(x) = P(X \le x) $$
+
+
+---
+
+# Reescrever
+
+
+Por que em v.a. contínua a probabilidade de um ponto específico é zero?
+
+Suponha que $X$ é uma variável aleatória que mede o diâmetro de uma peça produzida por uma máquina. O diâmetro pode assumir qualquer valor dentro de um intervalo contínuo, suponha entre 9 mm e 10 mm. Observe que $X(\omega) = 9.23\text{mm}$ é um valor possível para o diâmetro.
+
+Observe que há uma infinidade de valores possíveis para o diâmetro entre 9 mm e 10 mm.
+
+Deseja-se a probabilidade de $X(\omega)=9,53\text{mm}$.
+
+Observe que só há um caso possível para o valor de X que satisfaz $X(\omega)=9,53\text{mm}$, ou seja, o caso em que $\omega$ é tal que $X(\omega)=9,53\text{mm}$.
+
+Definindo uma medida de probabilidade da forma $P = \frac{\text{Número de casos favoráveis}}{\text{Número de casos possíveis}}$.
+
+Como temos infinitos números possíveis, a probabilidade de um ponto específico é zero.
+
+teríamos $P(X=9,53\text{mm}) = \frac{1}{\infty} = 0$.
+
+$$ X(\omega) = 9.23\text{ mm} $$
+
+$$ X(\omega) = 9.53\text{ mm} $$
+
+$$ P = \frac{\text{Número de casos favoráveis}}{\text{Número de casos possíveis}} $$
+
+$$
+P(X = 9.53\text{ mm}) = \frac{1}{\infty} = 0
+$$
+
+
+Bom, podemos tentar definir a probabilidade de $P(X \le 9,53\text{mm})$. Nesse caso, há infinitos valores possíveis para X que satisfazem a condição $X \le 9,53\text{mm}$. Como são valores próximos de 0, estamos somando infinitos valores próximos de zero e não faz sentido algum.
+
+
+
+Poder do text
+
+bom, o valor máximo de uma amostra é n-1, a população menos 1 elemento. Amostra de tamanho iguala  população N não faz sentido.
+Observe que para um teste de hipotese qualquer com uma amostra n-1, há uma grande "chance de saber" se a hipotese, seja ela qual for, é verdadeira ou não. Analogamente quando amostra é apenas 1 observação. 
+
+continua...
