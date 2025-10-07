@@ -17,10 +17,14 @@ $$
 P(X = x_i) = 0
 $$
 
-Se definirmos uma medida de probabilidade $ P: \sigma \rightarrow \mathbb{R} $, que associa a cada evento do espaço de eventos ao seu verdadeiro valor Real como:
-$ P = \frac{\text{"casos favoráveis"}}{\text{"todos os eventos possíveis"}} $, teríamos algo como: $ P(X = 2\text{mm}) = \frac{1}{\infty} \rightarrow 0$
+Se definirmos uma medida de probabilidade $P: \mathcal{F} \rightarrow \mathbb{R}$, que associa a cada evento da $\sigma$-álgebra (o espaço de eventos) ao seu verdadeiro valor Real como:  
+$$ 
+P = \frac{\text{"casos favoráveis"}}{\text{"todos os eventos possíveis"}}
+$$ 
+
+teríamos algo como: $P(X = 2\text{mm}) = \frac{1}{\infty} \rightarrow 0$
 pois teríamos apenas um caso favorável, o próprio valor desejado, dentro de todos os casos possíveis, que são infinitos (cálculo, $\lim_{n \to \infty} \frac{1}{n} = 0$).
-Se pegarmos algo como $P(X \ge x_i) = 0$, considerando independência, teríamos a soma de todos esses valores $ \sum_{i=0}^{n} P(X = x_i) = 0 $
+Se pegarmos algo como $P(X \ge x_i) = 0$, considerando independência, teríamos a soma de todos esses valores $\sum_{i=0}^{n} P(X = x_i) = 0$
 
 
 Que tal pegarmos a quantidade de pontos no intervalo onde X possa estar e dividirmos pelo tamanho do intervalo?
