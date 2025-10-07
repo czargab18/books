@@ -7,7 +7,7 @@ title: Notas temporárias
 Vamos començar com um exemplo introdutório. Suponha um laboratória que precise
 que um comprimido produzido tenha um voluma suficiente para não matar o paciente
 mas para curar ele. Observe que o volume pode assumir qualquer numero real.
-Vai ser difícil produzir com tanta precisão. Aqui, entra o conceito de [ESTXXXX](Controle Estatístico de Qualidade).
+Vai ser difícil produzir com tanta precisão. Aqui, entra o conceito de **Controle Estatístico de Qualidade**.
 Vamos tentar produzir o comprimido dentro de um intervalo que seja suficiente para
 atender as exigências. Mesmo que eu reduza a um intervalo, ainda há uma infinidade
 de valores que X, representando o volume do comprimido, poderá assumir dentro esse intervalo.
