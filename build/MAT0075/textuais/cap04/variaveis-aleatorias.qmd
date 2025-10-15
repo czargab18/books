@@ -1,1 +1,4 @@
 # Variáveis Aleatórias
+
+referência excelente é:
+Probabilidade é Variáveis Aleatórias de Marcos Nascimento Magalhães
