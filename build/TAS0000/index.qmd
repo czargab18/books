@@ -15,4 +15,10 @@ Essa abordagem modular permite acompanhar, de maneira cronológica e temática, 
 Os textos são baseados em referências clássicas e são enriquecidos com exemplos práticos, comentários críticos e aplicações computacionais.  
 
 Os livros são documentos vivos, sujeitos a revisões, correções e expansões. As publicações ocorrerão gradualmente. A medida que os conteúdos forem sendo consolidados, permitirá aos leitores acompanhar tanto o progresso acadêmico quanto a maturação conceitual dos temas abordados.  
-Recomenda-se o acompanhamento regular das atualizações em (github.com/czargb18/books)[github.com/czargb18/books]
+Recomenda-se o acompanhamento regular das atualizações em [czargab18/books](https://github.com/czargab18/books)
+
+# Estrutura do Projeto
+
+# Contribuidores
+
+- [César Gabriel](https://www.cesargabriel.com.br) idealizador e mantenedor.
