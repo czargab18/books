@@ -17,19 +17,21 @@ book:
     location: sidebar
     type: "textbox"
     limit: 20
+  
 
   chapters:
     - index.qmd
     - textuais/whatsstatistc.qmd
-    - textuais/statinBrazil.qmd
+    - textuais/statBrazil.qmd
     - textuais/fontsdados.qmd
+    - textuais/contribuir.qmd
     - postextuais/bibliografia/references.qmd
 
 bibliography: postextuais/bibliografia/references.bib
 
 format:
   html:
-     toc: true
+     toc: false
      toc-location: left
      toc-title: "Conteúdo"
      toc-depth: 2
