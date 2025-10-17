@@ -10,29 +10,28 @@ book:
     collapse: true
     collapse-level: 1
     style: "floating"
-    code-link: false
+    code-link: falseq
     pinned: true
-    search: true
+    search: false
   search: 
     location: sidebar
     type: "textbox"
     limit: 20
-
-# A Unidade I é destinada a falar sobre a area de Estatística, eoutras coisas. talvez, seja mais interresante apenas jogar
-# o conteúdo para TAS0000 deixando aqui apenas o conteúdo sobre métodos estatistica para análise de dados
+  
 
   chapters:
     - index.qmd
-    - pretextuais/whatsstatistc.qmd
-    - pretextuais/statinBrazil.qmd
-    - pretextuais/fontsdados.qmd
-    - postextuais/references.qmd
+    - textuais/whatsstatistc.qmd
+    - textuais/statBrazil.qmd
+    - textuais/fontsdados.qmd
+    - textuais/contribuir.qmd
+    - postextuais/bibliografia/references.qmd
 
 bibliography: postextuais/bibliografia/references.bib
 
 format:
   html:
-     toc: true
+     toc: false
      toc-location: left
      toc-title: "Conteúdo"
      toc-depth: 2
