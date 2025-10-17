@@ -1,0 +1,15 @@
+# Como Contribuir {.headline2}
+
+Este é um projeto aberto a contribuições da comunidade acadêmica. Você pode colaborar de diversas formas:
+
+- **Reportando Erros**: Identifique e reporte erros conceituais, tipográficos ou de código através das [issues no GitHub](https://github.com/czargab18/books/issues)
+- **Sugerindo Melhorias**: Proponha novos exemplos, exercícios ou abordagens pedagógicas
+- **Contribuindo com Código**: Submeta pull requests com correções ou novos conteúdos
+- **Compartilhando Feedback**: Relate sua experiência de uso e sugestões de aprimoramento
+
+Para contribuir, visite o repositório oficial em [github.com/czargab18/books](https://github.com/czargab18/books) e consulte o guia de contribuição.
+
+# Contribuidores {.headline2}
+
+- **[César Gabriel](https://www.cesargabriel.com.br)** — Idealizador e mantenedor principal do projeto. Responsável pela concepção, redação, revisão e atualização contínua dos conteúdos.
+- **[eu de novo](https://www.cesargabriel.com.br)** — Idealizador e mantenedor principal do projeto. Responsável pela concepção, redação, revisão e atualização contínua dos conteúdos.

@@ -2,7 +2,6 @@
 
 O nome desta série é inspirada na famosa coleção de Donald Knuth chamada "The Art of Computer Programming", veja [@knuthTAOCP]. Esta coleção será construída com base em minhas notas e exercícios de aulas. Para ter acesso aos livros disponiveis, a lista pode ser acessada em [https://www.estatistica.pro/book/](https://www.estatistica.pro/book/)
 
-
 ::: {.callout-warning title="Nota"}
 Esta seção e os livros associados estão sendo atualizações regularmente para incorporar melhorias aos conteúdos.
 :::
@@ -15,4 +14,4 @@ Essa abordagem modular permite acompanhar, de maneira cronológica e temática, 
 Os textos são baseados em referências clássicas e são enriquecidos com exemplos práticos, comentários críticos e aplicações computacionais.  
 
 Os livros são documentos vivos, sujeitos a revisões, correções e expansões. As publicações ocorrerão gradualmente. A medida que os conteúdos forem sendo consolidados, permitirá aos leitores acompanhar tanto o progresso acadêmico quanto a maturação conceitual dos temas abordados.  
-Recomenda-se o acompanhamento regular das atualizações em (github.com/czargb18/books)[github.com/czargb18/books]
+Recomenda-se o acompanhamento regular das atualizações em [czargab18/books](https://github.com/czargab18/books)
