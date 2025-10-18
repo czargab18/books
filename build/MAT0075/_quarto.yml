@@ -1,5 +1,5 @@
 project:
-  output-dir: "../../../book/MAT0075"
+#  output-dir: "../../../book/MAT0075"
 #  lib-dir:  "_libs"
   preview:
     navigate: true
@@ -22,10 +22,12 @@ book:
 
   chapters:
     - index.qmd
-    - notas_temp.qmd
-    
-#     - pretextuais/prefacio.qmd
-#     - pretextuais/sumario.qmd
+    - part: "Notas Temporárias"
+      chapters:
+        - notas_temp.qmd
+
+    - pretextuais/prefacio.qmd
+    - pretextuais/sumario.qmd
 
 #     - part: "Capítulo 1: Espaços de Probabilidade"
 #       chapters:
