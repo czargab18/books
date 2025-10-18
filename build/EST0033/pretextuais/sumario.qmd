@@ -1,9 +1,19 @@
 # Sumário {.title-page}
 
+:::{.callout-warning}
 Ainda em organização para melhor clareza
+:::
 
+## UNIDADE 1 - PRELIMINAR
+### INTRODUÇÃO
+### FASES DO TRABALHO ESTATISTICO
+## UNIDADE 1 - ANÁLISE EXPLORATÓRIA
+### RESUMO DADOS DE VARIÁVEIS
+### ANÁLISE DE UMA VARIÁVEIS
+### ANÁLISE DE DUAS VARIÁVEIS
+
+<!--
 ## Parte 1 - Preliminares
-
 ### Introdução
 
 1. O que é Estatística?
@@ -31,7 +41,7 @@ Ainda em organização para melhor clareza
 ## Parte 1 - ANÁLISE EXPLORATÓRIA
 
 ### RESUMO DADOS DE UMA VARIÁVEL
-<!-- ### RESUMO DADOS DE UMA VARIÁVEL QUANTITATIVAS UNIDIMENSIONAIS -->
+### RESUMO DADOS DE UMA VARIÁVEL QUANTITATIVAS UNIDIMENSIONAIS
 
 1. Representação gráfica de variáveis quantitativas  
   - Diagrama de pontos  
@@ -54,4 +64,4 @@ Ainda em organização para melhor clareza
   - Diagrama de dispersão  
   - Coeficiente de correlação de Pearson  
   - Coeficiente de correlação de Spearman
-
+ -->
