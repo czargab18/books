@@ -12,7 +12,7 @@ book:
     style: "floating"
     code-link: falseq
     pinned: true
-    search: false
+    search: true
   search: 
     location: sidebar
     type: "textbox"
