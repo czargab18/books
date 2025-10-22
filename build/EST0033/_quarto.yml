@@ -22,16 +22,18 @@ format:
     number-sections: true
     anchor-sections: true
     code-link: true
+    toc-location: left
+    toc-depth: 2
+    toc-title: "Conteúdo"
+    toc-expand: false
+    collapse: true
+    collapse-level: 1
     theme: cosmo
     # css: styles.css
 
 book:
   sidebar: 
-    title: "Conteúdo"
-    toc-depth: 3
-    toc-expand: false
-    collapse: true
-    collapse-level: 1
+    toc: true
     style: "floating"
     code-link: false
     pinned: true
