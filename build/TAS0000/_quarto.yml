@@ -31,12 +31,13 @@ bibliography: postextuais/bibliografia/references.bib
 
 format:
   html:
-     toc: false
-     toc-location: left
-     toc-title: "Conteúdo"
-     toc-depth: 2
-     toc-expand: false
-     bread-crumbs: false
-     number-sections: false
-     anchor-sections: false
-     code-link: false
+    toc: false
+    toc-location: left
+    toc-title: "Conteúdo"
+    toc-depth: 2
+    toc-expand: false
+    bread-crumbs: false
+    number-sections: false
+    anchor-sections: false
+    code-link: false
+    search: true
