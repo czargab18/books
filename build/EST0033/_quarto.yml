@@ -7,9 +7,29 @@ project:
     browser: false
     host: "localhost"
     port: 4200
-  
+
+format:
+  html-math-method:
+    method: mathjax
+    url: "https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"
+  html:
+    lang: "pt-BR"
+    search: true
+    language: 
+      pt-BR:
+        search-text-placeholder: "Pesquisar conteúdo..."
+    bread-crumbs: true
+    number-sections: true
+    anchor-sections: true
+    code-link: true
+    theme: cosmo
+    # css: styles.css
+
 book:
   sidebar: 
+    title: "Conteúdo"
+    toc-depth: 3
+    toc-expand: false
     collapse: true
     collapse-level: 1
     style: "floating"
@@ -20,7 +40,6 @@ book:
     location: sidebar
     type: "textbox"
     limit: 20
-      
 
   chapters:
     - index.qmd
@@ -52,15 +71,3 @@ book:
     - postextuais/bibliografia/references.qmd
 
 bibliography: postextuais/bibliografia/references.bib
-
-format:
-  html:
-     toc: true
-     toc-location: left
-     toc-title: "Conteúdo"
-     toc-depth: 2
-     toc-expand: false
-     bread-crumbs: false
-     number-sections: false
-     anchor-sections: false
-     code-link: false
