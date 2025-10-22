@@ -13,14 +13,20 @@ format:
     url: "https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"
   html:
     lang: "pt-BR"
-    search: true
     language: 
       pt-BR:
         search-text-placeholder: "Pesquisar conteúdo..."
+    search: true
     bread-crumbs: true
     number-sections: true
     anchor-sections: true
     code-link: true
+    toc-location: left
+    toc-depth: 2
+    toc-title: "Conteúdo"
+    toc-expand: false
+    collapse: true
+    collapse-level: 1
     theme: cosmo
     # css: styles.css
 
@@ -42,9 +48,7 @@ book:
 
   chapters:
     - index.qmd
-    - part: "Notas Temporárias"
-      chapters:
-        - notas_temp.qmd
+    - notas/v.a.continuas.qmd
 
     - pretextuais/prefacio.qmd
     - pretextuais/sumario.qmd
