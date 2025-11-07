@@ -96,7 +96,19 @@ jobs:
 
       - name: Renderizar livros Quarto
         run: |
-          LIVROS_LIST='${{ steps.gerar_payload.outputs.livros }}'
+          # Aceita dois formatos de saída do passo anterior:
+          # - JSON array em steps.gerar_payload.outputs.livros (ex: ["EST0033","MAT0075"]) 
+          # - lista espaço-separada em steps.gerar_payload.outputs.livros_list
+          LIVROS_JSON='${{ steps.gerar_payload.outputs.livros }}'
+          LIVROS_LIST_ESC='${{ steps.gerar_payload.outputs.livros_list }}'
+
+          # Converte JSON para lista espaço-separada sem depender de jq/python
+          if [ -n "$LIVROS_JSON" ] && [ "$LIVROS_JSON" != "[]" ]; then
+            # remove colchetes e aspas, troca vírgulas por espaço
+            LIVROS_LIST=$(echo "$LIVROS_JSON" | sed -e 's/\[//g' -e 's/\]//g' -e 's/"//g' -e 's/,/ /g' | xargs)
+          else
+            LIVROS_LIST=$(echo "$LIVROS_LIST_ESC" | xargs)
+          fi
 
           # Garante que a pasta de saída exista
           mkdir -p _books
@@ -115,7 +127,7 @@ jobs:
           FAIL_COUNT=0
 
           for livro in $LIVROS_LIST; do
-            if [ -d "books/build/$livro" ]; then
+            if [ -d "build/$livro" ]; then
               echo ""
               echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
               echo "📖 Renderizando: $livro"
