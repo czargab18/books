@@ -139,6 +139,12 @@ jobs:
               if quarto render "build/$livro" --to html --execute --output-dir "./_books/$livro"; then
                 echo "✅ Sucesso: $livro"
                 SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+                # Também cria cópia dentro da pasta do livro em build/ para compatibilidade (build/<livro>/_book)
+                if [ -d "./_books/$livro" ]; then
+                  mkdir -p "build/$livro/_book"
+                  cp -r "./_books/$livro/." "build/$livro/_book/" || echo "⚠️ Falha ao copiar para build/$livro/_book"
+                  echo "✅ Copiado _books/$livro -> build/$livro/_book"
+                fi
               else
                 echo "❌ Erro ao renderizar: $livro"
                 FAIL_COUNT=$((FAIL_COUNT + 1))
