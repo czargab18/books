@@ -33,7 +33,7 @@ jobs:
           git config --global url."https://${{ env.TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
 
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@v5
         with:
           repository: ${{ env.USERNAME }}/books
           token: ${{ env.TOKEN }}
@@ -53,7 +53,8 @@ jobs:
           # Se a lista estiver vazia, for null ou array vazio, renderiza todos os livros
           if [ -z "$LIVROS" ] || [ "$LIVROS" == "null" ] || [ "$LIVROS" == "[]" ]; then
             echo "🔄 Renderizando TODOS os livros"
-            LIVROS_LIST=$(cd books/build && ls -d */ 2>/dev/null | sed 's#/##' | tr '\n' ' ' | xargs)
+            # Lista subpastas em build/ (cada subpasta é um livro)
+            LIVROS_LIST=$(cd build && ls -d */ 2>/dev/null | sed 's#/##' | tr '\n' ' ' | xargs)
             echo "render_all=true" >> $GITHUB_OUTPUT
             echo "has_books=true" >> $GITHUB_OUTPUT
           else
@@ -82,6 +83,9 @@ jobs:
         run: |
           LIVROS_LIST='${{ steps.books-list.outputs.livros }}'
 
+          # Garante que a pasta de saída exista
+          mkdir -p _books
+
           if [ -z "$LIVROS_LIST" ]; then
             echo "⚠️ Nenhum livro para renderizar"
             exit 0
@@ -102,7 +106,7 @@ jobs:
               echo "📖 Renderizando: $livro"
               echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
               
-              if quarto render "books/build/$livro" --to html --execute --output-dir "./../../../book/$livro"; then
+              if quarto render "build/$livro" --to html --execute --output-dir "./_books/$livro"; then
                 echo "✅ Sucesso: $livro"
                 SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
               else
@@ -151,13 +155,13 @@ jobs:
       - name: Automação de Componentes dos livros
         run: |
           echo "🎨 Aplicando padronização HTML..."
-          python ./backend/src/scripts/site_manager.py --comp --update --all --path ./book/
+          python ./backend/src/scripts/site_manager.py --comp --update --all --path ./_books/
           echo "✅ Padronização concluída!"
 
       - name: Limpar arquivos gerados pelo Quarto com script Python
         run: |
           echo "🧹 Limpando pastas temporárias..."
-          python ./backend/src/scripts/quarto_clean.py --path ./book/
+          python ./backend/src/scripts/quarto_clean.py --path ./_books/
           echo "✅ Limpeza concluída!"
 
       - name: Commit e criar Pull Request
@@ -188,7 +192,7 @@ jobs:
           body: |
             ## 📖 Atualização de Livros Renderizados
 
-            Esta Pull Request contém a atualização dos livros renderizados via GitHub Actions a partir dos arquivos fonte em Quarto (.qmd) presentes na pasta `build/`.
+            Esta Pull Request contém a atualização dos livros renderizados via GitHub Actions a partir dos arquivos fonte em Quarto (.qmd) presentes na pasta `build/` e os artefatos foram salvos em `/_books/` na raiz do repositório.
 
             ### 📋 Detalhes da Renderização
             - **Commit fonte**: `${{ github.sha }}`
@@ -201,7 +205,7 @@ jobs:
             ```
 
             ### 🔄 Alterações Aplicadas
-            - ✅ Renderização Quarto → HTML
+            - ✅ Renderização Quarto → HTML (saída em `/_books/<livro>`)
             - ✅ Atualização do `<head>` dinâmico
             - ✅ Padronização do header
             - ✅ Padronização do footer
