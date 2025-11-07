@@ -168,7 +168,10 @@ jobs:
             exit 0
           fi
 
-
+      - name: Adicionar arquivos renderizados ao Git
+        run: |
+          git add _books/
+          echo "✅ Arquivos em _books/ adicionados ao Git"
 
       - name: Commit e criar Pull Request
         id: create-pr
