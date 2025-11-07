@@ -1,57 +1,57 @@
 # Sumário {.title-page}
 
-Ainda em organização para melhor clareza
+:::{.callout-warning title="Nota"}
+Este sumário está em desenvolvimento e será atualizado continuamente.
+:::  
 
-## Parte 1 - Preliminares
+## Parte I: Fundamentos
 
-### Introdução
+### Capítulo 1: Preliminares
+1.  **Introdução**
+2.  **Modelos Estatísticos**
+3.  **Estatística e Ciência de Dados**
+    - Aprendizado Supervisionado
+    - Aprendizado Não Supervisionado
+    - Dados e Megadados (Big Data)
+    - Programação Clássica vs. "Machine Learning"
+4.  **Aspectos Computacionais**
+    - O Repositório R
+5.  **Métodos Gráficos**
+6.  **Conjuntos de Dados**
+7.  **Plano do Livro**
 
-1. O que é Estatística?
-2. Estatística no Brasil  
-  - A profissão de estatístico no Brasil  
-  - Sistema Estatístico Brasileiro  
-  - Principais fontes de dados estatísticos
+## Parte II: Análise Exploratória de Dados
 
-### Fases do Trabalho Estatístico
+### Capítulo 2: Resumo de Dados
+1.  **Tipos de Variáveis**
+2.  **Distribuições de Frequências**
+3.  **Gráficos**
+    - Gráficos para Variáveis Qualitativas
+    - Gráficos para Variáveis Quantitativas
+4.  **Diagrama de Ramo e Folhas**
+5.  **Exemplos Computacionais**
+6.  **Problemas Suplementares**
+7.  **Complementos Metodológicos**
 
-1. Planejamento  
-  - Elaboração de um projeto de pesquisa
-2. Coleta de dados  
-  - Tipos de coleta: censos, amostras, registros contínuos  
-  - O questionário
-3. Apuração de dados  
-  - Escala de mensuração  
-  - Tipos de variáveis
-4. Apresentação de dados  
-  - Séries estatísticas: temporal, especificativa, geográfica, mista  
-  - Distribuições de frequências  
-  - Tabelas de contingência  
-  - Representação gráfica de variáveis qualitativas
+### Capítulo 3: Medidas-Resumo
+1.  **Medidas de Posição** (Média, Mediana, Moda)
+2.  **Medidas de Dispersão** (Variância, Desvio Padrão)
+3.  **Quantis Empíricos** (Quartis, Decis, Percentis)
+4.  **"Box Plots"** (Diagrama de Caixa)
+5.  **Gráficos de Simetria**
+6.  **Transformações de Dados**
+7.  **Exemplos Computacionais**
+8.  **Problemas Suplementares**
+9.  **Complementos Metodológicos**
 
-## Parte 1 - ANÁLISE EXPLORATÓRIA
-
-### RESUMO DADOS DE UMA VARIÁVEL
-<!-- ### RESUMO DADOS DE UMA VARIÁVEL QUANTITATIVAS UNIDIMENSIONAIS -->
-
-1. Representação gráfica de variáveis quantitativas  
-  - Diagrama de pontos  
-  - Ramo e folhas  
-  - Histograma  
-  - Polígono de frequências
-  - etc...
-
-### ANÁLISE DE UMA VARIÁVEIS
-1. Medidas de posição, variabilidade, assimetria e achatamento
-2. Medidas resistentes: quantis
-3. Desenho esquemático (“Box-plot”)
-4. 
-### ANÁLISE DE DUAS VARIÁVEIS
-
-1. Medidas de associação em tabelas de contingência  
-  - Medidas baseadas no Qui-Quadrado  
-  - Medida de Cramer
-2. Associação entre variáveis quantitativas  
-  - Diagrama de dispersão  
-  - Coeficiente de correlação de Pearson  
-  - Coeficiente de correlação de Spearman
-
+### Capítulo 4: Análise de Dados Multivariados
+1.  **Introdução**
+2.  **Análise de Variáveis Qualitativas**
+3.  **Associação entre Variáveis Qualitativas**
+4.  **Medidas de Associação para Variáveis Qualitativas**
+5.  **Associação entre Variáveis Quantitativas**
+6.  **Associação entre Variáveis Qualitativas e Quantitativas**
+7.  **Gráficos q × q (Quantil-Quantil)**
+8.  **Análise com Três ou Mais Variáveis**
+9.  **Problemas Suplementares**
+10. **Complementos Metodológicos**

@@ -1,15 +1,40 @@
 project:
-  type: book
-#  output-dir: "../../book/MAT0075"
+  output-dir: "../../../book/MAT0075"
 #  lib-dir:  "_libs"
   preview:
     navigate: true
     browser: false
     host: "localhost"
     port: 4200
-  
+
+format:
+  html-math-method:
+    method: mathjax
+    url: "https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"
+  html:
+    lang: "pt-BR"
+    language: 
+      pt-BR:
+        search-text-placeholder: "Pesquisar conteúdo..."
+    search: true
+    bread-crumbs: true
+    number-sections: true
+    anchor-sections: true
+    code-link: true
+    toc-location: left
+    toc-depth: 2
+    toc-title: "Conteúdo"
+    toc-expand: false
+    collapse: true
+    collapse-level: 1
+    theme: cosmo
+    # css: styles.css
+
 book:
   sidebar: 
+    title: "Conteúdo"
+    toc-depth: 3
+    toc-expand: false
     collapse: true
     collapse-level: 1
     style: "floating"
@@ -23,10 +48,10 @@ book:
 
   chapters:
     - index.qmd
-    - notas_temp.qmd
-    
-#     - pretextuais/prefacio.qmd
-#     - pretextuais/sumario.qmd
+    - notas/v.a.continuas.qmd
+
+    - pretextuais/prefacio.qmd
+    - pretextuais/sumario.qmd
 
 #     - part: "Capítulo 1: Espaços de Probabilidade"
 #       chapters:
@@ -165,23 +190,3 @@ book:
 
 #     - postextuais/bibliografia/references.qmd
 # bibliography: postextuais/bibliografia/references.bib
-
-format:
-  html-math-method:
-    method: mathjax
-    url: "https://cdn.jsdelivr.net/npm/mathjax@4.0.0/tex-mml-chtml.js"
-  html:
-    lang: "pt-BR"
-    language: "pt-BR"
-    toc: true
-    toc-location: left
-    toc-title: "Conteúdo"
-    toc-depth: 3
-    toc-expand: false
-    bread-crumbs: true
-    number-sections: true
-    anchor-sections: true
-    code-link: true
-    theme: cosmo
-    # css: styles.css
-

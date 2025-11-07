@@ -25,6 +25,10 @@ env:
 
 jobs:
   repository_dispatch:
+    # Proteção contra loops infinitos - não executa se for bot ou se vem de PR automatizado
+    if: |
+      github.actor != 'github-actions[bot]' &&
+      !contains(github.event.head_commit.message, 'books: atualiza e padroniza')
     runs-on: ubuntu-latest
     environment:
       name: ENVIRONMENT
