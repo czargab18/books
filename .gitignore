@@ -4,12 +4,10 @@
 ##### IGNORAR
 .quarto
 delete/
-_book/
 *libs*/
 *index*html/
 **/.gitignore
 
-book/
 
 ###########################################
 ################# ARQUIVOS ################
