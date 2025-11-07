@@ -89,3 +89,69 @@ jobs:
             echo "Livros gerados (JSON): $LIVROS_JSON"
           fi
 
+      - name: Instalar Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "release"
+
+      - name: Renderizar livros Quarto
+        run: |
+          LIVROS_LIST='${{ steps.gerar_payload.outputs.livros }}'
+
+          # Garante que a pasta de saída exista
+          mkdir -p _books
+
+          if [ -z "$LIVROS_LIST" ]; then
+            echo "⚠️ Nenhum livro para renderizar"
+            exit 0
+          fi
+
+          # Conta quantos livros
+          NUM_LIVROS=$(echo "$LIVROS_LIST" | wc -w)
+          echo "📚 Renderizando $NUM_LIVROS livro(s)..."
+
+          # Contador de sucesso e falha
+          SUCCESS_COUNT=0
+          FAIL_COUNT=0
+
+          for livro in $LIVROS_LIST; do
+            if [ -d "books/build/$livro" ]; then
+              echo ""
+              echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+              echo "📖 Renderizando: $livro"
+              echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+              
+              if quarto render "build/$livro" --to html --execute --output-dir "./_books/$livro"; then
+                echo "✅ Sucesso: $livro"
+                SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+              else
+                echo "❌ Erro ao renderizar: $livro"
+                FAIL_COUNT=$((FAIL_COUNT + 1))
+              fi
+            else
+              echo "⚠️ Livro não encontrado: $livro"
+              FAIL_COUNT=$((FAIL_COUNT + 1))
+            fi
+          done
+
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📊 Resumo da Renderização"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "✅ Sucesso: $SUCCESS_COUNT"
+          echo "❌ Falhas: $FAIL_COUNT"
+          echo "📚 Total: $NUM_LIVROS"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+          # Comparação segura e saída explícita
+          if [ "${FAIL_COUNT:-0}" -gt 0 ]; then
+            echo "⚠️ Alguns livros falharam na renderização"
+            exit 1
+          else
+            echo "✨ Renderização concluída com sucesso!"
+            exit 0
+          fi
+
+
+
+
