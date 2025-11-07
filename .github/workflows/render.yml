@@ -228,16 +228,27 @@ jobs:
             **⚠️ Esta PR requer aprovação manual do proprietário antes do merge.**
 
       - name: Auto-approve Pull Request
-        if: always()
-        uses: hmarr/auto-approve-action@v2.1.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Auto-merge Pull Request
-        if: always()
+        if: steps.create-pr.outputs.pull-request-number != ''
         uses: actions/github-script@v6
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          github-token: ${{ env.TOKEN }}
+          script: |
+            const prNumber = parseInt('${{ steps.create-pr.outputs.pull-request-number }}', 10);
+            if (prNumber) {
+              await github.rest.pulls.createReview({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                event: 'APPROVE'
+              });
+              core.info(`PR #${prNumber} approved`);
+            }
+
+      - name: Auto-merge Pull Request
+        if: steps.create-pr.outputs.pull-request-number != ''
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN_REPO_SYNC }}
           script: |
             const prNumber = parseInt('${{ steps.create-pr.outputs.pull-request-number }}', 10)
             if (!prNumber) {
