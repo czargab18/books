@@ -1,0 +1,54 @@
+# Código gerado/assistido por IA
+name: render
+# description: Workflow para atualizar arquivos dos submódulos com o repositório Estatística.
+
+on:
+  push:
+    branches: [main]
+    paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
+  workflow_dispatch:
+    inputs:
+      livros:
+        description: 'Livros para renderizar (ex: "TAS0000","EST0033" ou "all" para todos)'
+        required: false
+        default: "all"
+        type: string
+
+env:
+  url: ${{ vars.URL }}
+  TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
+  USERNAME: ${{ github.repository_owner }}
+  USEREMAIL: ${{ secrets.USEREMAIL }}
+
+permissions:
+  pages: write
+  id-token: write
+  contents: write
+  actions: write
+  pull-requests: write
+
+jobs:
+  books:
+    runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    steps:
+      - name: Configura credenciais do Git para submódulos privados
+        run: |
+          git config --global url."https://${{ env.TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ env.USERNAME }}/books
+          token: ${{ env.TOKEN }}
+          ref: "stag"
+          fetch-tags: true
+          submodules: false
+
+# 1 Detectar as pastas dos livros a serem renderizados
+# 2 Instalar o Quarto
+# 3 Renderizar os livros e salvar em _books
+# 4 criar pull_request
+# 5 auto-merge e auto-approve
+# 6 repository_dispath para estatistica com payload dos livros renderizados

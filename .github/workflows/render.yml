@@ -139,6 +139,7 @@ jobs:
               if quarto render "build/$livro" --to html --execute --output-dir "./_books/$livro"; then
                 echo "✅ Sucesso: $livro"
                 SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+                # Saída escrita apenas em ./_books/$livro (não copiamos para build/)
               else
                 echo "❌ Erro ao renderizar: $livro"
                 FAIL_COUNT=$((FAIL_COUNT + 1))
