@@ -226,5 +226,34 @@ jobs:
             ---
             **⚠️ Esta PR requer aprovação manual do proprietário antes do merge.**
 
+      - name: Auto-approve Pull Request
+        if: always()
+        uses: hmarr/auto-approve-action@v2.1.0
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Auto-merge Pull Request
+        if: always()
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = parseInt('${{ steps.create-pr.outputs.pull-request-number }}', 10)
+            if (!prNumber) {
+              core.info('PR number not found from create-pull-request outputs; searching for PR...')
+              const prs = await github.rest.pulls.list({ owner: context.repo.owner, repo: context.repo.repo, state: 'open', head: `${context.repo.owner}:book` })
+              if (prs.data.length > 0) {
+                pr = prs.data[0]
+                prNumber = pr.number
+              }
+            }
+            if (prNumber) {
+              core.info(`Merging PR #${prNumber}`)
+              await github.rest.pulls.merge({ owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, merge_method: 'squash' })
+              core.info('PR merged')
+            } else {
+              core.info('No PR found to merge')
+            }
+
 
 
