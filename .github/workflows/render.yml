@@ -74,14 +74,18 @@ jobs:
 
           if [ -z "$LIVROS_DETECTADAS" ]; then
             echo "Nenhum livro detectado para renderização"
-            echo "payload=" >> $GITHUB_OUTPUT
+            # Saídas: livros (JSON array), livros_list (espaço-separado), tem_livros
+            echo "livros=" >> $GITHUB_OUTPUT
+            echo "livros_list=" >> $GITHUB_OUTPUT
             echo "tem_livros=false" >> $GITHUB_OUTPUT
           else
-            # Converte para array JSON
+            # Converte para array JSON (ex: ["EST0033","MAT0075"])
             LIVROS_ARRAY=$(echo "$LIVROS_DETECTADAS" | tr ' ' '\n' | awk '{printf "\"%s\",", $0}' | sed 's/,$//')
-            PAYLOAD='{"livros": ['$LIVROS_ARRAY']}'
-            echo "payload=$PAYLOAD" >> $GITHUB_OUTPUT
+            LIVROS_JSON='['$LIVROS_ARRAY']'
+            # Emite saídas: JSON array e string espaço-separada para compatibilidade
+            echo "livros=$LIVROS_JSON" >> $GITHUB_OUTPUT
+            echo "livros_list=$LIVROS_DETECTADAS" >> $GITHUB_OUTPUT
             echo "tem_livros=true" >> $GITHUB_OUTPUT
-            echo "Payload gerado: $PAYLOAD"
+            echo "Livros gerados (JSON): $LIVROS_JSON"
           fi
 
