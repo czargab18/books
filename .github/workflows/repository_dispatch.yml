@@ -30,53 +30,41 @@ jobs:
       name: ENVIRONMENT
 
     steps:
-      - name: Configura credenciais do Git para submódulos privados
-        run: |
-          git config --global url."https://${{ env.TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
-
       - name: Checkout do repositório
         uses: actions/checkout@v4
         with:
           fetch-depth: 5
           token: ${{ env.TOKEN }}
 
-      - name: Detectar e gerar 'payload' com os livros detectados
+      - name: Detectar livros modificados e gerar payload
         id: gerar_payload
         run: |
-          # Se foi acionado manualmente com input
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ inputs.livros }}" ]; then
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
             INPUT_LIVROS="${{ inputs.livros }}"
             
-            # Se for "all", lista todos os livros disponíveis
             if [ "$INPUT_LIVROS" == "all" ]; then
-              LIVROS_DETECTADAS=$(find build -maxdepth 1 -type d -name '[A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9]' -printf '%f\n' | sort)
-              echo "Renderizando todos os livros: $(echo $LIVROS_DETECTADAS | tr '\n' ' ')"
+              LIVROS_DETECTADOS=$(find book -maxdepth 1 -type d -name '[A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9]' -printf '%f\n' | sort | xargs)
+              echo "📚 Todos os livros: $LIVROS_DETECTADOS"
             else
-              # Lista específica de livros separados por vírgula
-              LIVROS_DETECTADAS=$(echo "$INPUT_LIVROS" | tr ',' '\n' | sort | uniq)
-              echo "Renderizando livros especificados: $(echo $LIVROS_DETECTADAS | tr '\n' ' ')"
+              LIVROS_DETECTADOS=$(echo "$INPUT_LIVROS" | tr ',' ' ' | xargs)
+              echo "📚 Livros especificados: $LIVROS_DETECTADOS"
             fi
           else
-            # Detecta automaticamente pelos arquivos modificados (push)
-            ARQUIVOS_DETECTADOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-            LIVROS_DETECTADAS=$(echo "$ARQUIVOS_DETECTADOS" | grep -oE '^build/[A-Z]{3}[0-9]{4}' | sed 's|build/||' | sort | uniq)
-            echo "Livros detectados por push: $(echo $LIVROS_DETECTADAS | tr '\n' ' ')"
+            ARQUIVOS_MODIFICADOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+            LIVROS_DETECTADOS=$(echo "$ARQUIVOS_MODIFICADOS" | grep -oE '^book/[A-Z]{3}[0-9]{4}' | sed 's|book/||' | sort | uniq | xargs)
+            echo "📚 Livros detectados por push em book/: $LIVROS_DETECTADOS"
           fi
           
-          # Remove linhas vazias e espaços extras
-          LIVROS_DETECTADAS=$(echo "$LIVROS_DETECTADAS" | grep -v '^$' | xargs)
-          
-          if [ -z "$LIVROS_DETECTADAS" ]; then
-            echo "Nenhum livro detectado para renderização"
+          if [ -z "$LIVROS_DETECTADOS" ]; then
+            echo "⚠️ Nenhum livro detectado"
             echo "payload=" >> $GITHUB_OUTPUT
             echo "tem_livros=false" >> $GITHUB_OUTPUT
           else
-            # Converte para array JSON
-            LIVROS_ARRAY=$(echo "$LIVROS_DETECTADAS" | tr ' ' '\n' | awk '{printf "\"%s\",", $0}' | sed 's/,$//')
+            LIVROS_ARRAY=$(echo "$LIVROS_DETECTADOS" | tr ' ' '\n' | awk '{printf "\"%s\",", $0}' | sed 's/,$//')
             PAYLOAD='{"livros": ['$LIVROS_ARRAY']}'
             echo "payload=$PAYLOAD" >> $GITHUB_OUTPUT
             echo "tem_livros=true" >> $GITHUB_OUTPUT
-            echo "Payload gerado: $PAYLOAD"
+            echo "✅ Payload gerado: $PAYLOAD"
           fi
 
       - name: Dispara 'repository_dispatch' no estatistica
