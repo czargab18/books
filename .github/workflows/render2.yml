@@ -73,15 +73,16 @@ jobs:
           echo "lista_livros=$LISTA" >> $GITHUB_OUTPUT
           echo "✅ Lista salva: $LISTA"
 
-      # 1 Detectar as pastas dos livros a serem renderizados
-      #   e armazenar em uma variável de ambiente 'lista_livros'. 
       - name: Detectar livros para renderizar de 'push'
         id: detectar_livros_push
         if: github.event_name == 'push'
-        working-directory: books
         run: |
-          echo "Livros para renderizar: ....."
-          PADRAO_NOME = [A-Z]{3}[0-9]{4}
+          ARQUIVOS_MODIFICADOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          LISTA=$(echo "$ARQUIVOS_MODIFICADOS" | grep -oE '^build/[A-Z]{3}[0-9]{4}' | sed 's|build/||' | sort | uniq | xargs)
+          
+          echo "📚 Livros detectados por push: $LISTA"
+          echo "lista_livros=$LISTA" >> $GITHUB_OUTPUT
+          echo "✅ Lista salva: $LISTA"
 
       # 2 Instalar o Quarto
       - name: Instalar Quarto
