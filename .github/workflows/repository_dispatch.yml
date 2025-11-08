@@ -1,5 +1,5 @@
 name: renderbooks_create_pr
-description: Renderiza livros Quarto e cria 'Pull Request' automaticamente para revisão
+# description: Avisa ao repositório estatistica sobre livros atualizados para renderização
 # modelos de ia: Cloude Sonnet 4 e Gemini Pro
 
 on:
@@ -12,7 +12,7 @@ on:
         type: string
   push:
     branches: [main]
-    paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
+    paths: [/book/**]
 
 permissions:
   contents: write
