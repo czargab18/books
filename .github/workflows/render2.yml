@@ -60,10 +60,22 @@ jobs:
       #   e armazenar em uma variável de ambiente 'lista_livros'
       - name: Detectar livros para renderizar de 'workflow_dispatch'
         if: github.event_name == 'workflow_dispatch'
-        working-directory: books
         id: detectar_livros_workflow_dispatch
         run: |
-          echo "Livros para renderizar: ${{ github.event.inputs.livros }}"
+          INPUT_LIVROS="${{ github.event.inputs.livros }}"
+          
+          if [ "$INPUT_LIVROS" == "all" ]; then
+            LISTA=$(find build -maxdepth 1 -type d -name '[A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9]' -printf '%f\n' | sort | xargs)
+            echo "📚 Renderizando todos os livros: $LISTA"
+          else
+            # Lista específica de livros separados por vírgula, converte para espaços
+            LISTA=$(echo "$INPUT_LIVROS" | tr ',' ' ' | xargs)
+            echo "📚 Renderizando livros especificados: $LISTA"
+          fi
+          
+          # Salva a lista em output para uso nos próximos steps
+          echo "lista_livros=$LISTA" >> $GITHUB_OUTPUT
+          echo "✅ Lista salva: $LISTA"
 
       # 1 Detectar as pastas dos livros a serem renderizados
       #   e armazenar em uma variável de ambiente 'lista_livros'
