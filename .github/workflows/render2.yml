@@ -233,42 +233,40 @@ jobs:
     environment:
       name: ENVIRONMENT
     steps:
-      - name: Checkout branch stag
-        uses: actions/checkout@v5
-        with:
-          repository: ${{ github.repository_owner }}/books
-          token: ${{ secrets.TOKEN_REPO_SYNC }}
-          ref: stag
-          fetch-depth: 0
-
       - name: Criar Pull Request de 'stag' para 'main'
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ secrets.TOKEN_REPO_SYNC }}
-          base: main
-          branch: stag
-          delete-branch: false
-          title: "release: sincroniza stag → main"
-          labels: |
-            release
-            sync
-            automated-pr
-          assignees: ${{ github.repository_owner }}
-          draft: false
-          body: |
-            ## 🚀 Sincronização stag → main
-
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
+          PR_BODY: |
+            ## � Sincronização stag → main
+            
             Esta Pull Request sincroniza as alterações da branch `stag` (staging) para a branch `main` (produção).
-
+            
             ### 📋 Detalhes
             - **Branch origem**: `stag`
             - **Branch destino**: `main`
             - **Workflow Run**: [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-
+            
             ### ✅ Checklist
             - [ ] Verificar se todos os livros estão renderizados corretamente
             - [ ] Confirmar que os testes passaram
             - [ ] Revisar alterações críticas
-
-            ---
+            
             **⚠️ Esta PR requer aprovação manual antes do merge para produção.**
+        run: |
+          EXISTING_PR=$(gh pr list --repo ${{ github.repository }} --base main --head stag --json number --jq '.[0].number')
+          
+          if [ -n "$EXISTING_PR" ]; then
+            echo "✅ PR já existe: #$EXISTING_PR"
+            echo "🔗 https://github.com/${{ github.repository }}/pull/$EXISTING_PR"
+          else
+            gh pr create \
+              --repo ${{ github.repository }} \
+              --base main \
+              --head stag \
+              --title "release: sincroniza stag → main" \
+              --body "$PR_BODY" \
+              --label "release,sync,automated-pr" \
+              --assignee ${{ github.repository_owner }}
+            
+            echo "✅ PR criada com sucesso!"
+          fi
