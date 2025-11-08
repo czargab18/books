@@ -229,4 +229,42 @@ jobs:
               core.info(`PR #${prNumber} merged`);
             }
 
-      # 7 criar pull_request 'stag' para 'main'
+      - name: Criar Pull Request de 'stag' para 'main'
+        if: steps.create-pr.outputs.pull-request-number != ''
+        id: create-pr-main
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ env.TOKEN }}
+          base: main
+          branch: stag
+          delete-branch: false
+          title: "release: sincroniza stag → main"
+          labels: |
+            release
+            sync
+            automated-pr
+          assignees: ${{ github.repository_owner }}
+          draft: false
+          commit-message: |
+            release: sincroniza alterações de stag para main
+
+            Sincronização automática via GitHub Actions
+            Data: $(date +'%Y-%m-%d %H:%M:%S UTC')
+          body: |
+            ## 🚀 Sincronização stag → main
+
+            Esta Pull Request sincroniza as alterações da branch `stag` (staging) para a branch `main` (produção).
+
+            ### 📋 Detalhes
+            - **Branch origem**: `stag`
+            - **Branch destino**: `main`
+            - **Workflow Run**: [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            ### ✅ Checklist
+            - [ ] Verificar se todos os livros estão renderizados corretamente
+            - [ ] Confirmar que os testes passaram
+            - [ ] Revisar alterações críticas
+
+            ---
+            **⚠️ Esta PR requer aprovação manual antes do merge para produção.**
+
