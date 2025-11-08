@@ -8,6 +8,9 @@ delete/
 *index*html/
 **/.gitignore
 
+##### NÃO IGNORAR
+!book/
+!book/**
 
 ###########################################
 ################# ARQUIVOS ################
@@ -25,19 +28,10 @@ delete/
 #################### R ####################
 ###########################################
 ##### IGNORAR
-renv/*
-renv/.gitignore
-renv/library/
-renv/local/
-renv/cellar/
-renv/lock/
-renv/python/
-renv/sandbox/
-renv/staging/
+
 
 ##### NÃO IGNORAR
-# !**/renv/activate.R
-# !**/renv/settings.json
-# !.Rprofile
-# !renv.lock
-# /.quarto/
+
+
+
+mock/**

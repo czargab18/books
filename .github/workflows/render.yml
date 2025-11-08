@@ -99,9 +99,6 @@ jobs:
 
       - name: Renderizar livros Quarto
         run: |
-          # Aceita dois formatos de saída do passo anterior:
-          # - JSON array em steps.gerar_payload.outputs.livros (ex: ["EST0033","MAT0075"]) 
-          # - lista espaço-separada em steps.gerar_payload.outputs.livros_list
           LIVROS_JSON='${{ steps.gerar_payload.outputs.livros }}'
           LIVROS_LIST_ESC='${{ steps.gerar_payload.outputs.livros_list }}'
 
@@ -136,10 +133,9 @@ jobs:
               echo "📖 Renderizando: $livro"
               echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
               
-              if quarto render "build/$livro" --to html --execute --output-dir "./_books/$livro"; then
+              if quarto render "build/$livro" --to html --execute --output-dir "./../../book/$livro"; then
                 echo "✅ Sucesso: $livro"
                 SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
-                # Saída escrita apenas em ./_books/$livro (não copiamos para build/)
               else
                 echo "❌ Erro ao renderizar: $livro"
                 FAIL_COUNT=$((FAIL_COUNT + 1))
@@ -168,7 +164,10 @@ jobs:
             exit 0
           fi
 
-
+      - name: Adicionar arquivos renderizados ao Git
+        run: |
+          git add _books/
+          echo "✅ Arquivos em _books/ adicionados ao Git"
 
       - name: Commit e criar Pull Request
         id: create-pr
@@ -228,16 +227,27 @@ jobs:
             **⚠️ Esta PR requer aprovação manual do proprietário antes do merge.**
 
       - name: Auto-approve Pull Request
-        if: always()
-        uses: hmarr/auto-approve-action@v2.1.0
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Auto-merge Pull Request
-        if: always()
+        if: steps.create-pr.outputs.pull-request-number != ''
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = parseInt('${{ steps.create-pr.outputs.pull-request-number }}', 10);
+            if (prNumber) {
+              await github.rest.pulls.createReview({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                event: 'APPROVE'
+              });
+              core.info(`PR #${prNumber} approved`);
+            }
+
+      - name: Auto-merge Pull Request
+        if: steps.create-pr.outputs.pull-request-number != ''
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN_REPO_SYNC }}
           script: |
             const prNumber = parseInt('${{ steps.create-pr.outputs.pull-request-number }}', 10)
             if (!prNumber) {
@@ -256,5 +266,60 @@ jobs:
               core.info('No PR found to merge')
             }
 
+  # criar 'pull_request' de 'stag' para 'main'
+  pr-main:
+    needs: [books]
+    runs-on: ubuntu-latest
+    environment:
+      name: ENVIRONMENT
+    steps:
+      - name: Configura credenciais do Git para submódulos privados
+        run: |
+          git config --global url."https://${{ env.TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
 
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ env.USERNAME }}/books
+          token: ${{ env.TOKEN }}
+          ref: "stag"
+          fetch-tags: true
+          submodules: false
 
+      - name: Criar Pull Request de stag para main
+        id: create-pr-main
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ env.TOKEN }}
+          base: main
+          branch: stag
+          delete-branch: false
+          title: "release: sincroniza stag → main"
+          labels: |
+            release
+            sync
+            automated-pr
+          assignees: ${{ github.repository_owner }}
+          draft: false
+          commit-message: |
+            release: sincroniza alterações de stag para main
+
+            Sincronização automática via GitHub Actions
+            Data: $(date +'%Y-%m-%d %H:%M:%S UTC')
+          body: |
+            ## 🚀 Sincronização stag → main
+
+            Esta Pull Request sincroniza as alterações da branch `stag` (staging) para a branch `main` (produção).
+
+            ### 📋 Detalhes
+            - **Branch origem**: `stag`
+            - **Branch destino**: `main`
+            - **Workflow Run**: [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+
+            ### ✅ Checklist
+            - [ ] Verificar se todos os livros estão renderizados corretamente
+            - [ ] Confirmar que os testes passaram
+            - [ ] Revisar alterações críticas
+
+            ---
+            **⚠️ Esta PR requer aprovação manual antes do merge para produção.**
