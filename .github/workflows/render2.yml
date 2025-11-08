@@ -150,6 +150,64 @@ jobs:
 
 
       # 4 criar pull_request 'book' para 'stag'
+      - name: Commit e criar Pull Request
+        id: create-pr
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ env.TOKEN }}
+          base: stag
+          branch: book
+          delete-branch: true
+          title: "book: atualiza novos livros Quarto renderizados"
+          labels: |
+            books
+            quarto
+            action
+            needs-review
+            automated-pr
+          assignees: ${{ github.repository_owner }}
+          # reviewers: ${{ env.USERNAME }}
+          draft: false
+          commit-message: |
+            books: atualiza e padroniza livros renderizados
+
+            Commit fonte: ${{ github.sha }}
+            Data: $(date +'%Y-%m-%d %H:%M:%S UTC')
+            Livros renderizados: ${{ steps.gerar_payload.outputs.livros }}
+            Modo: ${{ steps.gerar_payload.outputs.render_all == 'true' && 'Todos os livros' || 'Livros específicos' }}
+          body: |
+            ## 📖 Atualização de Livros Renderizados
+
+            Esta Pull Request contém a atualização dos livros renderizados via GitHub Actions a partir dos arquivos fonte em Quarto (.qmd) presentes na pasta `build/` e os artefatos foram salvos em `/_books/` na raiz do repositório.
+
+            ### 📋 Detalhes da Renderização
+            - **Commit fonte**: `${{ github.sha }}`
+            - **Workflow Run**: [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
+            - **Modo**: ${{ steps.gerar_payload.outputs.render_all == 'true' && '🔄 Todos os livros' || '🎯 Livros específicos' }}
+
+            ### 📚 Livros Renderizados
+            ```
+            ${{ steps.gerar_payload.outputs.livros }}
+            ```
+
+            ### 🔄 Alterações Aplicadas
+            - ✅ Renderização Quarto → HTML (saída em `/_books/<livro>`)
+            - ✅ Atualização do `<head>` dinâmico
+            - ✅ Padronização do header
+            - ✅ Padronização do footer
+
+            ## 👀 Review Checklist
+            Por favor, verifique se todos os livros foram renderizados corretamente:
+            - [ ] 📖 Livros renderizados corretamente
+            - [ ] 🎨 Formatação e estilos adequados
+            - [ ] 🔗 Links internos funcionam
+            - [ ] 📱 Layout responsivo
+            - [ ] 📁 Estrutura de pastas organizada
+
+            ---
+            **⚠️ Esta PR requer aprovação manual do proprietário antes do merge.**
+
+
       # 5 auto-merge e auto-approve
       # 6 repository_dispath para estatistica com payload dos livros renderizados
       # 7 criar pull_request 'stag' para 'main'
