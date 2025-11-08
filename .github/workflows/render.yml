@@ -99,9 +99,6 @@ jobs:
 
       - name: Renderizar livros Quarto
         run: |
-          # Aceita dois formatos de saída do passo anterior:
-          # - JSON array em steps.gerar_payload.outputs.livros (ex: ["EST0033","MAT0075"]) 
-          # - lista espaço-separada em steps.gerar_payload.outputs.livros_list
           LIVROS_JSON='${{ steps.gerar_payload.outputs.livros }}'
           LIVROS_LIST_ESC='${{ steps.gerar_payload.outputs.livros_list }}'
 
