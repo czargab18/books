@@ -234,7 +234,7 @@ jobs:
         if: steps.create-pr.outputs.pull-request-number != ''
         uses: actions/github-script@v6
         with:
-          github-token: ${{ env.TOKEN }}
+          github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prNumber = parseInt('${{ steps.create-pr.outputs.pull-request-number }}', 10);
             if (prNumber) {
