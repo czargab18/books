@@ -151,14 +151,6 @@ jobs:
           done
           echo "✅ Limpeza concluída"
 
-      - name: Gerar JSON com a lista de livros renderizados e salvar em book
-        id: criar_json_livros
-        run: |
-          LIVROS_JSON=$(find book -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort | jq -Rsc 'split("\n") | map(select(length > 0))')
-          echo "$LIVROS_JSON" > book/livros_renderizados.json
-          echo "✅ JSON com a lista de todos os livros foi gerado em book/livros_renderizados.json"
-          echo "Conteúdo: $LIVROS_JSON"
-
       - name: Commit e criar Pull Request de 'book' para 'stag'
         id: create-pr
         uses: peter-evans/create-pull-request@v6
