@@ -84,22 +84,33 @@ jobs:
           echo "lista_livros=$LISTA" >> $GITHUB_OUTPUT
           echo "✅ Lista salva: $LISTA"
 
-      # 2 Instalar o Quarto
       - name: Instalar Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: "release"
       
-      # 3 Renderizar os livros e salvar em --output-dir "./../../book/$livro"
-      - name: Renderizar livros
-        if: steps.detectar_livros.outputs.lista_livros != '' or steps.detectar_livros_workflow_dispatch.outputs.lista_livros != ''
-        id: renderizar_livros 
-        working-directory: books
+      - name: Cria pasta 'book' se não existir
         run: |
-          echo "Renderizando livros..."
-          LISTA = ${{ steps.detectar_livros.outputs.lista_livros || steps.detectar_livros_workflow_dispatch.outputs.lista_livros }}
+          mkdir -p book
 
-          for livro in $LIVROS_LIST; do
+      - name: Renderizar livros
+        id: renderizar_livros
+        if: steps.detectar_livros_push.outputs.lista_livros != '' || steps.detectar_livros_workflow_dispatch.outputs.lista_livros != ''
+        run: |
+          LISTA="${{ steps.detectar_livros_push.outputs.lista_livros || steps.detectar_livros_workflow_dispatch.outputs.lista_livros }}"
+          
+          if [ -z "$LISTA" ]; then
+            echo "⚠️ Nenhum livro para renderizar"
+            exit 0
+          fi
+        
+          NUM_LIVROS=$(echo "$LISTA" | wc -w)
+          echo "📚 Renderizando $NUM_LIVROS livro(s): $LISTA"
+          
+          SUCCESS_COUNT=0
+          FAIL_COUNT=0
+
+          for livro in $LISTA; do
             if [ -d "build/$livro" ]; then
               echo ""
               echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
@@ -136,7 +147,6 @@ jobs:
             echo "✨ Renderização concluída com sucesso!"
             exit 0
           fi
-
 
 
       # 4 criar pull_request 'book' para 'stag'
