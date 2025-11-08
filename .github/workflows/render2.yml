@@ -148,12 +148,6 @@ jobs:
             exit 0
           fi
 
-
-      - name: Adicionar arquivos renderizados ao Git
-        run: |
-          git add book/
-          echo "✅ Arquivos em book/ adicionados ao Git"
-
       - name: Commit e criar Pull Request
         id: create-pr
         uses: peter-evans/create-pull-request@v6
