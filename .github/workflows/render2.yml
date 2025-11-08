@@ -49,11 +49,12 @@ jobs:
           fetch-tags: true
           submodules: false
 
-      - name: Detectar 'evento_name' do github
-        working-directory: books
-      # detectar nome do evento e armazenar ara os proximos passos
+      - name: Detectar evento de gatilho do GitHub
+        id: detectar_evento
         run: |
-          echo "Evento: ${{ github.event_name }}"
+          EVENTO="${{ github.event_name }}"
+          echo "Evento detectado: $EVENTO"
+          echo "evento=$EVENTO" >> $GITHUB_OUTPUT
 
       - name: Detectar livros para renderizar de 'workflow_dispatch'
       # 1 Detectar as pastas dos livros a serem renderizados
