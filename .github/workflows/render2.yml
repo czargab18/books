@@ -56,9 +56,9 @@ jobs:
           echo "Evento detectado: $EVENTO"
           echo "evento=$EVENTO" >> $GITHUB_OUTPUT
 
-      - name: Detectar livros para renderizar de 'workflow_dispatch'
       # 1 Detectar as pastas dos livros a serem renderizados
       #   e armazenar em uma variável de ambiente 'lista_livros'
+      - name: Detectar livros para renderizar de 'workflow_dispatch'
         if: github.event_name == 'workflow_dispatch'
         working-directory: books
         id: detectar_livros_workflow_dispatch
