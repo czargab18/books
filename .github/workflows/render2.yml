@@ -49,13 +49,6 @@ jobs:
           fetch-tags: true
           submodules: false
 
-      - name: Detectar evento de gatilho do GitHub
-        id: detectar_evento
-        run: |
-          EVENTO="${{ github.event_name }}"
-          echo "Evento detectado: $EVENTO"
-          echo "evento=$EVENTO" >> $GITHUB_OUTPUT
-
       - name: Detectar livros para renderizar de 'workflow_dispatch'
         if: github.event_name == 'workflow_dispatch'
         id: detectar_livros_workflow_dispatch
@@ -212,6 +205,10 @@ jobs:
               core.info(`PR #${prNumber} approved`);
             }
 
+      - name: Aguardar processamento da aprovação
+        if: steps.create-pr.outputs.pull-request-number != ''
+        run: sleep 3
+
       - name: Auto-merge Pull Request de 'book' para 'stag'
         if: steps.create-pr.outputs.pull-request-number != ''
         uses: actions/github-script@v6
@@ -229,12 +226,25 @@ jobs:
               core.info(`PR #${prNumber} merged`);
             }
 
+  pr-main:
+    needs: books
+    runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
+    environment:
+      name: ENVIRONMENT
+    steps:
+      - name: Checkout branch stag
+        uses: actions/checkout@v5
+        with:
+          repository: ${{ github.repository_owner }}/books
+          token: ${{ secrets.TOKEN_REPO_SYNC }}
+          ref: stag
+          fetch-depth: 0
+
       - name: Criar Pull Request de 'stag' para 'main'
-        if: steps.create-pr.outputs.pull-request-number != ''
-        id: create-pr-main
         uses: peter-evans/create-pull-request@v6
         with:
-          token: ${{ env.TOKEN }}
+          token: ${{ secrets.TOKEN_REPO_SYNC }}
           base: main
           branch: stag
           delete-branch: false
@@ -245,11 +255,6 @@ jobs:
             automated-pr
           assignees: ${{ github.repository_owner }}
           draft: false
-          commit-message: |
-            release: sincroniza alterações de stag para main
-
-            Sincronização automática via GitHub Actions
-            Data: $(date +'%Y-%m-%d %H:%M:%S UTC')
           body: |
             ## 🚀 Sincronização stag → main
 
