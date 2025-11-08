@@ -141,13 +141,15 @@ jobs:
             exit 0
           fi
 
-      - name: Remover pasta de bibliotecas gerados pelo Quarto
+      - name: Remover pastas de bibliotecas geradas pelo Quarto
         working-directory: book
         run: |
-          LISTA = ["site_libs","_libs","index_files", "book_libs" ]
-          for [lista in LISTA], do
-            find . -type d -name "$lista" -exec rm -rf {} +
-          end
+          LISTA="site_libs _libs index_files book_libs"
+          for pasta in $LISTA; do
+            echo "🗑️ Removendo pastas: $pasta"
+            find . -type d -name "$pasta" -exec rm -rf {} + 2>/dev/null || true
+          done
+          echo "✅ Limpeza concluída"
 
 
       - name: Commit e criar Pull Request de 'book' para 'stag'
