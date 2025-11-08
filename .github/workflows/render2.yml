@@ -195,7 +195,26 @@ jobs:
             ---
             **⚠️ Esta PR requer aprovação manual antes do merge.**
 
-
       # 5 auto-merge e auto-approve
+
+      - name: Auto-approve Pull Request
+        if: steps.create-pr.outputs.pull-request-number != ''
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            const prNumber = parseInt('${{ steps.create-pr.outputs.pull-request-number }}', 10);
+            if (prNumber) {
+              await github.rest.pulls.createReview({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                event: 'APPROVE'
+              });
+              core.info(`PR #${prNumber} approved`);
+            }
+
       # 6 repository_dispath para estatistica com payload dos livros renderizados
+
+
       # 7 criar pull_request 'stag' para 'main'
