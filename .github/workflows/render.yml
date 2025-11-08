@@ -1,10 +1,13 @@
-# Código gerado/assistido por IA
+#> Código gerado/assistido por IA - revisar cuidadosamente antes de usar.
+#> Agent AI: github-copilot-chat - vscode
+
+# description: Workflow para renderizar livros em Quarto e criar Pull Requests automaticamente.
+# version: 2.0.0
 name: render
-# description: Workflow para atualizar arquivos dos submódulos com o repositório Estatística.
 
 on:
   push:
-    branches: [main]
+    branches: [stag]
     paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
   workflow_dispatch:
     inputs:
@@ -46,92 +49,67 @@ jobs:
           fetch-tags: true
           submodules: false
 
-      - name: Detectar e gerar 'payload' com os livros detectados
-        id: gerar_payload
+      - name: Detectar livros para renderizar de 'workflow_dispatch'
+        if: github.event_name == 'workflow_dispatch'
+        id: detectar_livros_workflow_dispatch
         run: |
-          # Se foi acionado manualmente com input
-          if [ "${{ github.event_name }}" == "workflow_dispatch" ] && [ -n "${{ inputs.livros }}" ]; then
-            INPUT_LIVROS="${{ inputs.livros }}"
-            
-            # Se for "all", lista todos os livros disponíveis
-            if [ "$INPUT_LIVROS" == "all" ]; then
-              LIVROS_DETECTADAS=$(find build -maxdepth 1 -type d -name '[A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9]' -printf '%f\n' | sort)
-              echo "Renderizando todos os livros: $(echo $LIVROS_DETECTADAS | tr '\n' ' ')"
-            else
-              # Lista específica de livros separados por vírgula
-              LIVROS_DETECTADAS=$(echo "$INPUT_LIVROS" | tr ',' '\n' | sort | uniq)
-              echo "Renderizando livros especificados: $(echo $LIVROS_DETECTADAS | tr '\n' ' ')"
-            fi
+          INPUT_LIVROS="${{ github.event.inputs.livros }}"
+
+          if [ "$INPUT_LIVROS" == "all" ]; then
+            LISTA=$(find build -maxdepth 1 -type d -name '[A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9]' -printf '%f\n' | sort | xargs)
+            echo "📚 Renderizando todos os livros: $LISTA"
           else
-            # Detecta automaticamente pelos arquivos modificados (push)
-            ARQUIVOS_DETECTADOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
-            LIVROS_DETECTADAS=$(echo "$ARQUIVOS_DETECTADOS" | grep -oE '^build/[A-Z]{3}[0-9]{4}' | sed 's|build/||' | sort | uniq)
-            echo "Livros detectados por push: $(echo $LIVROS_DETECTADAS | tr '\n' ' ')"
+            LISTA=$(echo "$INPUT_LIVROS" | tr ',' ' ' | xargs)
+            echo "📚 Renderizando livros especificados: $LISTA"
           fi
 
-          # Remove linhas vazias e espaços extras
-          LIVROS_DETECTADAS=$(echo "$LIVROS_DETECTADAS" | grep -v '^$' | xargs)
+          echo "lista_livros=$LISTA" >> $GITHUB_OUTPUT
+          echo "✅ Lista salva: $LISTA"
 
-          if [ -z "$LIVROS_DETECTADAS" ]; then
-            echo "Nenhum livro detectado para renderização"
-            # Saídas: payload (JSON objeto), livros (JSON array), livros_list (espaço-separado), tem_livros
-            echo "payload=" >> $GITHUB_OUTPUT
-            echo "livros=" >> $GITHUB_OUTPUT
-            echo "livros_list=" >> $GITHUB_OUTPUT
-            echo "tem_livros=false" >> $GITHUB_OUTPUT
-          else
-            # Converte para array JSON (ex: ["EST0033","MAT0075"]) e também gera o payload {"livros": [...]} para outros workflows
-            LIVROS_ARRAY=$(echo "$LIVROS_DETECTADAS" | tr ' ' '\n' | awk '{printf "\"%s\",", $0}' | sed 's/,$//')
-            LIVROS_JSON='['$LIVROS_ARRAY']'
-            PAYLOAD='{"livros": ['$LIVROS_ARRAY']}'
-            # Emite saídas: payload (objeto JSON), JSON array e string espaço-separada para compatibilidade
-            echo "payload=$PAYLOAD" >> $GITHUB_OUTPUT
-            echo "livros=$LIVROS_JSON" >> $GITHUB_OUTPUT
-            echo "livros_list=$LIVROS_DETECTADAS" >> $GITHUB_OUTPUT
-            echo "tem_livros=true" >> $GITHUB_OUTPUT
-            echo "Livros gerados (JSON): $LIVROS_JSON"
-          fi
+      - name: Detectar livros para renderizar de 'push'
+        id: detectar_livros_push
+        if: github.event_name == 'push'
+        run: |
+          ARQUIVOS_MODIFICADOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
+          LISTA=$(echo "$ARQUIVOS_MODIFICADOS" | grep -oE '^build/[A-Z]{3}[0-9]{4}' | sed 's|build/||' | sort | uniq | xargs)
+
+          echo "📚 Livros detectados por push: $LISTA"
+          echo "lista_livros=$LISTA" >> $GITHUB_OUTPUT
+          echo "✅ Lista salva: $LISTA"
 
       - name: Instalar Quarto
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: "release"
 
-      - name: Renderizar livros Quarto
+      - name: Cria pasta 'book' se não existir
         run: |
-          LIVROS_JSON='${{ steps.gerar_payload.outputs.livros }}'
-          LIVROS_LIST_ESC='${{ steps.gerar_payload.outputs.livros_list }}'
+          mkdir -p book
 
-          # Converte JSON para lista espaço-separada sem depender de jq/python
-          if [ -n "$LIVROS_JSON" ] && [ "$LIVROS_JSON" != "[]" ]; then
-            # remove colchetes e aspas, troca vírgulas por espaço
-            LIVROS_LIST=$(echo "$LIVROS_JSON" | sed -e 's/\[//g' -e 's/\]//g' -e 's/"//g' -e 's/,/ /g' | xargs)
-          else
-            LIVROS_LIST=$(echo "$LIVROS_LIST_ESC" | xargs)
-          fi
+      - name: Renderizar livros
+        id: renderizar_livros
+        if: steps.detectar_livros_push.outputs.lista_livros != '' || steps.detectar_livros_workflow_dispatch.outputs.lista_livros != ''
+        run: |
+          LISTA="${{ steps.detectar_livros_push.outputs.lista_livros || steps.detectar_livros_workflow_dispatch.outputs.lista_livros }}"
 
-          # Garante que a pasta de saída exista
-          mkdir -p _books
-
-          if [ -z "$LIVROS_LIST" ]; then
+          if [ -z "$LISTA" ]; then
             echo "⚠️ Nenhum livro para renderizar"
             exit 0
           fi
 
-          # Conta quantos livros
-          NUM_LIVROS=$(echo "$LIVROS_LIST" | wc -w)
-          echo "📚 Renderizando $NUM_LIVROS livro(s)..."
+          NUM_LIVROS=$(echo "$LISTA" | wc -w)
+          echo "📚 Renderizando $NUM_LIVROS livro(s): $LISTA"
 
-          # Contador de sucesso e falha
           SUCCESS_COUNT=0
           FAIL_COUNT=0
 
-          for livro in $LIVROS_LIST; do
+          for livro in $LISTA; do
             if [ -d "build/$livro" ]; then
               echo ""
               echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
               echo "📖 Renderizando: $livro"
               echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+              echo ""
               
               if quarto render "build/$livro" --to html --execute --output-dir "./../../book/$livro"; then
                 echo "✅ Sucesso: $livro"
@@ -145,7 +123,6 @@ jobs:
               FAIL_COUNT=$((FAIL_COUNT + 1))
             fi
           done
-
           echo ""
           echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
           echo "📊 Resumo da Renderização"
@@ -164,12 +141,18 @@ jobs:
             exit 0
           fi
 
-      - name: Adicionar arquivos renderizados ao Git
+      - name: Remover pastas de bibliotecas geradas pelo Quarto
+        working-directory: book
         run: |
-          git add _books/
-          echo "✅ Arquivos em _books/ adicionados ao Git"
+          LISTA="site_libs _libs index_files book_libs"
+          for pasta in $LISTA; do
+            echo "🗑️ Removendo pastas: $pasta"
+            find . -type d -name "$pasta" -exec rm -rf {} + 2>/dev/null || true
+          done
+          echo "✅ Limpeza concluída"
 
-      - name: Commit e criar Pull Request
+
+      - name: Commit e criar Pull Request de 'book' para 'stag'
         id: create-pr
         uses: peter-evans/create-pull-request@v6
         with:
@@ -177,56 +160,46 @@ jobs:
           base: stag
           branch: book
           delete-branch: true
-          title: "book: atualiza novos livros Quarto renderizados"
+          title: "book: atualiza livros Quarto renderizados"
           labels: |
             books
             quarto
             action
-            needs-review
             automated-pr
           assignees: ${{ github.repository_owner }}
-          # reviewers: ${{ env.USERNAME }}
           draft: false
           commit-message: |
-            books: atualiza e padroniza livros renderizados
+            books: atualiza livros renderizados
 
             Commit fonte: ${{ github.sha }}
             Data: $(date +'%Y-%m-%d %H:%M:%S UTC')
-            Livros renderizados: ${{ steps.gerar_payload.outputs.livros }}
-            Modo: ${{ steps.gerar_payload.outputs.render_all == 'true' && 'Todos os livros' || 'Livros específicos' }}
+            Evento: ${{ github.event_name }}
+            Livros: ${{ steps.detectar_livros_push.outputs.lista_livros || steps.detectar_livros_workflow_dispatch.outputs.lista_livros }}
           body: |
             ## 📖 Atualização de Livros Renderizados
-
-            Esta Pull Request contém a atualização dos livros renderizados via GitHub Actions a partir dos arquivos fonte em Quarto (.qmd) presentes na pasta `build/` e os artefatos foram salvos em `/_books/` na raiz do repositório.
 
             ### 📋 Detalhes da Renderização
             - **Commit fonte**: `${{ github.sha }}`
             - **Workflow Run**: [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-            - **Modo**: ${{ steps.gerar_payload.outputs.render_all == 'true' && '🔄 Todos os livros' || '🎯 Livros específicos' }}
+            - **Evento**: ${{ github.event_name }}
 
             ### 📚 Livros Renderizados
             ```
-            ${{ steps.gerar_payload.outputs.livros }}
+            ${{ steps.detectar_livros_push.outputs.lista_livros || steps.detectar_livros_workflow_dispatch.outputs.lista_livros }}
             ```
 
             ### 🔄 Alterações Aplicadas
-            - ✅ Renderização Quarto → HTML (saída em `/_books/<livro>`)
-            - ✅ Atualização do `<head>` dinâmico
-            - ✅ Padronização do header
-            - ✅ Padronização do footer
+            - ✅ Renderização Quarto → HTML (saída em `/book/<livro>`)
 
             ## 👀 Review Checklist
-            Por favor, verifique se todos os livros foram renderizados corretamente:
             - [ ] 📖 Livros renderizados corretamente
             - [ ] 🎨 Formatação e estilos adequados
             - [ ] 🔗 Links internos funcionam
-            - [ ] 📱 Layout responsivo
-            - [ ] 📁 Estrutura de pastas organizada
 
             ---
-            **⚠️ Esta PR requer aprovação manual do proprietário antes do merge.**
+            **⚠️ Esta PR requer aprovação manual antes do merge.**
 
-      - name: Auto-approve Pull Request
+      - name: Auto-approve Pull Request de 'book' para 'stag'
         if: steps.create-pr.outputs.pull-request-number != ''
         uses: actions/github-script@v6
         with:
@@ -243,83 +216,68 @@ jobs:
               core.info(`PR #${prNumber} approved`);
             }
 
-      - name: Auto-merge Pull Request
+      - name: Aguardar processamento da aprovação
+        if: steps.create-pr.outputs.pull-request-number != ''
+        run: sleep 3
+
+      - name: Auto-merge Pull Request de 'book' para 'stag'
         if: steps.create-pr.outputs.pull-request-number != ''
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.TOKEN_REPO_SYNC }}
           script: |
-            const prNumber = parseInt('${{ steps.create-pr.outputs.pull-request-number }}', 10)
-            if (!prNumber) {
-              core.info('PR number not found from create-pull-request outputs; searching for PR...')
-              const prs = await github.rest.pulls.list({ owner: context.repo.owner, repo: context.repo.repo, state: 'open', head: `${context.repo.owner}:book` })
-              if (prs.data.length > 0) {
-                pr = prs.data[0]
-                prNumber = pr.number
-              }
-            }
+            const prNumber = parseInt('${{ steps.create-pr.outputs.pull-request-number }}', 10);
             if (prNumber) {
-              core.info(`Merging PR #${prNumber}`)
-              await github.rest.pulls.merge({ owner: context.repo.owner, repo: context.repo.repo, pull_number: prNumber, merge_method: 'squash' })
-              core.info('PR merged')
-            } else {
-              core.info('No PR found to merge')
+              await github.rest.pulls.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                merge_method: 'squash'
+              });
+              core.info(`PR #${prNumber} merged`);
             }
 
-  # criar 'pull_request' de 'stag' para 'main'
   pr-main:
-    needs: [books]
+    needs: books
     runs-on: ubuntu-latest
+    if: github.event_name == 'workflow_dispatch'
     environment:
       name: ENVIRONMENT
     steps:
-      - name: Configura credenciais do Git para submódulos privados
-        run: |
-          git config --global url."https://${{ env.TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
-
-      - name: Checkout
-        uses: actions/checkout@v5
-        with:
-          repository: ${{ env.USERNAME }}/books
-          token: ${{ env.TOKEN }}
-          ref: "stag"
-          fetch-tags: true
-          submodules: false
-
-      - name: Criar Pull Request de stag para main
-        id: create-pr-main
-        uses: peter-evans/create-pull-request@v6
-        with:
-          token: ${{ env.TOKEN }}
-          base: main
-          branch: stag
-          delete-branch: false
-          title: "release: sincroniza stag → main"
-          labels: |
-            release
-            sync
-            automated-pr
-          assignees: ${{ github.repository_owner }}
-          draft: false
-          commit-message: |
-            release: sincroniza alterações de stag para main
-
-            Sincronização automática via GitHub Actions
-            Data: $(date +'%Y-%m-%d %H:%M:%S UTC')
-          body: |
-            ## 🚀 Sincronização stag → main
-
+      - name: Criar Pull Request de 'stag' para 'main'
+        env:
+          GH_TOKEN: ${{ secrets.TOKEN_REPO_SYNC }}
+          PR_BODY: |
+            ## � Sincronização stag → main
+            
             Esta Pull Request sincroniza as alterações da branch `stag` (staging) para a branch `main` (produção).
-
+            
             ### 📋 Detalhes
             - **Branch origem**: `stag`
             - **Branch destino**: `main`
             - **Workflow Run**: [${{ github.run_id }}](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})
-
+            
             ### ✅ Checklist
             - [ ] Verificar se todos os livros estão renderizados corretamente
             - [ ] Confirmar que os testes passaram
             - [ ] Revisar alterações críticas
-
-            ---
+            
             **⚠️ Esta PR requer aprovação manual antes do merge para produção.**
+        run: |
+          EXISTING_PR=$(gh pr list --repo ${{ github.repository }} --base main --head stag --json number --jq '.[0].number')
+          
+          if [ -n "$EXISTING_PR" ]; then
+            echo "✅ PR já existe: #$EXISTING_PR"
+            echo "🔗 https://github.com/${{ github.repository }}/pull/$EXISTING_PR"
+          else
+            gh pr create \
+              --repo ${{ github.repository }} \
+              --base main \
+              --head stag \
+              --title "release: sincroniza stag → main" \
+              --body "$PR_BODY" \
+              --assignee ${{ github.repository_owner }}
+            
+            echo "✅ PR criada com sucesso!"
+            echo "💡 Dica: Crie as labels 'release', 'sync', 'automated-pr' no repositório para categorizá-la automaticamente"
+          fi
