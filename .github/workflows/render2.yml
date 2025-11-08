@@ -195,8 +195,6 @@ jobs:
             ---
             **⚠️ Esta PR requer aprovação manual antes do merge.**
 
-      # 5 auto-merge e auto-approve
-
       - name: Auto-approve Pull Request
         if: steps.create-pr.outputs.pull-request-number != ''
         uses: actions/github-script@v6
@@ -212,6 +210,23 @@ jobs:
                 event: 'APPROVE'
               });
               core.info(`PR #${prNumber} approved`);
+            }
+
+      - name: Auto-merge Pull Request
+        if: steps.create-pr.outputs.pull-request-number != ''
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.TOKEN_REPO_SYNC }}
+          script: |
+            const prNumber = parseInt('${{ steps.create-pr.outputs.pull-request-number }}', 10);
+            if (prNumber) {
+              await github.rest.pulls.merge({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                pull_number: prNumber,
+                merge_method: 'squash'
+              });
+              core.info(`PR #${prNumber} merged`);
             }
 
       # 6 repository_dispath para estatistica com payload dos livros renderizados
