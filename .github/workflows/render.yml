@@ -242,7 +242,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: prNumber,
-                merge_method: 'squash'
+                merge_method: 'merge'
               });
               core.info(`PR #${prNumber} merged`);
             }
