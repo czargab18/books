@@ -7,7 +7,7 @@ name: render_v2
 
 on:
   push:
-    branches: [main]
+    branches: [stag]
     paths: ["build/**/*.qmd", "build/**/*.yml", "build/*.bib"]
   workflow_dispatch:
     inputs:
