@@ -265,8 +265,8 @@ jobs:
               --head stag \
               --title "release: sincroniza stag → main" \
               --body "$PR_BODY" \
-              --label "release,sync,automated-pr" \
               --assignee ${{ github.repository_owner }}
             
             echo "✅ PR criada com sucesso!"
+            echo "💡 Dica: Crie as labels 'release', 'sync', 'automated-pr' no repositório para categorizá-la automaticamente"
           fi
