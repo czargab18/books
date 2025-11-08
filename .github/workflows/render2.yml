@@ -1,6 +1,9 @@
-# Código gerado/assistido por IA
-name: render2
-# description: Workflow para atualizar arquivos dos submódulos com o repositório Estatística.
+#> Código gerado/assistido por IA - revisar cuidadosamente antes de usar.
+#> Agent AI: github-copilot-chat - vscode
+
+# description: Workflow para renderizar livros em Quarto e criar Pull Requests automaticamente.
+# version: 2.0.0
+name: render_v2
 
 on:
   push:
@@ -46,31 +49,86 @@ jobs:
           fetch-tags: true
           submodules: false
 
-# 1 Detectar as pastas dos livros a serem renderizados
-# 2 Instalar o Quarto
-# 3 Renderizar os livros e salvar em --output-dir "./../../book/$livro"
-# 4 criar pull_request 'book' para 'stag'
-# 5 auto-merge e auto-approve
-# 6 repository_dispath para estatistica com payload dos livros renderizados
-# 7 criar pull_request 'stag' para 'main'
+      - name: Detectar 'evento_name' do github
+        working-directory: books
+      # detectar nome do evento e armazenar ara os proximos passos
+        run: |
+          echo "Evento: ${{ github.event_name }}"
 
+      - name: Detectar livros para renderizar de 'workflow_dispatch'
+      # 1 Detectar as pastas dos livros a serem renderizados
+      #   e armazenar em uma variável de ambiente 'lista_livros'
+        if: github.event_name == 'workflow_dispatch'
+        working-directory: books
+        id: detectar_livros_workflow_dispatch
+        run: |
+          echo "Livros para renderizar: ${{ github.event.inputs.livros }}"
 
-# # criar 'pull_request' de 'stag' para 'main'
-#   pr-main:
-#     runs-on: ubuntu-latest
-#     environment:
-#       name: ENVIRONMENT
-#     steps:
-#       - name: Configura credenciais do Git para submódulos privados
-#         run: |
-#           git config --global url."https://${{ env.TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+      # 1 Detectar as pastas dos livros a serem renderizados
+      #   e armazenar em uma variável de ambiente 'lista_livros'
+      - name: Detectar livros para renderizar de 'push'
+        id: detectar_livros_push
+        if: github.event_name == 'push'
+        working-directory: books
+        run: |
+          echo "Livros para renderizar: ....."
 
-#       - name: Checkout
-#         uses: actions/checkout@v5
-#         with:
-#           repository: ${{ env.USERNAME }}/books
-#           token: ${{ env.TOKEN }}
-#           ref: "stag"
-#           fetch-tags: true
-#           submodules: false
+      # 2 Instalar o Quarto
+      - name: Instalar Quarto
+        uses: quarto-dev/quarto-actions/setup@v2
+        with:
+          version: "release"
       
+      # 3 Renderizar os livros e salvar em --output-dir "./../../book/$livro"
+      - name: Renderizar livros
+        if: steps.detectar_livros.outputs.lista_livros != '' or steps.detectar_livros_workflow_dispatch.outputs.lista_livros != ''
+        id: renderizar_livros 
+        working-directory: books
+        run: |
+          echo "Renderizando livros..."
+          LISTA = ${{ steps.detectar_livros.outputs.lista_livros || steps.detectar_livros_workflow_dispatch.outputs.lista_livros }}
+
+          for livro in $LIVROS_LIST; do
+            if [ -d "build/$livro" ]; then
+              echo ""
+              echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+              echo "📖 Renderizando: $livro"
+              echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+              echo ""
+              
+              if quarto render "build/$livro" --to html --execute --output-dir "./../../book/$livro"; then
+                echo "✅ Sucesso: $livro"
+                SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+              else
+                echo "❌ Erro ao renderizar: $livro"
+                FAIL_COUNT=$((FAIL_COUNT + 1))
+              fi
+            else
+              echo "⚠️ Livro não encontrado: $livro"
+              FAIL_COUNT=$((FAIL_COUNT + 1))
+            fi
+          done
+          echo ""
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "📊 Resumo da Renderização"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+          echo "✅ Sucesso: $SUCCESS_COUNT"
+          echo "❌ Falhas: $FAIL_COUNT"
+          echo "📚 Total: $NUM_LIVROS"
+          echo "━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━"
+
+          # Comparação segura e saída explícita
+          if [ "${FAIL_COUNT:-0}" -gt 0 ]; then
+            echo "⚠️ Alguns livros falharam na renderização"
+            exit 1
+          else
+            echo "✨ Renderização concluída com sucesso!"
+            exit 0
+          fi
+
+
+
+      # 4 criar pull_request 'book' para 'stag'
+      # 5 auto-merge e auto-approve
+      # 6 repository_dispath para estatistica com payload dos livros renderizados
+      # 7 criar pull_request 'stag' para 'main'
