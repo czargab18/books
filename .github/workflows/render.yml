@@ -151,14 +151,11 @@ jobs:
           done
           echo "✅ Limpeza concluída"
 
-      - name: Gerar JSON com a lista de todos os livros existentes
+      - name: Gerar JSON com a lista de livros renderizados e salvar em book
         id: criar_json_livros
         run: |
-          LIVROS_JSON=$(echo "$LISTA" | jq -R 'split(" ")' | jq -c '.')
-          mkdir -p book
-
           LIVROS_JSON=$(find book -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort | jq -Rsc 'split("\n") | map(select(length > 0))')
-
+          echo "$LIVROS_JSON" > book/livros_renderizados.json
           echo "✅ JSON com a lista de todos os livros foi gerado em book/livros_renderizados.json"
           echo "Conteúdo: $LIVROS_JSON"
 
@@ -242,7 +239,7 @@ jobs:
                 owner: context.repo.owner,
                 repo: context.repo.repo,
                 pull_number: prNumber,
-                merge_method: 'squash'
+                merge_method: 'merge'
               });
               core.info(`PR #${prNumber} merged`);
             }
