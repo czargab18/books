@@ -3,7 +3,7 @@
 
 # description: Workflow para renderizar livros em Quarto e criar Pull Requests automaticamente.
 # version: 2.0.0
-name: render_v2
+name: render
 
 on:
   push:
