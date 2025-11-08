@@ -61,7 +61,7 @@ jobs:
         id: detectar_livros_workflow_dispatch
         run: |
           INPUT_LIVROS="${{ github.event.inputs.livros }}"
-          
+
           if [ "$INPUT_LIVROS" == "all" ]; then
             LISTA=$(find build -maxdepth 1 -type d -name '[A-Z][A-Z][A-Z][0-9][0-9][0-9][0-9]' -printf '%f\n' | sort | xargs)
             echo "📚 Renderizando todos os livros: $LISTA"
@@ -69,7 +69,7 @@ jobs:
             LISTA=$(echo "$INPUT_LIVROS" | tr ',' ' ' | xargs)
             echo "📚 Renderizando livros especificados: $LISTA"
           fi
-          
+
           echo "lista_livros=$LISTA" >> $GITHUB_OUTPUT
           echo "✅ Lista salva: $LISTA"
 
@@ -79,7 +79,7 @@ jobs:
         run: |
           ARQUIVOS_MODIFICADOS=$(git diff --name-only ${{ github.event.before }} ${{ github.sha }})
           LISTA=$(echo "$ARQUIVOS_MODIFICADOS" | grep -oE '^build/[A-Z]{3}[0-9]{4}' | sed 's|build/||' | sort | uniq | xargs)
-          
+
           echo "📚 Livros detectados por push: $LISTA"
           echo "lista_livros=$LISTA" >> $GITHUB_OUTPUT
           echo "✅ Lista salva: $LISTA"
@@ -88,7 +88,7 @@ jobs:
         uses: quarto-dev/quarto-actions/setup@v2
         with:
           version: "release"
-      
+
       - name: Cria pasta 'book' se não existir
         run: |
           mkdir -p book
@@ -98,15 +98,15 @@ jobs:
         if: steps.detectar_livros_push.outputs.lista_livros != '' || steps.detectar_livros_workflow_dispatch.outputs.lista_livros != ''
         run: |
           LISTA="${{ steps.detectar_livros_push.outputs.lista_livros || steps.detectar_livros_workflow_dispatch.outputs.lista_livros }}"
-          
+
           if [ -z "$LISTA" ]; then
             echo "⚠️ Nenhum livro para renderizar"
             exit 0
           fi
-        
+
           NUM_LIVROS=$(echo "$LISTA" | wc -w)
           echo "📚 Renderizando $NUM_LIVROS livro(s): $LISTA"
-          
+
           SUCCESS_COUNT=0
           FAIL_COUNT=0
 
@@ -267,4 +267,3 @@ jobs:
 
             ---
             **⚠️ Esta PR requer aprovação manual antes do merge para produção.**
-
