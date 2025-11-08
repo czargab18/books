@@ -49,6 +49,28 @@ jobs:
 # 1 Detectar as pastas dos livros a serem renderizados
 # 2 Instalar o Quarto
 # 3 Renderizar os livros e salvar em --output-dir "./../../book/$livro"
-# 4 criar pull_request
+# 4 criar pull_request 'book' para 'stag'
 # 5 auto-merge e auto-approve
 # 6 repository_dispath para estatistica com payload dos livros renderizados
+# 7 criar pull_request 'stag' para 'main'
+
+
+# # criar 'pull_request' de 'stag' para 'main'
+#   pr-main:
+#     runs-on: ubuntu-latest
+#     environment:
+#       name: ENVIRONMENT
+#     steps:
+#       - name: Configura credenciais do Git para submódulos privados
+#         run: |
+#           git config --global url."https://${{ env.TOKEN }}:x-oauth-basic@github.com/".insteadOf "https://github.com/"
+
+#       - name: Checkout
+#         uses: actions/checkout@v5
+#         with:
+#           repository: ${{ env.USERNAME }}/books
+#           token: ${{ env.TOKEN }}
+#           ref: "stag"
+#           fetch-tags: true
+#           submodules: false
+      
