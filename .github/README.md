@@ -37,6 +37,7 @@ Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull r
 - **`stag`**: Branch de testes, usada para validar mudanças antes de serem mescladas na `main`.
 - **`book`**: Branch usada pela action para atualizar os livros renderizados criando pull_request automaticos.
 - **`devX`**: Branch de desenvolvimento implementadas pelo `devX`
+- **`bard`**: Branch de escrita de livros pelo `bard`
 
 > Por favor, evite usar as branch `main`, `stag`, `dev0`, `dev1`, `dev2`, `news`, `book` para desenvolvimento direto. Crie uma nova branch a partir de `stag` para suas alterações usando como nome o sufixo `devX`, onde X é o próximo número de devs disponível. Branches de test devem ser enviadas como `devX-test`, ou faça o merge e envia o push em `devX`.
 
